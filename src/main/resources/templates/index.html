@@ -44,46 +44,46 @@
             </div>
             <div id=display-genre-target>
                 <!-- ローディング部分 -->
-                <div id="genre-loading" style="display: none;">
-                    <img class="spinner" src="images/loading.png" alt="読み込み中" style="width: 12%; height: 12%;">
+                <div id="genre-loading">
+                    <img class="loading-image" src="images/loading.png" alt="読み込み中">
                 </div>
-                <p id="genre-text-container" style="font-size: 1.125rem; font-weight: 600;">ジャンル：<span id="genre-text">〇〇</span></p>
-                <div id="target-loading" style="display: none;">
-                    <img class="spinner" src="images/loading.png" alt="読み込み中" style="width: 12%; height: 12%;">
+                <p id="genre-text-container">ジャンル：<span id="genre-text">〇〇</span></p>
+                <div id="target-loading">
+                <img class="loading-image" src="images/loading.png" alt="読み込み中">
                 </div>
-                <p id="target-text-container" style="font-size: 1.125rem; font-weight: 600;"><span id="target-text">〇〇</span>が答えられる問題を出せ</p>
+                <p id="target-text-container"><span id="target-text">〇〇</span>が答えられる問題を出せ</p>
             </div>
         </main>
 
         
-        <section id="gameconfig" style="background-color: #1F2937; padding: 1rem; border-radius: 0.5rem; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); margin-bottom: 1rem;">
-            <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 1rem;">
-                <label for="new-genre" style="font-size: .9rem; font-weight: 600;">新しいジャンル：</label>
-                <input id="new-genre" type="text" style="font-size: .9em; font-weight: 600; margin-right: 1rem;">
-                <button id="add-genre-button" style="width: 3rem; height: 2rem; background-color: #10B981; border-radius: 0; display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-weight: bold;">追加</button>
+        <section id="gameconfig">
+            <div class="config-parts">
+                <label for="new-genre" class="config-text">新しいジャンル：</label>
+                <input id="new-genre" class="config-input config-text">
+                <button id="add-genre-button" class="config-button config-add-button">追加</button>
             </div>
-            <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 1rem;">
-                <label for="delete-genre" style="font-size: .9rem; font-weight: 600;">削除するジャンル：</label>
-                <select id="delete-genre" style="font-size: .7rem; font-weight: 600; margin-right: 1rem;">
+            <div class="config-parts">
+                <label for="delete-genre" class="config-text">削除するジャンル：</label>
+                <select id="delete-genre" class="config-input config-text">
                 </select>
-                <button id="delete-genre-button" style="width: 3rem; height: 2rem; background-color: #EF4444; border-radius: 0; display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-weight: bold;">削除</button>
+                <button id="delete-genre-button" class="config-button config-delete-button">削除</button>
             </div>
-            <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 1rem;">
-                <label for="new-target" style="font-size: .9rem; font-weight: 600;">新しいターゲット：</label>
-                <input id="new-target" type="text" style="font-size: .9em; font-weight: 600; margin-right: 1rem;">
-                <button id="add-target-button" style="width: 3rem; height: 2rem; background-color: #10B981; border-radius: 0; display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-weight: bold;">追加</button>
+            <div class="config-parts">
+                <label for="new-target" class="config-text">新しいターゲット：</label>
+                <input id="new-target" class="config-input config-text">
+                <button id="add-target-button" class="config-button config-add-button">追加</button>
             </div>
-            <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 1rem;">
-                <label for="delete-target" style="font-size: .9rem; font-weight: 600;">削除するターゲット：</label>
-                <select id="delete-target" style="font-size: .9rem; font-weight: 600; margin-right: 1rem;">
+            <div class="config-parts">
+                <label for="delete-target" class="config-text">削除するターゲット：</label>
+                <select id="delete-target" class="config-input config-text">
                 </select>
-                <button id="delete-target-button" style="width: 3rem; height: 2rem; background-color: #EF4444; border-radius: 0; display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-weight: bold;">削除</button>
+                <button id="delete-target-button" class="config-button config-delete-button">削除</button>
             </div>
         </section>
         <!-- Footer Section -->
-        <footer style="text-align: center; padding: 2rem; background-color: #1F2937; border-radius: 0.5rem; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);">
-            <p class="font-bold">作：モモセヨウタ</p>
-            <p style="color: #D1D5DB;">© 2024 クイズスナイパー. All rights reserved.</p>
+        <footer class="footer">
+            <p>作：モモセヨウタ</p>
+            <p>© 2024 クイズスナイパー. All rights reserved.</p>
         </footer>
     </div>
     <script src="script/script.js"></script>
