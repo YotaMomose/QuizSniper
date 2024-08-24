@@ -1,0 +1,86 @@
+body {
+    color: #F5F5F5; 
+    background-image: url('../images/background.jpg'); 
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    background-attachment: fixed;
+}
+
+#main {
+    margin: auto; padding: 1rem;
+}
+
+/* タイトル部分 */
+header {
+    text-align: center; padding: 2rem;
+}
+
+#title {
+    font-size: 2.8rem; 
+    font-weight: bold; 
+    color: #4b0361; 
+    font-family: 'Dela Gothic One', sans-serif;
+}
+
+/* 説明部分 */
+.font-large {
+    font-size: larger;
+}
+
+#description {
+    background-color: #1F2937; 
+    padding: 1rem; 
+    border-radius: 0.5rem; 
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); margin-bottom: 1rem;
+}
+
+/* ゲーム部分 */
+main {
+    background-color: #1F2937; 
+    padding: 1rem; 
+    border-radius: 0.5rem; 
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); 
+    margin-bottom: 1rem;
+}
+
+#questioner {
+    text-align: center; 
+    margin-bottom: 1rem;
+}
+
+.questioner {
+    font-size: 1.125rem; 
+    font-weight: 600;
+}
+
+#genre-target-buttons {
+    display: flex; 
+    justify-content: center; 
+    margin-bottom: 
+    1rem; gap: 1rem;
+}
+
+.select-button {
+    width: 7rem; 
+    height: 7rem; 
+    border-radius: 50%; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    color: #FFFFFF; 
+    font-weight: bold;
+}
+
+#genre-button {
+    background-color: #EF4444; 
+}
+
+#target-button {
+    background-color: #3B82F6;
+}
+
+#display-genre-target {
+    text-align: center; 
+    margin-bottom: 1rem;
+}

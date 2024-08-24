@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>クイズスナイパー</title>
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap" rel="stylesheet">
+    
+    <style>
+    
+    </style>
+</head>
+<body>
+    <div id="main">
+        <!-- タイトル部分 -->
+        <header>
+            <h1 id="title">クイズスナイパー</h1>
+        </header>
+
+        <!-- ゲーム説明部分 -->
+        <section id="description">
+            <p class="font-large">ルール</p>
+            <hr>
+            <p>このゲームは指定されたジャンルでターゲットとなった人だけが正解できる問題を出題するゲームです。</p>
+            <p>まずは、ゲームに参加する人を登録してください。<a href="#gameconfig">登録はコチラ</a></p>
+            <p>1.ジャンル選択ボタンを押しジャンルを決定してください</p>
+            <p>2.ターゲット選択ボタンを押し正解させる人を決定してください</p>
+            <p>3.選ばれたジャンルでターゲットだけが正解できる問題を出題します</p>
+        </section>
+
+        <!-- ゲーム部分 -->
+        <main>
+            <div id="questioner">
+                <label for="targets" class="questioner">クイズ出題者：</label>
+                <select id="targets" class="questioner">
+                </select>
+            </div>
+            <div id="genre-target-buttons">
+                <button id="genre-button" class="select-button">ジャンル選択　スタート</button>
+                <button id="target-button" class="select-button">ターゲット選択　スタート</button>
+            </div>
+            <div id=display-genre-target>
+                <!-- ローディング部分 -->
+                <div id="genre-loading" style="display: none;">
+                    <img class="spinner" src="images/loading.png" alt="読み込み中" style="width: 12%; height: 12%;">
+                </div>
+                <p id="genre-text-container" style="font-size: 1.125rem; font-weight: 600;">ジャンル：<span id="genre-text">〇〇</span></p>
+                <div id="target-loading" style="display: none;">
+                    <img class="spinner" src="images/loading.png" alt="読み込み中" style="width: 12%; height: 12%;">
+                </div>
+                <p id="target-text-container" style="font-size: 1.125rem; font-weight: 600;"><span id="target-text">〇〇</span>が答えられる問題を出せ</p>
+            </div>
+        </main>
+
+        
+        <section id="gameconfig" style="background-color: #1F2937; padding: 1rem; border-radius: 0.5rem; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); margin-bottom: 1rem;">
+            <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 1rem;">
+                <label for="new-genre" style="font-size: .9rem; font-weight: 600;">新しいジャンル：</label>
+                <input id="new-genre" type="text" style="font-size: .9em; font-weight: 600; margin-right: 1rem;">
+                <button id="add-genre-button" style="width: 3rem; height: 2rem; background-color: #10B981; border-radius: 0; display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-weight: bold;">追加</button>
+            </div>
+            <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 1rem;">
+                <label for="delete-genre" style="font-size: .9rem; font-weight: 600;">削除するジャンル：</label>
+                <select id="delete-genre" style="font-size: .7rem; font-weight: 600; margin-right: 1rem;">
+                </select>
+                <button id="delete-genre-button" style="width: 3rem; height: 2rem; background-color: #EF4444; border-radius: 0; display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-weight: bold;">削除</button>
+            </div>
+            <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 1rem;">
+                <label for="new-target" style="font-size: .9rem; font-weight: 600;">新しいターゲット：</label>
+                <input id="new-target" type="text" style="font-size: .9em; font-weight: 600; margin-right: 1rem;">
+                <button id="add-target-button" style="width: 3rem; height: 2rem; background-color: #10B981; border-radius: 0; display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-weight: bold;">追加</button>
+            </div>
+            <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 1rem;">
+                <label for="delete-target" style="font-size: .9rem; font-weight: 600;">削除するターゲット：</label>
+                <select id="delete-target" style="font-size: .9rem; font-weight: 600; margin-right: 1rem;">
+                </select>
+                <button id="delete-target-button" style="width: 3rem; height: 2rem; background-color: #EF4444; border-radius: 0; display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-weight: bold;">削除</button>
+            </div>
+        </section>
+        <!-- Footer Section -->
+        <footer style="text-align: center; padding: 2rem; background-color: #1F2937; border-radius: 0.5rem; box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);">
+            <p class="font-bold">作：モモセヨウタ</p>
+            <p style="color: #D1D5DB;">© 2024 クイズスナイパー. All rights reserved.</p>
+        </footer>
+    </div>
+    <script src="script/script.js"></script>
+</body>
+</html>
+
+
