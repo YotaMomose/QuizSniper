@@ -83,6 +83,9 @@ main {
 #display-genre-target {
     text-align: center; 
     margin-bottom: 1rem;
+    font-family:"MS Pゴシック",sans-serif;
+    font-weight: bold;
+    font-size: 1.3rem;
 }
 
 #genre-loading {
@@ -122,6 +125,8 @@ main {
 #config-text {
     font-size: .9rem; 
     font-weight: 600;
+    flex: 0 0 150px;
+    text-align: left;
 }
 
 .config-input {
@@ -153,4 +158,13 @@ main {
     background-color: #1F2937; 
     border-radius: 0.5rem; 
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+/* ボタン　 */
+button {
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.8;
 }
