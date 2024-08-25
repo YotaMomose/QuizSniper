@@ -73,7 +73,7 @@ main {
 }
 
 #genre-button {
-    background-color: #EF4444; 
+    background-color: #640869; 
 }
 
 #target-button {
@@ -150,6 +150,23 @@ main {
 
 .config-delete-button {
     background-color: #EF4444;
+}
+
+.setting-view {
+    background-color: #3B82F6;
+    color: #FFFFFF;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    font-size: 16px;
+    margin: 4px auto;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 12px;
+    font-weight: bold;
+    width: 5rem;
 }
 
 .footer {
