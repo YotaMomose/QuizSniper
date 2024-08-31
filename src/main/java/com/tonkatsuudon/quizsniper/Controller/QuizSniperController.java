@@ -1,4 +1,4 @@
-package com.tonkatsuudon.quizsniper.Controller;
+package com.tonkatsuudon.quizsniper.controller;
 
 
 import org.springframework.stereotype.Controller;
