@@ -21,6 +21,13 @@
             <h1 id="title">クイズスナイパー</h1>
         </header>
 
+        <!-- テスト　 -->
+        <div th:each="user : ${usersList}">
+            <p th:text="${user.id}"></p>
+            <p th:text="${user.name}"></p>
+            <p th:text="${user.password}"></p>
+        </div>
+        
         <!-- ゲーム説明部分 -->
         <section id="description">
             <p class="font-large">ルール</p>
