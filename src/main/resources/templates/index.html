@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>クイズスナイパー</title>
-    <link href="css/style.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap" rel="stylesheet">
+    <link th:href="@{css/style.css}" rel="stylesheet">
+    <link rel="preconnect" th:href="@{'https://fonts.googleapis.com'}">
+    <link rel="preconnect" th:href="@{'https://fonts.gstatic.com'}" crossorigin>
+    <link th:href="@{'https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap'}" rel="stylesheet">
+    
     
     <style>
     
@@ -20,6 +21,13 @@
             <h1 id="title">クイズスナイパー</h1>
         </header>
 
+        <!-- テスト　 -->
+        <div th:each="user : ${usersList}">
+            <p th:text="${user.id}"></p>
+            <p th:text="${user.name}"></p>
+            <p th:text="${user.password}"></p>
+        </div>
+        
         <!-- ゲーム説明部分 -->
         <section id="description">
             <p class="font-large">ルール</p>
@@ -55,7 +63,7 @@
             </div>
         </main>
 
-        
+        <!-- 設定部分 -->
         <section id="gameconfig">
             <div class="config-parts">
                 <label for="new-genre" class="config-text">新しいジャンル：</label>
@@ -79,6 +87,8 @@
                 </select>
                 <button id="delete-target-button" class="config-button config-delete-button">削除</button>
             </div>
+            <!-- 設定画面遷移 -->
+            <a class="setting-view" th:href="@{/setting}">設定画面へ</a>
         </section>
         <!-- Footer Section -->
         <footer class="footer">
