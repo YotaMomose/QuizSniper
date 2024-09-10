@@ -20,7 +20,9 @@ public class TargetRepository implements TargetTemplateDao {
 
     
     /**
-     * ユーザーIDに紐づくターゲットテンプレートとその内容（TargetContets）を取得する
+     * ユーザーIDに紐づくターゲットテンプレートとその内容（TargetContets）を取得する。
+     * リストの1番最初の要素としてセットしているテンプレートを取得する。
+     * 
      * @param ユーザーID
      * @return ターゲットテンプレートのリスト
      */
@@ -29,8 +31,10 @@ public class TargetRepository implements TargetTemplateDao {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
         CriteriaQuery<TargetTemplates> query = builder.createQuery(TargetTemplates.class);
         Root<TargetTemplates> targetTemplatesRoot = query.from(TargetTemplates.class);
+        
         Predicate userCondition = builder.equal(targetTemplatesRoot.get("userId"), userId);
         query.where(userCondition);
+        query.orderBy(builder.desc(targetTemplatesRoot.get("isSet")));
         List<TargetTemplates> results = entityManager.createQuery(query).getResultList();
         return results;
         

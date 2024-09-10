@@ -19,6 +19,7 @@ public class GenreRepository implements GenreTemplateDao {
 
     /**
      * ユーザーIDに紐づくジャンルテンプレートとその内容（GenreContets）を取得する
+     * リストの1番最初の要素としてセットしているテンプレートを取得する。
      * @param ユーザーID
      * @return ジャンルテンプレートのリスト
      */
@@ -29,6 +30,7 @@ public class GenreRepository implements GenreTemplateDao {
         Root<GenreTemplates> genreTemplatesRoot = query.from(GenreTemplates.class);
         Predicate userCondition = builder.equal(genreTemplatesRoot.get("userId"), userId);
         query.where(userCondition);
+        query.orderBy(builder.desc(genreTemplatesRoot.get("isSet")));
         List<GenreTemplates> results = entityManager.createQuery(query).getResultList();
         return results;
     }

@@ -1,31 +1,35 @@
-const genres = [
-    '一般常識問題',
-    'スポーツのこと',
-    '自分に関すること',
-    '５教科の問題',
-    'ものの名前',
-    '動物に関すること',
-    '乗り物に関すること',
-    '食べ物に関すること',
-    'オールジャンル',
-    '有名人・芸能人に関すること',
-    '音楽に関すること',
-    '生き物に関すること',
-    'アニメ・漫画・ゲームに関すること',
-    'エンタメに関すること',
-    '地理・場所に関すること',
-    'ファッションに関すること',
-    '中学校時代に関すること',
-    '高校時代に関すること',
-    '小学校時代に関すること',
-]
-const targets = [
-    'よーた',
-    'しょーご',
-    'イケメン',
-    'はるき',
-    'よきを',
-]
+// const genres = [
+//     '一般常識問題',
+//     'スポーツのこと',
+//     '自分に関すること',
+//     '５教科の問題',
+//     'ものの名前',
+//     '動物に関すること',
+//     '乗り物に関すること',
+//     '食べ物に関すること',
+//     'オールジャンル',
+//     '有名人・芸能人に関すること',
+//     '音楽に関すること',
+//     '生き物に関すること',
+//     'アニメ・漫画・ゲームに関すること',
+//     'エンタメに関すること',
+//     '地理・場所に関すること',
+//     'ファッションに関すること',
+//     '中学校時代に関すること',
+//     '高校時代に関すること',
+//     '小学校時代に関すること',
+// ]
+
+
+
+
+// const targets = [
+//     'よーた',
+//     'しょーご',
+//     'イケメン',
+//     'はるき',
+//     'よきを',
+// ]
 
 let genreButton = document.getElementById('genre-button');
 let targetButton = document.getElementById('target-button');
@@ -41,14 +45,15 @@ genreButton.addEventListener('click', function() {
         genreTextContainer.style.display = 'block';
     }, 500);
 
-    const randomIndex = Math.floor(Math.random() * genres.length);
-    const selectedGenre = genres[randomIndex];
+    const randomIndex = Math.floor(Math.random() * setGenreContets.length);
+    const selectedGenre = setGenreContets[randomIndex];
     document.getElementById('genre-text').textContent = selectedGenre;
-    console.log(genres)
+    console.log(setGenreContets)
 });
 
 // ターゲット選択ボタンをクリックしたときの処理
 targetButton.addEventListener('click', function() {
+
     let targetTextContainer = document.getElementById('target-text-container');
     targetTextContainer.style.display = 'none';
     let loading = document.getElementById('target-loading');
@@ -60,9 +65,9 @@ targetButton.addEventListener('click', function() {
 
     // index.htmlのselectで選ばれている要素を取得
     let selectedOption = document.getElementById('targets').value;
-
+    console.log(selectedOption)
     // 選ばれている要素を除外した新しい配列を作成
-    let filteredTargets = targets.filter(target => target !== selectedOption);
+    let filteredTargets = setTargetContets.filter(target => target !== selectedOption);
 
     const randomCount = Math.floor(Math.random() * (filteredTargets.length - 1)) + 1;
     const selectedTargets = [];
@@ -78,30 +83,30 @@ targetButton.addEventListener('click', function() {
 
 
 //selectの初期値を設定する
-window.onload = function() {
-    //クイズ出題者のselectの初期値を設定
-    let selectElement = document.getElementById('targets');
-    let deleteSelectElement = document.getElementById('delete-target');
-    for (let i = 0; i < targets.length; i++) {
-        let option1 = document.createElement('option');
-        option1.value = targets[i];
-        option1.text = targets[i];
-        selectElement.appendChild(option1);
+// window.onload = function() {
+//     //クイズ出題者のselectの初期値を設定
+//     let selectElement = document.getElementById('targets');
+//     let deleteSelectElement = document.getElementById('delete-target');
+//     for (let i = 0; i < targets.length; i++) {
+//         let option1 = document.createElement('option');
+//         option1.value = targets[i];
+//         option1.text = targets[i];
+//         selectElement.appendChild(option1);
 
-        let option2 = document.createElement('option');
-        option2.value = targets[i];
-        option2.text = targets[i];
-        deleteSelectElement.appendChild(option2);
-    }
-    //クイズジャンル削除のselectの初期値を設定
-    let deleteGenre = document.getElementById('delete-genre');
-    for (let i = 0; i < genres.length; i++) {
-        let option = document.createElement('option');
-        option.value = genres[i];
-        option.text = genres[i];
-        deleteGenre.appendChild(option);
-    }
-}
+//         let option2 = document.createElement('option');
+//         option2.value = targets[i];
+//         option2.text = targets[i];
+//         deleteSelectElement.appendChild(option2);
+//     }
+//     //クイズジャンル削除のselectの初期値を設定
+//     let deleteGenre = document.getElementById('delete-genre');
+//     for (let i = 0; i < genres.length; i++) {
+//         let option = document.createElement('option');
+//         option.value = genres[i];
+//         option.text = genres[i];
+//         deleteGenre.appendChild(option);
+//     }
+// }
 
 
 //削除ボタン押下でジャンルを消す

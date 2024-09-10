@@ -1,8 +1,10 @@
 package com.tonkatsuudon.quizsniper.controller;
 
 
+import java.util.ArrayList;
 import java.util.List;
-
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,10 +14,9 @@ import com.tonkatsuudon.quizsniper.entity.GenreContents;
 import com.tonkatsuudon.quizsniper.entity.GenreTemplates;
 import com.tonkatsuudon.quizsniper.entity.TargetContents;
 import com.tonkatsuudon.quizsniper.entity.TargetTemplates;
-import com.tonkatsuudon.quizsniper.entity.Users;
 import com.tonkatsuudon.quizsniper.repository.GenreRepository;
 import com.tonkatsuudon.quizsniper.repository.TargetRepository;
-import com.tonkatsuudon.quizsniper.repository.UsersRepository;
+
 
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
@@ -27,7 +28,6 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 public class QuizSniperController {
-    private final UsersRepository usersRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -46,30 +46,35 @@ public class QuizSniperController {
         // TODO　仮としてユーザーIDを「tonkatsu」の固定値で設定
         // ログイン処理を実装時にログインユーザーのIDで検索をするように変更
 
+        //ターゲット
         List<TargetTemplates> targetTemplates = targetRepository.findTargetTemplates("tonkatsu");
-        for (TargetTemplates template : targetTemplates) {
-            System.out.println("Template Name: " + template.getName());
-            List<TargetContents> targetContents = template.getTargetContents();
-            for (TargetContents content : targetContents) {
-                System.out.println("Content: " + content.getContent());
-            }
-        }
 
+        TargetTemplates setTargetTemplate = targetTemplates.get(0);
+
+        List<String> setTargetContets = setTargetTemplate.getTargetContents().stream()
+        .map(TargetContents::getContent)
+        .collect(Collectors.toList());
+        
+        mv.addObject("setTargetContets", setTargetContets);
+        mv.addObject("targetTemplates", targetTemplates);
+
+        //ジャンル
         List<GenreTemplates> genreTemplates = genreRepository.findGenreTemplates("tonkatsu");
-        for (GenreTemplates template : genreTemplates) {
-            System.out.println("Template Name: " + template.getName());
-            List<GenreContents> genreContents = template.getGenreContents();
-            for (GenreContents content : genreContents) {
-                System.out.println("Content: " + content.getContent());
-            }
-        }
+
+        GenreTemplates setGenreTemplate = genreTemplates.get(0);
+
+        List<String> setGenreContets = setGenreTemplate.getGenreContents().stream()
+        .map(GenreContents::getContent)
+        .collect(Collectors.toList());
+        
+        mv.addObject("setGenreContets", setGenreContets);
+        mv.addObject("genreTemplates", genreTemplates);
+
 
 
         
 
         mv.setViewName("index");
-        List<Users> usersList = usersRepository.findAll();
-        mv.addObject("usersList", usersList);
         return mv;
     }
 
