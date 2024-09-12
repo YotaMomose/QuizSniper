@@ -1,10 +1,15 @@
 package com.tonkatsuudon.quizsniper.entity;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -25,5 +30,9 @@ public class TargetTemplates {
 
     @Column
     private boolean isSet;
+
+    //fetch = FetchType.EAGERとすることで一度のアクセスでtargetContentsまで取得する。デフォルトはFetchType.LAZY
+    @OneToMany(mappedBy = "targetTemplates", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<TargetContents> targetContents;
 }
 

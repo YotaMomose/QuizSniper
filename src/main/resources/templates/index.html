@@ -9,6 +9,15 @@
     <link rel="preconnect" th:href="@{'https://fonts.gstatic.com'}" crossorigin>
     <link th:href="@{'https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap'}" rel="stylesheet">
     
+    <script th:inline="javascript">
+        // Controllerの値をJSの配列に変換
+        const setTargetContets = /*[[${setTargetContets}]]*/[];
+        const setGenreContets = /*[[${setGenreContets}]]*/[];
+        // 配列の内容をコンソールに出力
+        //これはイケリル
+        console.log(setTargetContets);
+    </script>
+    
     
     <style>
     
@@ -20,13 +29,6 @@
         <header>
             <h1 id="title">クイズスナイパー</h1>
         </header>
-
-        <!-- テスト　 -->
-        <div th:each="user : ${usersList}">
-            <p th:text="${user.id}"></p>
-            <p th:text="${user.name}"></p>
-            <p th:text="${user.password}"></p>
-        </div>
         
         <!-- ゲーム説明部分 -->
         <section id="description">
@@ -43,6 +45,7 @@
         <main>
             <div id="questioner">
                 <label for="targets" class="questioner">クイズ出題者：</label>
+                
                 <select id="targets" class="questioner">
                 </select>
             </div>
