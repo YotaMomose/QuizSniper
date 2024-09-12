@@ -47,9 +47,6 @@
                 <label for="targets" class="questioner">クイズ出題者：</label>
                 
                 <select id="targets" class="questioner">
-                    <th:block th:each="targetContent : ${targetTemplates[0].targetContents}">
-                        <option th:value="${targetContent.content}" th:text="${targetContent.content}"></option>
-                    </th:block>
                 </select>
             </div>
             <div id="genre-target-buttons">
