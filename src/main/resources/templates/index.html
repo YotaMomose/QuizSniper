@@ -11,11 +11,8 @@
     
     <script th:inline="javascript">
         // Controllerの値をJSの配列に変換
-        const setTargetContets = /*[[${setTargetContets}]]*/[];
-        const setGenreContets = /*[[${setGenreContets}]]*/[];
-        // 配列の内容をコンソールに出力
-        //これはイケリル
-        console.log(setTargetContets);
+        const setTargetContets = /*[[${session.setTargetContets}]]*/[];
+        const setGenreContets = /*[[${session.setGenreContets}]]*/[];
     </script>
     
     
@@ -27,6 +24,17 @@
     <div id="main">
         <!-- タイトル部分 -->
         <header>
+            <div id="login-register-buttons">
+                <div th:if="${session.loginUser != null}">
+                    <a th:href="@{/logout}" id="logout-button" class="login-register-button">ログアウト</a>
+                </div>
+                <div th:if="${session.loginUser == null}">
+                    <a th:href="@{/login}" id="login-button" class="login-register-button">ログイン</a>
+                </div>
+                
+                <button id="register-button" class="login-register-button">新規登録</button>
+            </div>
+            <br>
             <h1 id="title">クイズスナイパー</h1>
         </header>
         

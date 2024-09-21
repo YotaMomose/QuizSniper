@@ -12,6 +12,8 @@ body {
 }
 
 /* タイトル部分 */
+
+
 header {
     text-align: center; padding: 2rem;
 }
@@ -22,6 +24,37 @@ header {
     color: #4b0361; 
     font-family: 'Dela Gothic One', sans-serif;
 }
+
+
+/* ログインボタン・新規登録ボタン */
+#login-register-buttons {
+    position: absolute;
+    top: 10px; /* 画面の上からの距離 */
+    right: 10px; /* 画面の右からの距離 */
+    display: flex;
+    flex-direction: column; /* ボタンを縦に並べる */
+    gap: 10px; /* ボタン間のスペース */
+}
+
+.login-register-button {
+    background-color: #34466a;
+    color: #F5F5F5;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 12px;
+    font-weight: bold;
+}
+
+.login-register-button:hover {
+    background-color: #F5F5F5;
+    color: #4b0361;
+}
+
 
 /* 説明部分 */
 .font-large {
@@ -166,7 +199,7 @@ main {
     cursor: pointer;
     border-radius: 12px;
     font-weight: bold;
-    width: 5rem;
+    width: 10rem;
 }
 
 .footer {
@@ -184,4 +217,75 @@ button {
 
 button:hover {
     opacity: 0.8;
+}
+
+/*--------------------ログイン画面------------------*/
+* {
+    box-sizing: border-box;
+}
+#loginview-title {
+    font-size: 1.8rem; 
+    font-weight: bold; 
+    color: #4b0361; 
+    font-family: 'Dela Gothic One', sans-serif;
+}
+
+#login-body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center;
+}
+
+#login-title {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.login-label {
+    display: block;
+    text-align: left;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #333;
+}
+
+.login-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.login-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #34466a;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.login-button:hover {
+    background-color: #5a6ba7;
+}
+
+.error-message {
+    color: #EF4444;
 }

@@ -7,8 +7,6 @@ import com.tonkatsuudon.quizsniper.entity.TargetTemplates;
 
 
 
-public interface TargetTemplateDao {
-    
+public interface TargetTemplateDao {   
     List<TargetTemplates> findTargetTemplates(String userId);
-
 } 

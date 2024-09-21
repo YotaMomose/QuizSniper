@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ログイン</title>
+    <link th:href="@{css/style.css}" rel="stylesheet">
+    <link rel="preconnect" th:href="@{'https://fonts.googleapis.com'}">
+    <link rel="preconnect" th:href="@{'https://fonts.gstatic.com'}" crossorigin>
+    <link th:href="@{'https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap'}" rel="stylesheet">
+    
+    <script th:inline="javascript">
+
+    </script>
+    
+    
+    <style>
+    
+    </style>
+</head>
+<body id="login-body">
+    <div class="login-container">
+        <header>
+            <h1 id="loginview-title">クイズスナイパー</h1>
+        </header>
+        <h2 id="login-title">ログイン</h2>
+
+        
+        <form th:action="@{/}" method="post" th:object="${loginData}" id="login-form">
+            <!-- エラーメッセージ表示部分 -->
+            <div th:if="${#fields.hasErrors()}" class="error-message">
+                <p th:if="${#fields.hasErrors('userId')}" th:text="${#fields.errors('userId')}"></p>
+                <p th:if="${#fields.hasErrors('password')}" th:text="${#fields.errors('password')}"></p>
+            </div>
+            <div th:if="${#fields.hasErrors('global')}" class="error-message">
+                <p th:text="${#fields.errors('global')}" />
+            </div>
+            
+            <label class="login-label" for="username">ユーザーID:</label>
+            <input class="login-input" type="text" id="username" name="userId" th:value="*{userId}">
+            
+            <label class="login-label" for="password">パスワード:</label>
+            <input class="login-input" type="password" id="password" name="password" th:value="*{password}">
+            
+            <button type="submit" class="login-button">ログイン</button>
+        </form>
+    </div>
+</body>
+</html>
+
+
