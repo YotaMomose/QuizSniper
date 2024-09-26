@@ -11,11 +11,8 @@
     
     <script th:inline="javascript">
         // Controllerの値をJSの配列に変換
-        const setTargetContets = /*[[${setTargetContets}]]*/[];
-        const setGenreContets = /*[[${setGenreContets}]]*/[];
-        // 配列の内容をコンソールに出力
-        //これはイケリル
-        console.log(setTargetContets);
+        const setTargetContets = /*[[${session.setTargetContets}]]*/[];
+        const setGenreContets = /*[[${session.setGenreContets}]]*/[];
     </script>
     
     
@@ -27,6 +24,17 @@
     <div id="main">
         <!-- タイトル部分 -->
         <header>
+            <div id="login-register-buttons">
+                <div th:if="${session.loginUser != null}">
+                    <a th:href="@{/logout}" id="logout-button" class="login-register-button">ログアウト</a>
+                </div>
+                <div th:if="${session.loginUser == null}">
+                    <a th:href="@{/login}" id="login-button" class="login-register-button">ログイン</a>
+                </div>
+                
+                <button id="register-button" class="login-register-button">新規登録</button>
+            </div>
+            <br>
             <h1 id="title">クイズスナイパー</h1>
         </header>
         
@@ -68,28 +76,31 @@
 
         <!-- 設定部分 -->
         <section id="gameconfig">
-            <div class="config-parts">
-                <label for="new-genre" class="config-text">新しいジャンル：</label>
-                <input id="new-genre" class="config-input config-text">
-                <button id="add-genre-button" class="config-button config-add-button">追加</button>
-            </div>
-            <div class="config-parts">
-                <label for="delete-genre" class="config-text">削除するジャンル：</label>
-                <select id="delete-genre" class="config-input config-text">
-                </select>
-                <button id="delete-genre-button" class="config-button config-delete-button">削除</button>
-            </div>
-            <div class="config-parts">
-                <label for="new-target" class="config-text">新しいターゲット：</label>
-                <input id="new-target" class="config-input config-text">
-                <button id="add-target-button" class="config-button config-add-button">追加</button>
-            </div>
-            <div class="config-parts">
-                <label for="delete-target" class="config-text">削除するターゲット：</label>
-                <select id="delete-target" class="config-input config-text">
-                </select>
-                <button id="delete-target-button" class="config-button config-delete-button">削除</button>
-            </div>
+            <form th:action="@{/addgenre}" method="post" id="add-genre-form">
+                <div class="config-parts">
+                    <label for="new-genre" class="config-text">新しいジャンル：</label>
+                    <input id="new-genre" name="newGenre" class="config-input config-text">
+                    <button type="submit" class="config-button config-add-button" id="add-genre-button">追加</button>
+                </div>
+            </form>
+                <div class="config-parts">
+                    <label for="delete-genre" class="config-text">削除するジャンル：</label>
+                    <select id="delete-genre" class="config-input config-text">
+                    </select>
+                    <button id="delete-genre-button" class="config-button config-delete-button">削除</button>
+                </div>
+                <div class="config-parts">
+                    <label for="new-target" class="config-text">新しいターゲット：</label>
+                    <input id="new-target" class="config-input config-text">
+                    <button id="add-target-button" class="config-button config-add-button">追加</button>
+                </div>
+                <div class="config-parts">
+                    <label for="delete-target" class="config-text">削除するターゲット：</label>
+                    <select id="delete-target" class="config-input config-text">
+                    </select>
+                    <button id="delete-target-button" class="config-button config-delete-button">削除</button>
+                </div>
+            
             <!-- 設定画面遷移 -->
             <a class="setting-view" th:href="@{/setting}">設定画面へ</a>
         </section>

@@ -166,25 +166,25 @@ addTargetButton.addEventListener('click', function() {
 });
 
 // 新しいジャンル追加ボタンを取得
-let addGenreButton = document.getElementById('add-genre-button');
-addGenreButton.addEventListener('click', function() {
-    // 入力されたジャンルを取得
-    let newGenreInput = document.getElementById('new-genre');
-    let newGenre = newGenreInput.value;
+// let addGenreButton = document.getElementById('add-genre-button');
+// addGenreButton.addEventListener('click', function() {
+//     // 入力されたジャンルを取得
+//     let newGenreInput = document.getElementById('new-genre');
+//     let newGenre = newGenreInput.value;
 
-    // setGenreContets配列に新しいジャンルを追加
-    setGenreContets.push(newGenre);
+//     // setGenreContets配列に新しいジャンルを追加
+//     setGenreContets.push(newGenre);
 
-    // selectの内容を更新
-    let deleteGenreSelect = document.getElementById('delete-genre');
-    let option = document.createElement('option');
-    option.value = newGenre;
-    option.text = newGenre;
-    deleteGenreSelect.appendChild(option);
+//     // selectの内容を更新
+//     let deleteGenreSelect = document.getElementById('delete-genre');
+//     let option = document.createElement('option');
+//     option.value = newGenre;
+//     option.text = newGenre;
+//     deleteGenreSelect.appendChild(option);
 
-    // 入力フィールドをクリア
-    newGenreInput.value = '';
-});
+//     // 入力フィールドをクリア
+//     newGenreInput.value = '';
+// });
 
 
 
