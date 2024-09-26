@@ -1,6 +1,7 @@
 package com.tonkatsuudon.quizsniper.controller;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tonkatsuudon.quizsniper.entity.Users;
@@ -77,8 +79,7 @@ public class QuizSniperController {
             mv.setViewName("login");
             return mv;
         }
-        // TODO　仮としてユーザーIDを「tonkatsu」の固定値で設定
-        // ログイン処理を実装時にログインユーザーのIDで検索をするように変更
+
         Users loginInfo = loginData.toEntity();
         Users loginUser = loginService.fetchLoginUserData(loginInfo);
 
@@ -115,6 +116,18 @@ public class QuizSniperController {
     @GetMapping("/logout")
     public String loout(HttpSession session) {
         session.invalidate();
+        return "redirect:/";
+    }
+
+    /* ジャンル追加処理 */
+    @PostMapping("/addgenre")
+    public String addGenre(@RequestParam("newGenre") String newGenre, HttpSession session) {
+        List<String> setTargetContets = (List<String>) session.getAttribute("setTargetContets");
+        List<String> newTargetContents = new ArrayList<>(setTargetContets);
+        newTargetContents.add(newGenre);
+        
+        System.out.println(newGenre);
+        session.setAttribute("setTargetContets", newTargetContents);
         return "redirect:/";
     }
 
