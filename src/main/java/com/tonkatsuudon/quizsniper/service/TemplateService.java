@@ -9,27 +9,11 @@ import com.tonkatsuudon.quizsniper.entity.GenreContents;
 import com.tonkatsuudon.quizsniper.entity.GenreTemplates;
 import com.tonkatsuudon.quizsniper.entity.TargetContents;
 import com.tonkatsuudon.quizsniper.entity.TargetTemplates;
-import com.tonkatsuudon.quizsniper.repository.GenreRepository;
-import com.tonkatsuudon.quizsniper.repository.TargetRepository;
-
-import jakarta.annotation.PostConstruct;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class TemplateService {
-    @PersistenceContext
-    private EntityManager entityManager;
-    private TargetRepository targetRepository;
-    private GenreRepository genreRepository;
-
-    @PostConstruct
-    public void init() {
-        targetRepository = new TargetRepository(entityManager);
-        genreRepository = new GenreRepository(entityManager);
-    }
 
     //TODO インターフェースとかで下の二つのメソッドをいい感じにまとめられないか要検討
     /**
@@ -37,9 +21,7 @@ public class TemplateService {
      * @param ユーザーID
      * @return　セットしているターゲットテンプレートの中身のリスト
      */
-    public List<String> getSetTargetContents(String userId) {
-        List<TargetTemplates> targetTemplates = targetRepository.findTargetTemplates(userId);
-
+    public List<String> getSetTargetContents(List<TargetTemplates> targetTemplates) {
         TargetTemplates setTargetTemplate = targetTemplates.get(0);
 
         List<String> setTargetContets = setTargetTemplate.getTargetContents().stream()
@@ -54,9 +36,7 @@ public class TemplateService {
      * @param ユーザーID
      * @return　セットしているジャンルテンプレートの中身のリスト
      */
-    public List<String> getSetGenreContents(String userId) {
-        List<GenreTemplates> genreTemplates = genreRepository.findGenreTemplates(userId);
-
+    public List<String> getSetGenreContents(List<GenreTemplates> genreTemplates) {
         GenreTemplates setGenreTemplate = genreTemplates.get(0);
 
         List<String> setGenreContets = setGenreTemplate.getGenreContents().stream()
@@ -66,4 +46,21 @@ public class TemplateService {
         return setGenreContets;
     }
     
+    /**
+     * ユーザーがセットしているターゲットテンプレートのidを取得する処理
+     */
+    public Integer getSetTargetId(List<TargetTemplates> targetTemplates) {
+        TargetTemplates setTargetTemplate = targetTemplates.get(0);
+
+        return setTargetTemplate.getId();
+    }
+
+    /**
+     * ユーザーがセットしているジャンルテンプレートのidを取得する処理
+     */
+    public Integer getSetGenreId(List<GenreTemplates> genreTemplates) {
+        GenreTemplates setGenreTemplate = genreTemplates.get(0);
+
+        return setGenreTemplate.getId();
+    }
 }
