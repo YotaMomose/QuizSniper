@@ -13,7 +13,6 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -41,16 +40,58 @@ public class GenreRepository implements GenreTemplateDao  {
     }
 
     /**
+     * 引数で受け取ったidのGenreTemplatesのisSetをtrueに更新する
+     * @param id
+     */
+    @Override
+    public void setGenreTemplate(Integer id) {
+        try {
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaQuery<GenreTemplates> query = cb.createQuery(GenreTemplates.class);
+            Root<GenreTemplates> root = query.from(GenreTemplates.class);
+            
+            query.select(root).where(cb.equal(root.get("id"), id));
+
+            GenreTemplates genreTemplate = entityManager.createQuery(query).getSingleResult();
+            
+            if (genreTemplate != null) {
+                genreTemplate.setSet(true);
+                entityManager.persist(genreTemplate); 
+            }
+        } catch (Exception e) {
+            // TODO 結果が見つからない場合の処理（例: ログ出力など）
+            System.out.println("GenreTemplate with ID " + id + " not found.");
+            System.out.println(e);
+        }
+
+    }
+
+
+    /**
      * 引数で受け取ったidのGenreTemplatesのisSetをfalseに更新する
      * @param id
      */
     @Override
     public void unsetGenreTemplate(Integer id) {
-        GenreTemplates genreTemplate = entityManager.find(GenreTemplates.class, id);
-        if (genreTemplate != null) {
-            genreTemplate.setSet(false);
-            entityManager.persist(genreTemplate);
+        try {
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaQuery<GenreTemplates> query = cb.createQuery(GenreTemplates.class);
+            Root<GenreTemplates> root = query.from(GenreTemplates.class);
+            
+            query.select(root).where(cb.equal(root.get("id"), id));
+
+            GenreTemplates genreTemplate = entityManager.createQuery(query).getSingleResult();
+            
+            if (genreTemplate != null) {
+                genreTemplate.setSet(false);
+                entityManager.persist(genreTemplate); 
+            }
+        } catch (Exception e) {
+            // TODO 結果が見つからない場合の処理（例: ログ出力など）
+            System.out.println("GenreTemplate with ID " + id + " not found.");
+            System.out.println(e);
         }
+
     }
 
 }

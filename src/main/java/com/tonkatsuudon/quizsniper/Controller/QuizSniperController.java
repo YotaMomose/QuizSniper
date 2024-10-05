@@ -26,9 +26,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.servlet.http.HttpSession;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @Controller
@@ -91,8 +89,35 @@ public class QuizSniperController {
 
             // ジャンル
             session.setAttribute("setGenreContets", setGenreContets);
-        }
+        } else {
+            //ログイン情報がある場合は再度DBにデータを取得しにいくString userId = loginUser.getId();
 
+            String userId = loginUser.getId();
+            // ユーザー情報をセッションに登録
+            session.setAttribute("loginUser", loginUser);
+
+            // ログインユーザーに紐づくターゲットテンプレートの一覧
+            List<TargetTemplates> targetTemplates = targetRepository.findTargetTemplates(userId);
+            session.setAttribute("targetTemplates", targetTemplates);
+
+            // ログインユーザーに紐づくジャンルテンプレートの一覧
+            List<GenreTemplates> genreTemplates = genreRepository.findGenreTemplates(userId);
+            session.setAttribute("genreTemplates", genreTemplates);
+
+            // セットされているターゲット
+            session.setAttribute("setTargetContets", templateService.getSetTargetContents(targetTemplates));
+
+            // セットされているジャンル
+            session.setAttribute("setGenreContets", templateService.getSetGenreContents(genreTemplates));
+
+            // セットされているターゲットのid
+            session.setAttribute("setTargetId", templateService.getSetTargetId(targetTemplates));
+
+            // セットされているジャンルのid
+            session.setAttribute("setGenreId", templateService.getSetGenreId(genreTemplates));
+
+            
+            }
         mv.setViewName("index");
         return mv;
     }
@@ -163,12 +188,21 @@ public class QuizSniperController {
     }
 
     /* テンプレートセット(ジャンル) */
-    @PostMapping("/setGenreTemplate/{id}")
-    @Transactional
-    public String setGenreTmp(@PathVariable Integer id, HttpSession session) {
+    @PostMapping("/setGenreTemplate/")
+    public String setGenreTmp(@RequestParam("id") Integer id, HttpSession session) {
+        Integer currentSetId = (Integer) session.getAttribute("setGenreId");
+        //現在のテンプレートのセットを解除
+        templateService.switchSetGenreTemplate(currentSetId,id);
+        
+        return "redirect:/";
+    }
+
+    /* テンプレートセット(ターゲット) */
+    @PostMapping("/setTargetTemplate/")
+    public String setTargetTmp(@RequestParam("id") Integer id, HttpSession session) {
         Integer currentSetId = (Integer) session.getAttribute("setTargetId");
         //現在のテンプレートのセットを解除
-        genreRepository.unsetGenreTemplate(currentSetId);
+        templateService.switchSetTargetTemplate(currentSetId,id);
         
         return "redirect:/";
     }

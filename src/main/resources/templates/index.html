@@ -89,11 +89,13 @@
                                 </li>
                             </ul>
                         </details>
-                        <form th:action="@{/setGenreTemplate/{id}(id=${template.id})}" method="post">
+                        <form th:action="@{/setTargetTemplate/}" method="post">
+                            <input type="hidden" name="id" th:value="${template.id}">
                             <button type="submit">セットする</button>
                         </form>
                         
-                        <form th:action="@{/editGenreTemplate/{id}(id=${template.id})}" method="post">
+                        <form th:action="@{/editTargetTemplate/}" method="post">
+                            <input type="hidden" name="id" th:value="${template.id}">
                             <button type="submit">編集する</button>
                         </form>
                     </div>
@@ -113,11 +115,13 @@
                                 </li>
                             </ul>
                         </details>
-                        <form th:action="@{/setTemplate/{id}(id=${template.id})}" method="post">
+                        <form th:action="@{/setGenreTemplate/}" method="post">
+                            <input type="hidden" name="id" th:value="${template.id}">
                             <button type="submit">セットする</button>
                         </form>
                         
-                        <form th:action="@{/editTemplate/{id}(id=${template.id})}" method="post">
+                        <form th:action="@{/editGenreTemplate/}" method="post">
+                            <input type="hidden" name="id" th:value="${template.id}">
                             <button type="submit">編集する</button>
                         </form>
                     </div>

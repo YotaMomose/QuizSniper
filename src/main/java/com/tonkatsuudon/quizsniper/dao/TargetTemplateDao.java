@@ -9,4 +9,8 @@ import com.tonkatsuudon.quizsniper.entity.TargetTemplates;
 
 public interface TargetTemplateDao {   
     List<TargetTemplates> findTargetTemplates(String userId);
+
+    void unsetTargetTemplate(Integer id);
+
+    void setTargetTemplate(Integer id);
 } 
