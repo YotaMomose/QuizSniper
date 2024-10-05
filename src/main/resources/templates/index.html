@@ -74,8 +74,65 @@
             </div>
         </main>
 
+        <!-- テンプレートの一覧表示 -->
+        <section class="template-list">
+            <p class="font-large">ターゲットテンプレート一覧</p>
+            <ul>
+                <li th:each="template : ${session.targetTemplates}" class="template-li">
+                    <div class="template-button-set">
+                        <details>
+                            <summary th:text="${template.name}"></summary>
+                            
+                            <ul>
+                                <li th:each="content : ${template.targetContents}">
+                                    <p th:text="${content.content}" class="content-text"></p>
+                                </li>
+                            </ul>
+                        </details>
+                        <form th:action="@{/setTargetTemplate/}" method="post">
+                            <input type="hidden" name="id" th:value="${template.id}">
+                            <button type="submit">セットする</button>
+                        </form>
+                        
+                        <form th:action="@{/editTargetTemplate/}" method="post">
+                            <input type="hidden" name="id" th:value="${template.id}">
+                            <button type="submit">編集する</button>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+
+            <p class="font-large">ジャンルテンプレート一覧</p>
+            <ul>
+                <li th:each="template : ${session.genreTemplates}" class="template-li">
+                    <div class="template-button-set">
+                        <details>
+                            <summary th:text="${template.name}"></summary>
+                            
+                            <ul>
+                                <li th:each="content : ${template.genreContents}">
+                                    <p th:text="${content.content}" class="content-text"></p>
+                                </li>
+                            </ul>
+                        </details>
+                        <form th:action="@{/setGenreTemplate/}" method="post">
+                            <input type="hidden" name="id" th:value="${template.id}">
+                            <button type="submit">セットする</button>
+                        </form>
+                        
+                        <form th:action="@{/editGenreTemplate/}" method="post">
+                            <input type="hidden" name="id" th:value="${template.id}">
+                            <button type="submit">編集する</button>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        
         <!-- 設定部分 -->
         <section id="gameconfig">
+            <p class="font-large">セットしているテンプレートの編集</p>
             <form th:action="@{/addgenre}" method="post" id="add-genre-form">
                 <div class="config-parts">
                     <label for="new-genre" class="config-text">新しいジャンル：</label>

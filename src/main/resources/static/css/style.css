@@ -11,6 +11,8 @@ body {
     margin: auto; padding: 1rem;
 }
 
+
+
 /* タイトル部分 */
 
 
@@ -136,6 +138,30 @@ main {
 
 #text-container {
     font-size: 1.125rem; font-weight: 600;
+}
+
+/* テンプレート一覧表示部分 */
+.template-list {
+    background-color: #1F2937; 
+    padding: 1rem; 
+    border-radius: 0.5rem; 
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); 
+    margin-bottom: 1rem;
+}
+
+.template-li {
+    list-style: none;
+}
+
+.content-text {
+    margin: 0; 
+    padding: 0;
+}
+
+.template-button-set {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
 }
 
 /* 設定部分 */

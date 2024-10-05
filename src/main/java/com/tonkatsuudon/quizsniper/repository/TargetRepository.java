@@ -40,6 +40,59 @@ public class TargetRepository implements TargetTemplateDao {
         
     }
 
+    /**
+     * 引数で受け取ったidのTargetTemplatesのisSetをtrueに更新する
+     * @param id
+     */
+    @Override
+    public void setTargetTemplate(Integer id) {
+        try {
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaQuery<TargetTemplates> query = cb.createQuery(TargetTemplates.class);
+            Root<TargetTemplates> root = query.from(TargetTemplates.class);
+            
+            query.select(root).where(cb.equal(root.get("id"), id));
 
+            TargetTemplates targetTemplate = entityManager.createQuery(query).getSingleResult();
+            
+            if (targetTemplate != null) {
+                targetTemplate.setSet(true);
+                entityManager.persist(targetTemplate); 
+            }
+        } catch (Exception e) {
+            // TODO 結果が見つからない場合の処理（例: ログ出力など）
+            System.out.println("TargetTemplate with ID " + id + " not found.");
+            System.out.println(e);
+        }
+
+    }
+
+
+    /**
+     * 引数で受け取ったidのTargetTemplatesのisSetをfalseに更新する
+     * @param id
+     */
+    @Override
+    public void unsetTargetTemplate(Integer id) {
+        try {
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaQuery<TargetTemplates> query = cb.createQuery(TargetTemplates.class);
+            Root<TargetTemplates> root = query.from(TargetTemplates.class);
+            
+            query.select(root).where(cb.equal(root.get("id"), id));
+
+            TargetTemplates targetTemplate = entityManager.createQuery(query).getSingleResult();
+            
+            if (targetTemplate != null) {
+                targetTemplate.setSet(false);
+                entityManager.persist(targetTemplate); 
+            }
+        } catch (Exception e) {
+            // TODO 結果が見つからない場合の処理（例: ログ出力など）
+            System.out.println("TargetTemplate with ID " + id + " not found.");
+            System.out.println(e);
+        }
+
+    }
     
 }
