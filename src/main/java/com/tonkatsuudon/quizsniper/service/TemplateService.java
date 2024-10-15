@@ -1,16 +1,21 @@
 package com.tonkatsuudon.quizsniper.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.tonkatsuudon.quizsniper.dao.QuizElementDao;
 import com.tonkatsuudon.quizsniper.entity.GenreContents;
 import com.tonkatsuudon.quizsniper.entity.GenreTemplates;
 import com.tonkatsuudon.quizsniper.entity.TargetContents;
 import com.tonkatsuudon.quizsniper.entity.TargetTemplates;
+import com.tonkatsuudon.quizsniper.entity.Templates;
 import com.tonkatsuudon.quizsniper.repository.GenreRepository;
 import com.tonkatsuudon.quizsniper.repository.TargetRepository;
+import com.tonkatsuudon.quizsniper.type.ElementType;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
@@ -26,11 +31,15 @@ public class TemplateService {
     private EntityManager entityManager;
     private TargetRepository targetRepository;
     private GenreRepository genreRepository;
+    private Map<ElementType, QuizElementDao> repositoies;
 
     @PostConstruct
     public void init() {
         targetRepository = new TargetRepository(entityManager);
         genreRepository = new GenreRepository(entityManager);
+        repositoies = new HashMap<>();
+        repositoies.put(ElementType.Genre, genreRepository);
+        //repositoies.put(ElementType.Target, targetRepository);
     }
     //TODO インターフェースとかで下の二つのメソッドをいい感じにまとめられないか要検討
     /**
@@ -92,7 +101,7 @@ public class TemplateService {
         genreRepository.setGenreTemplate(newSetId);
     }
 
-        /**
+    /**
      * 現在セットされているターゲットテンプレートを解除し、新たにテンプレートをセットする。
      * @param currentSetId 現在セットされているテンプレートのID
      * @param newSetId　新たにセットするテンプレートのID
@@ -101,5 +110,54 @@ public class TemplateService {
     public void switchSetTargetTemplate(Integer currentSetId, Integer newSetId) {
         targetRepository.unsetTargetTemplate(currentSetId);
         targetRepository.setTargetTemplate(newSetId);
+    }
+
+    /**
+     * 現在セットされているジャンルテンプレートに新たにコンテンツを追加する
+     * @param genreTemplates テンプレートのリスト
+     * @param newGenre 追加するコンテンツ
+     */
+    @Transactional
+    public void addNewGenreContent(List<GenreTemplates> genreTemplates, String newGenre) {
+        GenreTemplates setTemplate = genreTemplates.get(0);
+
+        genreRepository.addGenreContent(newGenre, setTemplate);
+    }
+
+    /**
+     * 現在セットされているテンプレートにのコンテンツを削除する
+     * @param genreTemplates テンプレートのリスト
+     * @param deleteGenre 削除するコンテンツ
+     */
+    @Transactional
+    public void deleteContent(List<Templates> templates, String deleteContent, ElementType type) {
+        Templates setTemplate = templates.get(0);
+        // QuizElementDao repository = repositoies.get(type);
+        genreRepository.delteSetContent(deleteContent, setTemplate);
+        
+    }
+
+    /**
+     * 現在セットされているテンプレートにのコンテンツを削除する
+     * @param genreTemplates テンプレートのリスト
+     * @param deleteGenre 削除するコンテンツ
+     */
+    @Transactional
+    public void deletetest(String id) {
+        
+        genreRepository.delteTest(id);;
+        
+    }
+
+    /**
+     * 現在セットされているターゲットテンプレートに新たにコンテンツを追加する
+     * @param targetTemplates　
+     * @param newGenre 追加するコンテンツ
+     */
+    @Transactional
+    public void addNewTargetContent(List<TargetTemplates> targetTemplates, String newTarget) {
+        TargetTemplates setTemplate = targetTemplates.get(0);
+
+        targetRepository.addTargetContent(newTarget, setTemplate);
     }
 }

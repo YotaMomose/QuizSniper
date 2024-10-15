@@ -81,89 +81,89 @@ window.onload = function() {
 
 
 //削除ボタン押下でジャンルを消す
-let deleteGenreButton = document.getElementById('delete-genre-button');
-deleteGenreButton.addEventListener('click', function() {
-    let deleteGenreSelect = document.getElementById('delete-genre');
-    let selectedGenre = deleteGenreSelect.value;
+// let deleteGenreButton = document.getElementById('delete-genre-button');
+// deleteGenreButton.addEventListener('click', function() {
+//     let deleteGenreSelect = document.getElementById('delete-genre');
+//     let selectedGenre = deleteGenreSelect.value;
 
-    // setGenreContets配列から選ばれた要素を削除
-    const index = setGenreContets.indexOf(selectedGenre);
-    if (index > -1) {
-        setGenreContets.splice(index, 1);
-    }
+//     // setGenreContets配列から選ばれた要素を削除
+//     const index = setGenreContets.indexOf(selectedGenre);
+//     if (index > -1) {
+//         setGenreContets.splice(index, 1);
+//     }
 
-    // selectの内容を更新
-    while (deleteGenreSelect.firstChild) {
-        deleteGenreSelect.removeChild(deleteGenreSelect.firstChild);
-    }
-    for (let i = 0; i < setGenreContets.length; i++) {
-        let option = document.createElement('option');
-        option.value = setGenreContets[i];
-        option.text = setGenreContets[i];
-        deleteGenreSelect.appendChild(option);
-    }
-    console.log(setGenreContets)
-});
+//     // selectの内容を更新
+//     while (deleteGenreSelect.firstChild) {
+//         deleteGenreSelect.removeChild(deleteGenreSelect.firstChild);
+//     }
+//     for (let i = 0; i < setGenreContets.length; i++) {
+//         let option = document.createElement('option');
+//         option.value = setGenreContets[i];
+//         option.text = setGenreContets[i];
+//         deleteGenreSelect.appendChild(option);
+//     }
+//     console.log(setGenreContets)
+// });
 
-// 削除ボタン押下で選ばれたターゲットを消す
-let deleteTargetButton = document.getElementById('delete-target-button');
-deleteTargetButton.addEventListener('click', function() {
-    let deleteTargetSelect = document.getElementById('delete-target');
-    let selectedTarget = deleteTargetSelect.value;
+// // 削除ボタン押下で選ばれたターゲットを消す
+// let deleteTargetButton = document.getElementById('delete-target-button');
+// deleteTargetButton.addEventListener('click', function() {
+//     let deleteTargetSelect = document.getElementById('delete-target');
+//     let selectedTarget = deleteTargetSelect.value;
 
-    // setTargetContets配列から選ばれた要素を削除
-    const index = setTargetContets.indexOf(selectedTarget);
-    if (index > -1) {
-        setTargetContets.splice(index, 1);
-    }
+//     // setTargetContets配列から選ばれた要素を削除
+//     const index = setTargetContets.indexOf(selectedTarget);
+//     if (index > -1) {
+//         setTargetContets.splice(index, 1);
+//     }
 
-    // selectの内容を更新
-    while (deleteTargetSelect.firstChild) {
-        deleteTargetSelect.removeChild(deleteTargetSelect.firstChild);
-    }
-    let selectElement = document.getElementById('targets');
-    while (selectElement.firstChild) {
-        selectElement.removeChild(selectElement.firstChild);
-    }
-    for (let i = 0; i < setTargetContets.length; i++) {
-        let option1 = document.createElement('option');
-        option1.value = setTargetContets[i];
-        option1.text = setTargetContets[i];
-        deleteTargetSelect.appendChild(option1);
+//     // selectの内容を更新
+//     while (deleteTargetSelect.firstChild) {
+//         deleteTargetSelect.removeChild(deleteTargetSelect.firstChild);
+//     }
+//     let selectElement = document.getElementById('targets');
+//     while (selectElement.firstChild) {
+//         selectElement.removeChild(selectElement.firstChild);
+//     }
+//     for (let i = 0; i < setTargetContets.length; i++) {
+//         let option1 = document.createElement('option');
+//         option1.value = setTargetContets[i];
+//         option1.text = setTargetContets[i];
+//         deleteTargetSelect.appendChild(option1);
 
-        let option2 = document.createElement('option');
-        option2.value = setTargetContets[i];
-        option2.text = setTargetContets[i];
-        selectElement.appendChild(option2);
-    }
-});
+//         let option2 = document.createElement('option');
+//         option2.value = setTargetContets[i];
+//         option2.text = setTargetContets[i];
+//         selectElement.appendChild(option2);
+//     }
+// });
 
-// 追加ボタンを取得
-let addTargetButton = document.getElementById('add-target-button');
-addTargetButton.addEventListener('click', function() {
-    // 入力されたターゲットを取得
-    let newTargetInput = document.getElementById('new-target');
-    let newTarget = newTargetInput.value;
+// // 追加ボタンを取得
+// let addTargetButton = document.getElementById('add-target-button');
+// addTargetButton.addEventListener('click', function() {
+//     // 入力されたターゲットを取得
+//     let newTargetInput = document.getElementById('new-target');
+//     let newTarget = newTargetInput.value;
 
-    // setTargetContets配列に新しいターゲットを追加
-    setTargetContets.push(newTarget);
+//     // setTargetContets配列に新しいターゲットを追加
+//     setTargetContets.push(newTarget);
 
-    // selectの内容を更新
-    let deleteTargetSelect = document.getElementById('delete-target');
-    let option1 = document.createElement('option');
-    option1.value = newTarget;
-    option1.text = newTarget;
-    deleteTargetSelect.appendChild(option1);
+//     // selectの内容を更新
+//     let deleteTargetSelect = document.getElementById('delete-target');
+//     let option1 = document.createElement('option');
+//     option1.value = newTarget;
+//     option1.text = newTarget;
+//     deleteTargetSelect.appendChild(option1);
 
-    let selectElement = document.getElementById('targets');
-    let option2 = document.createElement('option');
-    option2.value = newTarget;
-    option2.text = newTarget;
-    selectElement.appendChild(option2);
+//     let selectElement = document.getElementById('targets');
+//     let option2 = document.createElement('option');
+//     option2.value = newTarget;
+//     option2.text = newTarget;
+//     selectElement.appendChild(option2);
 
-    // 入力フィールドをクリア
-    newTargetInput.value = '';
-});
+//     // 入力フィールドをクリア
+//     newTargetInput.value = '';
+// });
 
 // 新しいジャンル追加ボタンを取得
 // let addGenreButton = document.getElementById('add-genre-button');

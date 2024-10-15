@@ -17,7 +17,7 @@ import lombok.Data;
 @Entity
 @Table(name = "genre_templates")
 @Data
-public class GenreTemplates {
+public class GenreTemplates implements Templates {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +33,7 @@ public class GenreTemplates {
     private boolean isSet;
 
     //fetch = FetchType.EAGERとすることで一度のアクセスでtargetContentsまで取得する。デフォルトはFetchType.LAZY
-    @OneToMany(mappedBy = "genreTemplates", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "genreTemplates", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<GenreContents> genreContents;
 
 

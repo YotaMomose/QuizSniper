@@ -1,6 +1,5 @@
 package com.tonkatsuudon.quizsniper.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -8,19 +7,20 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tonkatsuudon.quizsniper.entity.GenreTemplates;
 import com.tonkatsuudon.quizsniper.entity.TargetTemplates;
+import com.tonkatsuudon.quizsniper.entity.Templates;
 import com.tonkatsuudon.quizsniper.entity.Users;
 import com.tonkatsuudon.quizsniper.form.LoginData;
 import com.tonkatsuudon.quizsniper.repository.GenreRepository;
 import com.tonkatsuudon.quizsniper.repository.TargetRepository;
 import com.tonkatsuudon.quizsniper.service.LoginService;
 import com.tonkatsuudon.quizsniper.service.TemplateService;
+import com.tonkatsuudon.quizsniper.type.ElementType;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
@@ -90,7 +90,7 @@ public class QuizSniperController {
             // ジャンル
             session.setAttribute("setGenreContets", setGenreContets);
         } else {
-            //ログイン情報がある場合は再度DBにデータを取得しにいくString userId = loginUser.getId();
+            //ログイン情報がある場合は再度DBにデータを取得しにいく
 
             String userId = loginUser.getId();
             // ユーザー情報をセッションに登録
@@ -211,12 +211,27 @@ public class QuizSniperController {
     /* ジャンル追加処理 */
     @PostMapping("/addgenre")
     public String addGenre(@RequestParam("newGenre") String newGenre, HttpSession session) {
-        List<String> setTargetContets = (List<String>) session.getAttribute("setTargetContets");
-        List<String> newTargetContents = new ArrayList<>(setTargetContets);
-        newTargetContents.add(newGenre);
+        List<GenreTemplates> genreTemplates = (List<GenreTemplates>) session.getAttribute("genreTemplates");
+        templateService.addNewGenreContent(genreTemplates, newGenre);
 
-        System.out.println(newGenre);
-        session.setAttribute("setTargetContets", newTargetContents);
+        return "redirect:/";
+    }
+
+    /* ジャンル削除処理 */
+    @PostMapping("/delgenre")
+    public String deleteGenre(@RequestParam("delGenre") String deleteGenre, HttpSession session) {
+        List<Templates> genreTemplates = (List<Templates>) session.getAttribute("genreTemplates");
+        templateService.deleteContent(genreTemplates, deleteGenre, ElementType.Genre);
+        //templateService.deletetest("test");
+        return "redirect:/";
+    }
+
+    /* ターゲット追加処理 */
+    @PostMapping("/addtarget")
+    public String addTarget(@RequestParam("newTarget") String newTarget, HttpSession session) {
+        List<TargetTemplates> targetTemplates = (List<TargetTemplates>) session.getAttribute("targetTemplates");
+        templateService.addNewTargetContent(targetTemplates, newTarget);
+
         return "redirect:/";
     }
 

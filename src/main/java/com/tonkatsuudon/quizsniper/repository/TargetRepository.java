@@ -5,6 +5,7 @@ import java.util.List;
 
 
 import com.tonkatsuudon.quizsniper.dao.TargetTemplateDao;
+import com.tonkatsuudon.quizsniper.entity.TargetContents;
 import com.tonkatsuudon.quizsniper.entity.TargetTemplates;
 
 import jakarta.persistence.EntityManager;
@@ -93,6 +94,25 @@ public class TargetRepository implements TargetTemplateDao {
             System.out.println(e);
         }
 
+    }
+
+    /**
+     * 引数で受け取ったcontentとtemplateidを持つTargetContentを追加する
+     * @param content
+     * @param templateId
+     */
+    @Override
+    public void addTargetContent(String content, TargetTemplates setTemplate) {
+        try {
+            TargetContents targetContent = new TargetContents();
+            targetContent.setContent(content);
+            targetContent.setTargetTemplates(setTemplate);
+            entityManager.persist(targetContent);
+        } catch (Exception e) {
+            // TODO: エラーハンドリング（例: ログ出力など）
+            
+            System.out.println(e);
+        }
     }
     
 }

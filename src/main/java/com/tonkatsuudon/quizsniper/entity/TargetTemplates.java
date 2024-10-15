@@ -17,7 +17,7 @@ import lombok.Data;
 @Entity
 @Table(name = "target_templates")
 @Data
-public class TargetTemplates {
+public class TargetTemplates implements Templates {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
