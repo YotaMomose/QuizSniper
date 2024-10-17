@@ -11,8 +11,11 @@
     
     <script th:inline="javascript">
         // Controllerの値をJSの配列に変換
-        const setTargetContets = /*[[${session.setTargetContets}]]*/[];
-        const setGenreContets = /*[[${session.setGenreContets}]]*/[];
+        const setTargetStringList = /*[[${session.setTargetStringList}]]*/[];
+        const setGenreStringList = /*[[${session.setGenreStringList}]]*/[];
+
+        var testContents = /*[[${session.TestContents}]]*/ {};
+        console.log(testContents); // JavaScriptで使用可能
     </script>
     
     
@@ -53,8 +56,8 @@
         <main>
             <div id="questioner">
                 <label for="targets" class="questioner">クイズ出題者：</label>
-                
                 <select id="targets" class="questioner">
+                    <option th:each="target : ${session.setTargetStringList}" th:value="${target}" th:text="${target}"></option>
                 </select>
             </div>
             <div id="genre-target-buttons">
@@ -144,6 +147,7 @@
                 <div class="config-parts">
                     <label for="delete-genre" class="config-text">削除するジャンル：</label>
                     <select name="delGenre" id="delete-genre" class="config-input config-text">
+                        <option th:each="genreContent : ${session.setGenreContents}" th:value="${genreContent.id}" th:text="${genreContent.content}"></option>
                     </select>
                     <button type="submit" id="delete-genre-button" class="config-button config-delete-button">削除</button>
                 </div>
@@ -155,13 +159,15 @@
                     <button type="submit" id="add-target-button" class="config-button config-add-button">追加</button>
                 </div>
             </form>
+            <form th:action="@{/deltarget}" method="post" id="add-genre-form">
                 <div class="config-parts">
                     <label for="delete-target" class="config-text">削除するターゲット：</label>
-                    <select id="delete-target" class="config-input config-text">
+                    <select name="delTarget" id="delete-target" class="config-input config-text">
+                        <option th:each="targetContent : ${session.setTargetContents}" th:value="${targetContent.id}" th:text="${targetContent.content}"></option>
                     </select>
                     <button id="delete-target-button" class="config-button config-delete-button">削除</button>
                 </div>
-            
+            </form>
             <!-- 設定画面遷移 -->
             <a class="setting-view" th:href="@{/setting}">設定画面へ</a>
         </section>

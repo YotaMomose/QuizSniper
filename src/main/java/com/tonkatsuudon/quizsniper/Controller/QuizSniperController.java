@@ -46,6 +46,8 @@ public class QuizSniperController {
     private final TemplateService templateService;
     private final LoginService loginService;
 
+    private final String DEFAULT_USER_ID = "default";
+
     /* 初期表示（メイン画面） */
     @GetMapping("/")
     public ModelAndView showMainView(ModelAndView mv, @ModelAttribute @Validated LoginData loginData,
@@ -54,41 +56,29 @@ public class QuizSniperController {
         // ログイン情報がない場合はテンプレートに初期値をセット
         Users loginUser = (Users) session.getAttribute("loginUser");
         if (loginUser == null) {
-            List<String> setTargetContets = List.of("佐藤", "鈴木", "高橋", "田中", "伊藤");
-            List<String> setGenreContets = List.of(
-                    "漢字問題",
-                    "一般常識問題",
-                    "スポーツのこと",
-                    "自分に関すること",
-                    "５教科の問題",
-                    "ものの名前",
-                    "動物に関すること",
-                    "乗り物に関すること",
-                    "食べ物に関すること",
-                    "オールジャンル",
-                    "有名人・芸能人に関すること",
-                    "音楽に関すること",
-                    "生き物に関すること",
-                    "アニメ・漫画・ゲームに関すること",
-                    "エンタメに関すること",
-                    "地理・場所に関すること",
-                    "ファッションに関すること",
-                    "中学校時代に関すること",
-                    "高校時代に関すること",
-                    "小学校時代に関すること");
 
-            //ターゲットのデフォルト一覧
-            TargetTemplates targetTemplates = new TargetTemplates();
-            session.setAttribute("targetTemplates", targetTemplates.getDefaultTmplate(setTargetContets));
+            // ログインしない場合のターゲットテンプレートの一覧
+            List<TargetTemplates> targetTemplates = targetRepository.findTargetTemplates(DEFAULT_USER_ID);
+            session.setAttribute("targetTemplates", targetTemplates);
 
-            GenreTemplates genreTemplates = new GenreTemplates();
-            session.setAttribute("genreTemplates", genreTemplates.getDefaultTmplate(setGenreContets));
+            // ログインしない場合のジャンルテンプレートの一覧
+            List<GenreTemplates> genreTemplates = genreRepository.findGenreTemplates(DEFAULT_USER_ID);
+            session.setAttribute("genreTemplates", genreTemplates);
 
-            // ターゲット
-            session.setAttribute("setTargetContets", setTargetContets);
+            //セットされているターゲットのContentsのリスト
+            session.setAttribute("setTargetContents", templateService.getsetTargetContents(targetTemplates));
+            
+            //セットされているジャンルのContentsのリスト
+            session.setAttribute("setGenreContents", templateService.getsetGenreContents(genreTemplates));
+            
+            // セットされているターゲットのStirngのリスト
+            session.setAttribute("setTargetStringList", templateService.getSetTargetStringList(targetTemplates));
 
-            // ジャンル
-            session.setAttribute("setGenreContets", setGenreContets);
+            // セットされているジャンルStringのリスト
+            session.setAttribute("setGenreStringList", templateService.getSetGenreStringList(genreTemplates));
+
+
+
         } else {
             //ログイン情報がある場合は再度DBにデータを取得しにいく
 
@@ -104,18 +94,23 @@ public class QuizSniperController {
             List<GenreTemplates> genreTemplates = genreRepository.findGenreTemplates(userId);
             session.setAttribute("genreTemplates", genreTemplates);
 
-            // セットされているターゲット
-            session.setAttribute("setTargetContets", templateService.getSetTargetContents(targetTemplates));
+            //セットされているターゲットのContentsのリスト
+            session.setAttribute("setTargetContents", templateService.getsetTargetContents(targetTemplates));
+            
+            //セットされているジャンルのContentsのリスト
+            session.setAttribute("setGenreContents", templateService.getsetGenreContents(genreTemplates));
+            
+            // セットされているターゲットのStirngのリスト
+            session.setAttribute("setTargetStringList", templateService.getSetTargetStringList(targetTemplates));
 
-            // セットされているジャンル
-            session.setAttribute("setGenreContets", templateService.getSetGenreContents(genreTemplates));
+            // セットされているジャンルStringのリスト
+            session.setAttribute("setGenreStringList", templateService.getSetGenreStringList(genreTemplates));
 
             // セットされているターゲットのid
             session.setAttribute("setTargetId", templateService.getSetTargetId(targetTemplates));
 
             // セットされているジャンルのid
             session.setAttribute("setGenreId", templateService.getSetGenreId(genreTemplates));
-
             
             }
         mv.setViewName("index");
@@ -155,17 +150,25 @@ public class QuizSniperController {
         List<GenreTemplates> genreTemplates = genreRepository.findGenreTemplates(userId);
         session.setAttribute("genreTemplates", genreTemplates);
 
-        // セットされているターゲット
-        session.setAttribute("setTargetContets", templateService.getSetTargetContents(targetTemplates));
+        //セットされているターゲットのContentsのリスト
+        session.setAttribute("setTargetContents", templateService.getsetTargetContents(targetTemplates));
+        
+        //セットされているジャンルのContentsのリスト
+        session.setAttribute("setGenreContents", templateService.getsetGenreContents(genreTemplates));
+        
+        // セットされているターゲットのStirngのリスト
+        session.setAttribute("setTargetStringList", templateService.getSetTargetStringList(targetTemplates));
 
-        // セットされているジャンル
-        session.setAttribute("setGenreContets", templateService.getSetGenreContents(genreTemplates));
+        // セットされているジャンルStringのリスト
+        session.setAttribute("setGenreStringList", templateService.getSetGenreStringList(genreTemplates));
 
         // セットされているターゲットのid
         session.setAttribute("setTargetId", templateService.getSetTargetId(targetTemplates));
 
         // セットされているジャンルのid
         session.setAttribute("setGenreId", templateService.getSetGenreId(genreTemplates));
+
+        
 
         mv.setViewName("index");
         return mv;
@@ -219,10 +222,9 @@ public class QuizSniperController {
 
     /* ジャンル削除処理 */
     @PostMapping("/delgenre")
-    public String deleteGenre(@RequestParam("delGenre") String deleteGenre, HttpSession session) {
+    public String deleteGenre(@RequestParam("delGenre") Integer deleteGenre, HttpSession session) {
         List<Templates> genreTemplates = (List<Templates>) session.getAttribute("genreTemplates");
         templateService.deleteContent(genreTemplates, deleteGenre, ElementType.Genre);
-        //templateService.deletetest("test");
         return "redirect:/";
     }
 
@@ -232,6 +234,15 @@ public class QuizSniperController {
         List<TargetTemplates> targetTemplates = (List<TargetTemplates>) session.getAttribute("targetTemplates");
         templateService.addNewTargetContent(targetTemplates, newTarget);
 
+        return "redirect:/";
+    }
+
+    /* ターゲット削除処理 */
+    @PostMapping("/deltarget")
+    public String deleteTarget(@RequestParam("delTarget") Integer deleteTarget, HttpSession session) {
+        List<Templates> targetTemplates = (List<Templates>) session.getAttribute("targetTemplates");
+        System.out.println("ジャンルのID：" + deleteTarget);
+        templateService.deleteContent(targetTemplates, deleteTarget, ElementType.Target);
         return "redirect:/";
     }
 

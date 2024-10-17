@@ -4,15 +4,11 @@ import java.util.List;
 
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.tonkatsuudon.quizsniper.dao.GenreTemplateDao;
 import com.tonkatsuudon.quizsniper.dao.QuizElementDao;
 import com.tonkatsuudon.quizsniper.entity.GenreContents;
 import com.tonkatsuudon.quizsniper.entity.GenreTemplates;
 import com.tonkatsuudon.quizsniper.entity.Templates;
-import com.tonkatsuudon.quizsniper.entity.Users;
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -27,7 +23,7 @@ public class GenreRepository implements GenreTemplateDao, QuizElementDao {
 
 
     /**
-     * ユーザーIDに紐づくジャンルテンプレートとその内容（GenreContets）を取得する
+     * ユーザーIDに紐づくジャンルテンプレートとその内容（GenreContents）を取得する
      * リストの1番最初の要素としてセットしているテンプレートを取得する。
      * @param ユーザーID
      * @return ジャンルテンプレートのリスト
@@ -119,64 +115,23 @@ public class GenreRepository implements GenreTemplateDao, QuizElementDao {
     }
 
     @Override
-    public void delteSetContent(String content, Templates setTemplate) {
-        //try {
-            
-             // 既存のエンティティを検索
-            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-            CriteriaQuery<GenreContents> query = cb.createQuery(GenreContents.class);
-            Root<GenreContents> root = query.from(GenreContents.class);
-            
-            // content と setTemplate に基づいて削除するエンティティを検索
-            query.select(root).where(
-                cb.equal(root.get("id"), 15)
-            );
-            // 検索結果を取得
-            GenreContents genreContent = entityManager.createQuery(query).getSingleResult();
-            
-            System.out.println("GenreContent content: " + genreContent.getContent());
-            System.out.println("GenreContent content: " + genreContent.getId());
-            
-            // 検索したエンティティを削除
-            if (genreContent != null) {
-                GenreTemplates genreTemplates = (GenreTemplates)setTemplate;
-                genreTemplates.getGenreContents().remove(genreContent);
-                entityManager.merge(genreTemplates);
-                entityManager.flush(); 
-            }
-            genreContent = entityManager.createQuery(query).getSingleResult();
-            System.out.println(genreContent.getContent());
-            System.out.println(genreContent.getId());
-            System.out.println(genreContent.getGenreTemplates().getId());
-       // } catch (Exception e) {
-            // TODO: エラーハンドリング（例: ログ出力など）
-            
-         //   System.out.println(e);
-       // }
-        
-    }
-
-    @Override
-    public void delteTest(String id) {
+    public void delteSetContent(Integer id, Templates setTemplate) {
         try {
-             // 既存のエンティティを検索
-            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-            CriteriaQuery<Users> query = cb.createQuery(Users.class);
-            Root<Users> root = query.from(Users.class);
             
-            // content と setTemplate に基づいて削除するエンティティを検索
-            query.select(root).where(
-                cb.equal(root.get("id"), id)
-            );
             // 検索結果を取得
-            Users user = entityManager.createQuery(query).getSingleResult();
-            System.out.println("GenreContent content: " + user.getId());
-            System.out.println("GenreContent content: " + user.getName());
+            GenreTemplates genreTemplates = (GenreTemplates)setTemplate;
+            List<GenreContents> genreContents = genreTemplates.getGenreContents();
+            GenreContents deleteContents = genreContents.stream()
+                .filter(content -> content.getId().equals(id))
+                .findFirst()
+                .orElse(null);
             
             // 検索したエンティティを削除
-            if (user != null) {
-                entityManager.remove(user);
+            if (deleteContents != null) {
+                genreTemplates.getGenreContents().remove(deleteContents);
+                entityManager.merge(genreTemplates);
             }
+            
         } catch (Exception e) {
             // TODO: エラーハンドリング（例: ログ出力など）
             
@@ -184,6 +139,8 @@ public class GenreRepository implements GenreTemplateDao, QuizElementDao {
         }
         
     }
+        
+    
 
     
 

@@ -15,5 +15,4 @@ public interface GenreTemplateDao {
 
     void addGenreContent(String content, GenreTemplates setTemplate);
 
-    void delteTest(String id);
 }

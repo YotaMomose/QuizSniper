@@ -39,37 +39,63 @@ public class TemplateService {
         genreRepository = new GenreRepository(entityManager);
         repositoies = new HashMap<>();
         repositoies.put(ElementType.Genre, genreRepository);
-        //repositoies.put(ElementType.Target, targetRepository);
+        repositoies.put(ElementType.Target, targetRepository);
     }
-    //TODO インターフェースとかで下の二つのメソッドをいい感じにまとめられないか要検討
     /**
-     * ユーザーがセットしているターゲットテンプレートの中身（contets）の一覧のリストを取得する。
+     * ユーザーがセットしているターゲットテンプレートの中身（Contents）の内容をリストとして取得する。
      * @param ユーザーID
      * @return　セットしているターゲットテンプレートの中身のリスト
      */
-    public List<String> getSetTargetContents(List<TargetTemplates> targetTemplates) {
+    public List<TargetContents> getsetTargetContents(List<TargetTemplates> targetTemplates) {
         TargetTemplates setTargetTemplate = targetTemplates.get(0);
 
-        List<String> setTargetContets = setTargetTemplate.getTargetContents().stream()
-        .map(TargetContents::getContent)
-        .collect(Collectors.toList());
+        List<TargetContents> setTargetStringList = setTargetTemplate.getTargetContents();
 
-        return setTargetContets;
+        return setTargetStringList;
     }
 
     /**
-     * ユーザーがセットしているジャンルテンプレートの中身（contets）の一覧のリストを取得する。
+     * ユーザーがセットしているジャンルテンプレートの中身（Contents）の内容をリストとして取得する。
      * @param ユーザーID
      * @return　セットしているジャンルテンプレートの中身のリスト
      */
-    public List<String> getSetGenreContents(List<GenreTemplates> genreTemplates) {
+    public List<GenreContents> getsetGenreContents(List<GenreTemplates> genreTemplates) {
         GenreTemplates setGenreTemplate = genreTemplates.get(0);
 
-        List<String> setGenreContets = setGenreTemplate.getGenreContents().stream()
+        List<GenreContents> setGenreStringList = setGenreTemplate.getGenreContents();
+
+        return setGenreStringList;
+    }
+
+    //TODO インターフェースとかで下の二つのメソッドをいい感じにまとめられないか要検討
+    /**
+     * ユーザーがセットしているターゲットテンプレートの中身（Contents）の内容をStringリストとして取得する。
+     * @param ユーザーID
+     * @return　セットしているターゲットテンプレートの中身のStringのリスト
+     */
+    public List<String> getSetTargetStringList(List<TargetTemplates> targetTemplates) {
+        TargetTemplates setTargetTemplate = targetTemplates.get(0);
+
+        List<String> setTargetStringList = setTargetTemplate.getTargetContents().stream()
+        .map(TargetContents::getContent)
+        .collect(Collectors.toList());
+
+        return setTargetStringList;
+    }
+
+    /**
+     * ユーザーがセットしているジャンルテンプレートの中身（Contents）の一覧のリストを取得する。
+     * @param ユーザーID
+     * @return　セットしているジャンルテンプレートの中身のStringのリスト
+     */
+    public List<String> getSetGenreStringList(List<GenreTemplates> genreTemplates) {
+        GenreTemplates setGenreTemplate = genreTemplates.get(0);
+
+        List<String> setGenreStringList = setGenreTemplate.getGenreContents().stream()
         .map(GenreContents::getContent)
         .collect(Collectors.toList());
 
-        return setGenreContets;
+        return setGenreStringList;
     }
     
     /**
@@ -77,7 +103,6 @@ public class TemplateService {
      */
     public Integer getSetTargetId(List<TargetTemplates> targetTemplates) {
         TargetTemplates setTargetTemplate = targetTemplates.get(0);
-        System.out.println(setTargetTemplate.getId());
         return setTargetTemplate.getId();
     }
 
@@ -86,7 +111,6 @@ public class TemplateService {
      */
     public Integer getSetGenreId(List<GenreTemplates> genreTemplates) {
         GenreTemplates setGenreTemplate = genreTemplates.get(0);
-        System.out.println(setGenreTemplate.getId());
         return setGenreTemplate.getId();
     }
 
@@ -130,24 +154,13 @@ public class TemplateService {
      * @param deleteGenre 削除するコンテンツ
      */
     @Transactional
-    public void deleteContent(List<Templates> templates, String deleteContent, ElementType type) {
+    public void deleteContent(List<Templates> templates, Integer id, ElementType type) {
         Templates setTemplate = templates.get(0);
-        // QuizElementDao repository = repositoies.get(type);
-        genreRepository.delteSetContent(deleteContent, setTemplate);
+        QuizElementDao repository = repositoies.get(type);
+        repository.delteSetContent(id, setTemplate);
         
     }
 
-    /**
-     * 現在セットされているテンプレートにのコンテンツを削除する
-     * @param genreTemplates テンプレートのリスト
-     * @param deleteGenre 削除するコンテンツ
-     */
-    @Transactional
-    public void deletetest(String id) {
-        
-        genreRepository.delteTest(id);;
-        
-    }
 
     /**
      * 現在セットされているターゲットテンプレートに新たにコンテンツを追加する

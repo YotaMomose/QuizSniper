@@ -3,10 +3,13 @@ package com.tonkatsuudon.quizsniper.repository;
 
 import java.util.List;
 
-
+import com.tonkatsuudon.quizsniper.dao.QuizElementDao;
 import com.tonkatsuudon.quizsniper.dao.TargetTemplateDao;
+import com.tonkatsuudon.quizsniper.entity.GenreContents;
+import com.tonkatsuudon.quizsniper.entity.GenreTemplates;
 import com.tonkatsuudon.quizsniper.entity.TargetContents;
 import com.tonkatsuudon.quizsniper.entity.TargetTemplates;
+import com.tonkatsuudon.quizsniper.entity.Templates;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -16,12 +19,12 @@ import jakarta.persistence.criteria.Root;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class TargetRepository implements TargetTemplateDao {
+public class TargetRepository implements TargetTemplateDao, QuizElementDao {
     private final EntityManager entityManager;
 
     
     /**
-     * ユーザーIDに紐づくターゲットテンプレートとその内容（TargetContets）を取得する。
+     * ユーザーIDに紐づくターゲットテンプレートとその内容（TargetContents）を取得する。
      * リストの1番最初の要素としてセットしているテンプレートを取得する。
      * 
      * @param ユーザーID
@@ -113,6 +116,32 @@ public class TargetRepository implements TargetTemplateDao {
             
             System.out.println(e);
         }
+    }
+
+    @Override
+    public void delteSetContent(Integer id, Templates setTemplate) {
+        try {
+            
+            // 検索結果を取得
+            TargetTemplates targetTemplates = (TargetTemplates)setTemplate;
+            List<TargetContents> targetContents = targetTemplates.getTargetContents();
+            TargetContents deleteContents = targetContents.stream()
+                .filter(content -> content.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+            
+            // 検索したエンティティを削除
+            if (deleteContents != null) {
+                targetTemplates.getTargetContents().remove(deleteContents);
+                entityManager.merge(targetTemplates);
+            }
+            
+        } catch (Exception e) {
+            // TODO: エラーハンドリング（例: ログ出力など）
+            
+            System.out.println(e);
+        }
+        
     }
     
 }
