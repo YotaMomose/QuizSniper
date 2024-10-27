@@ -1,5 +1,6 @@
 package com.tonkatsuudon.quizsniper.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -172,5 +173,22 @@ public class TemplateService {
         TargetTemplates setTemplate = targetTemplates.get(0);
 
         targetRepository.addTargetContent(newTarget, setTemplate);
+    }
+
+    /**
+     * デフォルトのジャンルテンプレートにcontetsを追加する
+     * @param genreTemplates 現在のデフォルトテンプレート
+     * @return newTemplates 新たに追加したデフォルトテンプレート
+     */
+    public List<GenreTemplates> addDefaultGenre(List<GenreTemplates> genreTemplates, String newGenre) {
+        GenreTemplates newTemplate = genreTemplates.get(0);
+        GenreContents newContents = new GenreContents();
+        newContents.setContent(newGenre);
+        newTemplate.getGenreContents().add(newContents);
+        
+        List<GenreTemplates> newTemplates = new ArrayList<GenreTemplates>();
+        newTemplates.add(newTemplate);
+
+        return newTemplates;
     }
 }

@@ -1,5 +1,6 @@
 package com.tonkatsuudon.quizsniper.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.tonkatsuudon.quizsniper.entity.GenreContents;
 import com.tonkatsuudon.quizsniper.entity.GenreTemplates;
 import com.tonkatsuudon.quizsniper.entity.TargetTemplates;
 import com.tonkatsuudon.quizsniper.entity.Templates;
@@ -56,13 +58,19 @@ public class QuizSniperController {
         // ログイン情報がない場合はテンプレートに初期値をセット
         Users loginUser = (Users) session.getAttribute("loginUser");
         if (loginUser == null) {
+            List<GenreTemplates> genreTemplates = (List<GenreTemplates>) session.getAttribute("genreTemplates"); 
+            // すでにセッション情報がある場合はセッションに初期値をセットしない
+            if(genreTemplates != null) {
+                mv.setViewName("index");
+                return mv;
+            }
 
             // ログインしない場合のターゲットテンプレートの一覧
             List<TargetTemplates> targetTemplates = targetRepository.findTargetTemplates(DEFAULT_USER_ID);
             session.setAttribute("targetTemplates", targetTemplates);
 
             // ログインしない場合のジャンルテンプレートの一覧
-            List<GenreTemplates> genreTemplates = genreRepository.findGenreTemplates(DEFAULT_USER_ID);
+            genreTemplates = genreRepository.findGenreTemplates(DEFAULT_USER_ID);
             session.setAttribute("genreTemplates", genreTemplates);
 
             //セットされているターゲットのContentsのリスト
@@ -215,7 +223,20 @@ public class QuizSniperController {
     @PostMapping("/addgenre")
     public String addGenre(@RequestParam("newGenre") String newGenre, HttpSession session) {
         List<GenreTemplates> genreTemplates = (List<GenreTemplates>) session.getAttribute("genreTemplates");
-        templateService.addNewGenreContent(genreTemplates, newGenre);
+        Users loginUser = (Users) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            // ログイン情報がない場合はテンプレートに追加
+            List<GenreTemplates> newTemplates = templateService.addDefaultGenre(genreTemplates, newGenre);
+
+            
+            session.setAttribute("genreTemplates", newTemplates);
+            session.setAttribute("setGenreContents", templateService.getsetGenreContents(newTemplates));
+            session.setAttribute("setGenreStringList", templateService.getSetGenreStringList(newTemplates));
+        } else {
+            // ログイン情報がある場合はDBのデータを更新
+            templateService.addNewGenreContent(genreTemplates, newGenre);
+        }
+        
 
         return "redirect:/";
     }
