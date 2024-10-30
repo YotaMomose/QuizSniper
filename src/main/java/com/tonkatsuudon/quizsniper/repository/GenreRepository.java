@@ -4,10 +4,11 @@ import java.util.List;
 
 
 import org.springframework.stereotype.Repository;
-
 import com.tonkatsuudon.quizsniper.dao.GenreTemplateDao;
+import com.tonkatsuudon.quizsniper.dao.QuizElementDao;
+import com.tonkatsuudon.quizsniper.entity.GenreContents;
 import com.tonkatsuudon.quizsniper.entity.GenreTemplates;
-
+import com.tonkatsuudon.quizsniper.entity.Templates;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -17,12 +18,12 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @Repository
-public class GenreRepository implements GenreTemplateDao  {
+public class GenreRepository implements GenreTemplateDao, QuizElementDao {
     private final EntityManager entityManager;
 
 
     /**
-     * ユーザーIDに紐づくジャンルテンプレートとその内容（GenreContets）を取得する
+     * ユーザーIDに紐づくジャンルテンプレートとその内容（GenreContents）を取得する
      * リストの1番最初の要素としてセットしているテンプレートを取得する。
      * @param ユーザーID
      * @return ジャンルテンプレートのリスト
@@ -93,5 +94,56 @@ public class GenreRepository implements GenreTemplateDao  {
         }
 
     }
+
+    /**
+     * 引数で受け取ったcontentとtemplateidを持つGenreContentを追加する
+     * @param content
+     * @param templateId
+     */
+    @Override
+    public void addGenreContent(String content, GenreTemplates setTemplate) {
+        try {
+            GenreContents genreContent = new GenreContents();
+            genreContent.setContent(content);
+            genreContent.setGenreTemplates(setTemplate);
+            entityManager.persist(genreContent);
+        } catch (Exception e) {
+            // TODO: エラーハンドリング（例: ログ出力など）
+            
+            System.out.println(e);
+        }
+    }
+
+    @Override
+    public void delteSetContent(Integer id, Templates setTemplate) {
+        try {
+            
+            // 検索結果を取得
+            GenreTemplates genreTemplates = (GenreTemplates)setTemplate;
+            List<GenreContents> genreContents = genreTemplates.getGenreContents();
+            GenreContents deleteContents = genreContents.stream()
+                .filter(content -> content.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+            
+            // 検索したエンティティを削除
+            if (deleteContents != null) {
+                genreTemplates.getGenreContents().remove(deleteContents);
+                entityManager.merge(genreTemplates);
+            }
+            
+        } catch (Exception e) {
+            // TODO: エラーハンドリング（例: ログ出力など）
+            
+            System.out.println(e);
+        }
+        
+    }
+        
+    
+
+    
+
+
 
 }
