@@ -1,5 +1,7 @@
 package com.tonkatsuudon.quizsniper.entity;
 
+import java.util.Objects;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -24,6 +26,19 @@ public class GenreContents {
     @ManyToOne
     @JoinColumn(name = "template_id", referencedColumnName = "id")
     private GenreTemplates genreTemplates;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GenreContents that = (GenreContents) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
 
 

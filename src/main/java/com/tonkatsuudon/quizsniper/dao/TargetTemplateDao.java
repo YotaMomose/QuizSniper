@@ -13,4 +13,6 @@ public interface TargetTemplateDao {
     void unsetTargetTemplate(Integer id);
 
     void setTargetTemplate(Integer id);
+
+    public void addTargetContent(String content, TargetTemplates setTemplate);
 } 
