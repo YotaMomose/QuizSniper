@@ -191,4 +191,61 @@ public class TemplateService {
 
         return newTemplates;
     }
+
+    /**
+     * デフォルトのターゲットテンプレートにcontetsを追加する
+     * @param targetTemplates 現在のデフォルトテンプレート
+     * @return newTemplates 新たに追加したデフォルトテンプレート
+     */
+    public List<TargetTemplates> addDefaultTarget(List<TargetTemplates> targetTemplates, String newTarget) {
+        TargetTemplates newTemplate = targetTemplates.get(0);
+        TargetContents newContents = new TargetContents();
+        newContents.setContent(newTarget);
+        newTemplate.getTargetContents().add(newContents);
+        
+        List<TargetTemplates> newTemplates = new ArrayList<TargetTemplates>();
+        newTemplates.add(newTemplate);
+
+        return newTemplates;
+    }
+
+     /**
+     * デフォルトのジャンルテンプレートからcontetsを削除する
+     * @param genreTemplates 現在のデフォルトテンプレート
+     * @param delGenre 削除するcontents
+     * @return newTemplates contentsを削除したデフォルトテンプレート
+     */
+    public List<GenreTemplates> deleteDefaultGenreContent(List<GenreTemplates> genreTemplates, Integer delGenre) {
+        GenreTemplates newTemplate = genreTemplates.get(0);
+        
+        GenreContents deleteContents = newTemplate.getGenreContents().stream()
+                .filter(content -> content.getId().equals(delGenre))
+                .findFirst()
+                .orElse(null);
+        newTemplate.getGenreContents().remove(deleteContents);
+        List<GenreTemplates> newTemplates = new ArrayList<GenreTemplates>();
+        newTemplates.add(newTemplate);
+
+        return newTemplates;
+    }
+
+    /**
+     * デフォルトのターゲットプレートからcontetsを削除する
+     * @param targetTemplates 現在のデフォルトテンプレート
+     * @param delTarget 削除するcontents
+     * @return newTemplates contentsを削除したデフォルトテンプレート
+     */
+    public List<TargetTemplates> deleteDefaultTargetContent(List<TargetTemplates> targetTemplates, Integer delTarget) {
+        TargetTemplates newTemplate = targetTemplates.get(0);
+        
+        TargetContents deleteContents = newTemplate.getTargetContents().stream()
+                .filter(content -> content.getId().equals(delTarget))
+                .findFirst()
+                .orElse(null);
+        newTemplate.getTargetContents().remove(deleteContents);
+        List<TargetTemplates> newTemplates = new ArrayList<TargetTemplates>();
+        newTemplates.add(newTemplate);
+
+        return newTemplates;
+    }
 }

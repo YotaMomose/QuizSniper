@@ -244,16 +244,40 @@ public class QuizSniperController {
     /* ジャンル削除処理 */
     @PostMapping("/delgenre")
     public String deleteGenre(@RequestParam("delGenre") Integer deleteGenre, HttpSession session) {
-        List<Templates> genreTemplates = (List<Templates>) session.getAttribute("genreTemplates");
-        templateService.deleteContent(genreTemplates, deleteGenre, ElementType.Genre);
-        return "redirect:/";
+        
+        Users loginUser = (Users) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            // ログイン情報がない場合はテンプレートから削除
+            //TODO 宣言がログイン時と非ログイン時で重複してるから改善したい。
+            List<GenreTemplates> genreTemplates = (List<GenreTemplates>) session.getAttribute("genreTemplates");
+            List<GenreTemplates> newTemplates = templateService.deleteDefaultGenreContent(genreTemplates, deleteGenre);
+
+            session.setAttribute("genreTemplates", newTemplates);
+            session.setAttribute("setGenreContents", templateService.getsetGenreContents(newTemplates));
+            session.setAttribute("setGenreStringList", templateService.getSetGenreStringList(newTemplates));
+        } else {
+            List<Templates> genreTemplates = (List<Templates>) session.getAttribute("genreTemplates");
+            templateService.deleteContent(genreTemplates, deleteGenre, ElementType.Genre);
+        }
+            return "redirect:/";
     }
 
     /* ターゲット追加処理 */
     @PostMapping("/addtarget")
     public String addTarget(@RequestParam("newTarget") String newTarget, HttpSession session) {
         List<TargetTemplates> targetTemplates = (List<TargetTemplates>) session.getAttribute("targetTemplates");
-        templateService.addNewTargetContent(targetTemplates, newTarget);
+        Users loginUser = (Users) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            // ログイン情報がない場合はテンプレートに追加
+            List<TargetTemplates> newTemplates = templateService.addDefaultTarget(targetTemplates, newTarget);
+
+            session.setAttribute("targetTemplates", newTemplates);
+            session.setAttribute("setTargetContents", templateService.getsetTargetContents(newTemplates));
+            session.setAttribute("setTargetStringList", templateService.getSetTargetStringList(newTemplates));
+        } else {
+            templateService.addNewTargetContent(targetTemplates, newTarget);
+        }
+        
 
         return "redirect:/";
     }
@@ -261,9 +285,20 @@ public class QuizSniperController {
     /* ターゲット削除処理 */
     @PostMapping("/deltarget")
     public String deleteTarget(@RequestParam("delTarget") Integer deleteTarget, HttpSession session) {
-        List<Templates> targetTemplates = (List<Templates>) session.getAttribute("targetTemplates");
-        System.out.println("ジャンルのID：" + deleteTarget);
-        templateService.deleteContent(targetTemplates, deleteTarget, ElementType.Target);
+        Users loginUser = (Users) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            // ログイン情報がない場合はテンプレートから削除
+            //TODO 宣言がログイン時と非ログイン時で重複してるから改善したい。
+            List<TargetTemplates> targetTemplates = (List<TargetTemplates>) session.getAttribute("targetTemplates");
+            List<TargetTemplates> newTemplates = templateService.deleteDefaultTargetContent(targetTemplates, deleteTarget);
+
+            session.setAttribute("targetTemplates", newTemplates);
+            session.setAttribute("setTargetContents", templateService.getsetTargetContents(newTemplates));
+            session.setAttribute("setTargetStringList", templateService.getSetTargetStringList(newTemplates));
+        } else {
+            List<Templates> targetTemplates = (List<Templates>) session.getAttribute("targetTemplates");
+            templateService.deleteContent(targetTemplates, deleteTarget, ElementType.Target);
+        }
         return "redirect:/";
     }
 

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>クイズスナイパー</title>
+    <link th:href="@{css/style.css}" rel="stylesheet">
+    <link rel="preconnect" th:href="@{'https://fonts.googleapis.com'}">
+    <link rel="preconnect" th:href="@{'https://fonts.gstatic.com'}" crossorigin>
+    <link th:href="@{'https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap'}" rel="stylesheet">
+    
+    <script th:inline="javascript">
+        // Controllerの値をJSの配列に変換
+        const setTargetStringList = /*[[${session.setTargetStringList}]]*/[];
+        const setGenreStringList = /*[[${session.setGenreStringList}]]*/[];
+
+        var testContents = /*[[${session.TestContents}]]*/ {};
+        console.log(testContents); // JavaScriptで使用可能
+    </script>
+    
+    
+    <style>
+    
+    </style>
+</head>
+<body>
+    <div id="main">
+        <!-- タイトル部分 -->
+        <header>
+            <div id="login-register-buttons">
+                <div th:if="${session.loginUser != null}">
+                    <a th:href="@{/logout}" id="logout-button" class="login-register-button">ログアウト</a>
+                </div>
+                <div th:if="${session.loginUser == null}">
+                    <a th:href="@{/login}" id="login-button" class="login-register-button">ログイン</a>
+                </div>
+                
+                <button id="register-button" class="login-register-button">新規登録</button>
+            </div>
+            <br>
+            <h1 id="title">クイズスナイパー</h1>
+        </header>
+        
+        <!-- ゲーム説明部分 -->
+        <section id="description">
+            <p class="font-large">ルール</p>
+            <hr>
+            <p>このゲームは指定されたジャンルでターゲットとなった人だけが正解できる問題を出題するゲームです。</p>
+            <p>まずは、ゲームに参加する人を登録してください。<a href="#gameconfig">登録はコチラ</a></p>
+            <p>1.ジャンル選択ボタンを押しジャンルを決定してください</p>
+            <p>2.ターゲット選択ボタンを押し正解させる人を決定してください</p>
+            <p>3.選ばれたジャンルでターゲットだけが正解できる問題を出題します</p>
+        </section>
+
+        <!-- ゲーム部分 -->
+        <main>
+            <div id="questioner">
+                <label for="targets" class="questioner">クイズ出題者：</label>
+                <select id="targets" class="questioner">
+                    <option th:each="target : ${session.setTargetStringList}" th:value="${target}" th:text="${target}"></option>
+                </select>
+            </div>
+            <div id="genre-target-buttons">
+                <button id="genre-button" class="select-button">ジャンル選択<br>スタート</button>
+                <button id="target-button" class="select-button">ターゲット選択<br>スタート</button>
+            </div>
+            <div id=display-genre-target>
+                <!-- ローディング部分 -->
+                <div id="genre-loading">
+                    <img class="loading-image" src="images/loading.png" alt="読み込み中">
+                </div>
+                <p id="genre-text-container">ジャンル：<span id="genre-text">〇〇</span></p>
+                <div id="target-loading">
+                <img class="loading-image" src="images/loading.png" alt="読み込み中">
+                </div>
+                <p id="target-text-container"><span id="target-text">〇〇</span>が答えられる問題を出せ</p>
+            </div>
+        </main>
+
+        <!-- テンプレートの一覧表示 -->
+        <section class="template-list">
+            <p class="font-large">ターゲットテンプレート一覧</p>
+            <ul>
+                <li th:each="template : ${session.targetTemplates}" class="template-li">
+                    <div class="template-button-set">
+                        <details>
+                            <summary th:text="${template.name}"></summary>
+                            
+                            <ul>
+                                <li th:each="content : ${template.targetContents}">
+                                    <p th:text="${content.content}" class="content-text"></p>
+                                </li>
+                            </ul>
+                        </details>
+                        <form th:action="@{/setTargetTemplate/}" method="post">
+                            <input type="hidden" name="id" th:value="${template.id}">
+                            <button type="submit">セットする</button>
+                        </form>
+                        
+                        <form th:action="@{/editTargetTemplate/}" method="post">
+                            <input type="hidden" name="id" th:value="${template.id}">
+                            <button type="submit">編集する</button>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+
+            <p class="font-large">ジャンルテンプレート一覧</p>
+            <ul>
+                <li th:each="template : ${session.genreTemplates}" class="template-li">
+                    <div class="template-button-set">
+                        <details>
+                            <summary th:text="${template.name}"></summary>
+                            
+                            <ul>
+                                <li th:each="content : ${template.genreContents}">
+                                    <p th:text="${content.content}" class="content-text"></p>
+                                </li>
+                            </ul>
+                        </details>
+                        <form th:action="@{/setGenreTemplate/}" method="post">
+                            <input type="hidden" name="id" th:value="${template.id}">
+                            <button type="submit">セットする</button>
+                        </form>
+                        
+                        <form th:action="@{/editGenreTemplate/}" method="post">
+                            <input type="hidden" name="id" th:value="${template.id}">
+                            <button type="submit">編集する</button>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        
+        <!-- 設定部分 -->
+        <section id="gameconfig">
+            <p class="font-large">セットしているテンプレートの編集</p>
+            <form th:action="@{/addgenre}" method="post" id="add-genre-form">
+                <div class="config-parts">
+                    <label for="new-genre" class="config-text">新しいジャンル：</label>
+                    <input id="new-genre" name="newGenre" class="config-input config-text">
+                    <button type="submit" class="config-button config-add-button" id="add-genre-button">追加</button>
+                </div>
+            </form>
+            <form th:action="@{/delgenre}" method="post" id="add-genre-form">
+                <div class="config-parts">
+                    <label for="delete-genre" class="config-text">削除するジャンル：</label>
+                    <select name="delGenre" id="delete-genre" class="config-input config-text">
+                        <option th:each="genreContent : ${session.setGenreContents}" th:value="${genreContent.id}" th:text="${genreContent.content}"></option>
+                    </select>
+                    <button type="submit" id="delete-genre-button" class="config-button config-delete-button">削除</button>
+                </div>
+            </form>
+            <form th:action="@{/addtarget}" method="post" id="add-genre-form">
+                <div class="config-parts">
+                    <label for="new-target" class="config-text">新しいターゲット：</label>
+                    <input id="new-target" name="newTarget" class="config-input config-text">
+                    <button type="submit" id="add-target-button" class="config-button config-add-button">追加</button>
+                </div>
+            </form>
+            <form th:action="@{/deltarget}" method="post" id="add-genre-form">
+                <div class="config-parts">
+                    <label for="delete-target" class="config-text">削除するターゲット：</label>
+                    <select name="delTarget" id="delete-target" class="config-input config-text">
+                        <option th:each="targetContent : ${session.setTargetContents}" th:value="${targetContent.id}" th:text="${targetContent.content}"></option>
+                    </select>
+                    <button id="delete-target-button" class="config-button config-delete-button">削除</button>
+                </div>
+            </form>
+            <!-- 設定画面遷移 -->
+            <a class="setting-view" th:href="@{/setting}">設定画面へ</a>
+        </section>
+        <!-- Footer Section -->
+        <footer class="footer">
+            <p>作：モモセヨウタ</p>
+            <p>© 2024 クイズスナイパー. All rights reserved.</p>
+        </footer>
+    </div>
+    <script src="script/script.js"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,317 @@
+body {
+    color: #F5F5F5; 
+    background-image: url('../images/background.jpg'); 
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    background-attachment: fixed;
+}
+
+#main {
+    margin: auto; padding: 1rem;
+}
+
+
+
+/* タイトル部分 */
+
+
+header {
+    text-align: center; padding: 2rem;
+}
+
+#title {
+    font-size: 2.8rem; 
+    font-weight: bold; 
+    color: #4b0361; 
+    font-family: 'Dela Gothic One', sans-serif;
+}
+
+
+/* ログインボタン・新規登録ボタン */
+#login-register-buttons {
+    position: absolute;
+    top: 10px; /* 画面の上からの距離 */
+    right: 10px; /* 画面の右からの距離 */
+    display: flex;
+    flex-direction: column; /* ボタンを縦に並べる */
+    gap: 10px; /* ボタン間のスペース */
+}
+
+.login-register-button {
+    background-color: #34466a;
+    color: #F5F5F5;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 12px;
+    font-weight: bold;
+}
+
+.login-register-button:hover {
+    background-color: #F5F5F5;
+    color: #4b0361;
+}
+
+
+/* 説明部分 */
+.font-large {
+    font-size: larger;
+}
+
+#description {
+    background-color: #1F2937; 
+    padding: 1rem; 
+    border-radius: 0.5rem; 
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); margin-bottom: 1rem;
+}
+
+/* ゲーム部分 */
+main {
+    background-color: #1F2937; 
+    padding: 1rem; 
+    border-radius: 0.5rem; 
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); 
+    margin-bottom: 1rem;
+}
+
+#questioner {
+    text-align: center; 
+    margin-bottom: 1rem;
+}
+
+.questioner {
+    font-size: 1.125rem; 
+    font-weight: 600;
+}
+
+#genre-target-buttons {
+    display: flex; 
+    justify-content: center; 
+    margin-bottom: 
+    1rem; gap: 1rem;
+}
+
+.select-button {
+    width: 7rem; 
+    height: 7rem; 
+    border-radius: 50%; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    color: #FFFFFF; 
+    font-weight: bold;
+}
+
+#genre-button {
+    background-color: #640869; 
+}
+
+#target-button {
+    background-color: #3B82F6;
+}
+
+#display-genre-target {
+    text-align: center; 
+    margin-bottom: 1rem;
+    font-family:"MS Pゴシック",sans-serif;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+#genre-loading {
+    display: none;
+}
+
+#target-loading {
+    display: none;
+}
+
+.loading-image {
+    width: 9%; 
+    height: 9%;
+}
+
+#text-container {
+    font-size: 1.125rem; font-weight: 600;
+}
+
+/* テンプレート一覧表示部分 */
+.template-list {
+    background-color: #1F2937; 
+    padding: 1rem; 
+    border-radius: 0.5rem; 
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); 
+    margin-bottom: 1rem;
+}
+
+.template-li {
+    list-style: none;
+}
+
+.content-text {
+    margin: 0; 
+    padding: 0;
+}
+
+.template-button-set {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+}
+
+/* 設定部分 */
+#gameconfig{
+    background-color: #1F2937; 
+    padding: 1rem; 
+    border-radius: 0.5rem; 
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); 
+    margin-bottom: 1rem;
+}
+
+.config-parts{
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    margin-bottom: 1rem;
+    
+}
+
+#config-text {
+    font-size: .9rem; 
+    font-weight: 600;
+    flex: 0 0 150px;
+    text-align: left;
+}
+
+.config-input {
+    margin-right: 1rem;
+}
+
+.config-button {
+    width: 3rem; 
+    height: 2rem; 
+    border-radius: 0; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    color: #FFFFFF; 
+    font-weight: bold;
+}
+
+.config-add-button {
+    background-color: #10B981; 
+}
+
+.config-delete-button {
+    background-color: #EF4444;
+}
+
+.setting-view {
+    background-color: #3B82F6;
+    color: #FFFFFF;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    font-size: 16px;
+    margin: 4px auto;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 12px;
+    font-weight: bold;
+    width: 10rem;
+}
+
+.footer {
+    text-align: center; 
+    padding: 2rem; 
+    background-color: #1F2937; 
+    border-radius: 0.5rem; 
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+/* ボタン　 */
+button {
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+/*--------------------ログイン画面------------------*/
+* {
+    box-sizing: border-box;
+}
+#loginview-title {
+    font-size: 1.8rem; 
+    font-weight: bold; 
+    color: #4b0361; 
+    font-family: 'Dela Gothic One', sans-serif;
+}
+
+#login-body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center;
+}
+
+#login-title {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.login-label {
+    display: block;
+    text-align: left;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #333;
+}
+
+.login-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.login-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #34466a;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.login-button:hover {
+    background-color: #5a6ba7;
+}
+
+.error-message {
+    color: #EF4444;
+}
