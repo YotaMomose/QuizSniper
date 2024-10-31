@@ -248,4 +248,19 @@ public class TemplateService {
 
         return newTemplates;
     }
+
+    /**
+     * テンプレートのリストからidのテンプレートを抽出する
+     * @param List<Templates> テンプレートのリスト
+     * @param id テンプレートID
+     * @return Templates idに該当するテンプレート
+     */
+    public Templates getTemplateById(List<Templates> templates, Integer id) {
+        Templates editTemplate = templates.stream()
+        .filter(template -> template.getId().equals(id))
+        .findFirst()
+        .orElse(null);
+
+        return editTemplate;
+    } 
 }

@@ -1,6 +1,5 @@
 package com.tonkatsuudon.quizsniper.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.tonkatsuudon.quizsniper.entity.GenreContents;
 import com.tonkatsuudon.quizsniper.entity.GenreTemplates;
 import com.tonkatsuudon.quizsniper.entity.TargetTemplates;
 import com.tonkatsuudon.quizsniper.entity.Templates;
@@ -49,6 +47,8 @@ public class QuizSniperController {
     private final LoginService loginService;
 
     private final String DEFAULT_USER_ID = "default";
+    private final String TYPE_GENRE = "genre";
+    private final String TYPE_TARGET = "target";
 
     /* 初期表示（メイン画面） */
     @GetMapping("/")
@@ -300,6 +300,24 @@ public class QuizSniperController {
             templateService.deleteContent(targetTemplates, deleteTarget, ElementType.Target);
         }
         return "redirect:/";
+    }
+
+    /* テンプレート編集画面遷移（ターゲット）*/
+    @PostMapping("/editTargetTemplate")
+    public ModelAndView showeditTargetTempateView(ModelAndView mv, @RequestParam("id") Integer id, HttpSession session) {
+        //編集するテンプレートを特定
+        List<Templates> targetTemplates = (List<Templates>) session.getAttribute("targetTemplates");
+        TargetTemplates editTemplate = (TargetTemplates) templateService.getTemplateById(targetTemplates, id);
+
+        if (editTemplate == null) { 
+            System.out.println("null");
+            // エラー画面に遷移
+        }
+        
+        mv.addObject("editTemplate", editTemplate);
+        mv.addObject("type", TYPE_TARGET);
+        mv.setViewName("templateEdit");
+        return mv;
     }
 
     /* 設定画面遷移 */
