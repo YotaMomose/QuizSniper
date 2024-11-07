@@ -150,7 +150,7 @@ public class TemplateService {
     }
 
     /**
-     * 現在セットされているテンプレートにのコンテンツを削除する
+     * 現在セットされているテンプレートのコンテンツを削除する
      * @param genreTemplates テンプレートのリスト
      * @param deleteGenre 削除するコンテンツ
      */
@@ -263,4 +263,20 @@ public class TemplateService {
 
         return editTemplate;
     } 
+
+    /**
+     * テンプレートのコンテンツを一括削除する
+     * @param genreTemplates テンプレートのリスト
+     * @param tempid 削除する対象のテンプレートのID
+     * @param deleteContentList 削除するコンテンツのIDのリスト
+     * @param type ジャンルorターゲット
+     */
+    @Transactional
+    public void bulkDeleteContents(List<Templates> templates, Integer tempId , List<Integer> deleteIdList, ElementType type) {
+        Templates Template = getTemplateById(templates, tempId);
+        
+        QuizElementDao repository = repositoies.get(type);
+        repository.bulkDeleteContents(deleteIdList, Template);
+        
+    }
 }

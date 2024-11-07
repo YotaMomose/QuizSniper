@@ -1,7 +1,7 @@
 package com.tonkatsuudon.quizsniper.repository;
 
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 import com.tonkatsuudon.quizsniper.dao.GenreTemplateDao;
@@ -141,9 +141,34 @@ public class GenreRepository implements GenreTemplateDao, QuizElementDao {
     }
         
     
-
+    @Override
+    /**
+     * @param deleteIdList 削除するコンテンツのIDのリスト
+     * @param Template コンテンツを削除する対象のテンプレート
+     */
+    public void bulkDeleteContents(List<Integer> deleteIdList, Templates Template) {
+        try {
+            
+            // 検索結果を取得
+            GenreTemplates genreTemplates = (GenreTemplates)Template;
+            List<GenreContents> deleteContents = genreTemplates.getGenreContents().stream()
+                    .filter(content -> deleteIdList.contains(content.getId()))
+                    .collect(Collectors.toList());
+            
+            // 検索したエンティティを削除
+            if (!deleteContents.isEmpty()) {
+                genreTemplates.getGenreContents().removeAll(deleteContents);
+                entityManager.merge(genreTemplates);
+            }
+            
+        } catch (Exception e) {
+            // TODO: エラーハンドリング（例: ログ出力など）
+            
+            System.out.println(e);
+        }
+        
+    }
     
-
 
 
 }

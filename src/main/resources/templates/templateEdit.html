@@ -23,15 +23,35 @@
 
          <div class="template-contents">
              <h2 th:text="${editTemplate.name}"></h2>
-             <h2 th:text="${type}"></h2>
              <div class="content-list">
-                 <div th:if="${type == 'target'}" th:each="content : ${editTemplate.targetContents}">
-                     <p th:text="${content.content}"></p>
-                 </div>
-                 <!-- <div th:if="${type == 'genre'}" th:each="content : ${editTemplate.genreContents}">
-                     <p th:text="${content.content}"></p>
-                 </div> -->
+                <div th:if="${type == 'target'}">
+                    <form th:action="@{/deleteTargetContents}" method="post">
+                        <div th:each="content : ${editTemplate.targetContents}">
+                            <div style="display: flex; align-items: center;">
+                                <input type="checkbox" name="deleteContentId" th:value="${content.id}">
+                                <p th:text="${content.content}"></p>
+                            </div>
+                        </div>
+                        <input type="hidden" name="editTemplateId" th:value="${editTemplate.id}"/>
+                        <button type="submit">削除する</button>
+                    </form>
+                </div>
+                <div th:if="${type == 'genre'}">
+                    <form th:action="@{/deleteGenreContents}" method="post">
+                        <div th:each="content : ${editTemplate.genreContents}">
+                            <div style="display: flex; align-items: center;">
+                                <input type="checkbox" name="deleteContentId" th:value="${content.id}">
+                                <p th:text="${content.content}"></p>
+                            </div>
+                        </div>
+                        <input type="hidden" name="editTemplateId" th:value="${editTemplate.id}"/>
+                        <button type="submit">削除する</button>
+                    </form>
+                </div>
              </div>
+            <div class="back-button">
+                <a th:href="@{/}" class="btn">戻る</a>
+            </div>
          </div>
         
          <!-- Footer Section -->

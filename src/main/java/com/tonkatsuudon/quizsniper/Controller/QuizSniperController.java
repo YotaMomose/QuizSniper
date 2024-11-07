@@ -320,10 +320,53 @@ public class QuizSniperController {
         return mv;
     }
 
+    /* テンプレート編集画面遷移（ジャンル）*/
+    @PostMapping("/editGenreTemplate")
+    public ModelAndView showeditGenreTempateView(ModelAndView mv, @RequestParam("id") Integer id, HttpSession session) {
+        //編集するテンプレートを特定
+        List<Templates> genreTemplates = (List<Templates>) session.getAttribute("genreTemplates");
+        GenreTemplates editTemplate = (GenreTemplates) templateService.getTemplateById(genreTemplates, id);
+
+        if (editTemplate == null) { 
+            System.out.println("null");
+            // エラー画面に遷移
+        }
+        
+        mv.addObject("editTemplate", editTemplate);
+        mv.addObject("type", TYPE_GENRE);
+        mv.setViewName("templateEdit");
+        return mv;
+    }
+
     /* 設定画面遷移 */
     @GetMapping("/setting")
     public ModelAndView showSettingView(ModelAndView mv) {
         mv.setViewName("setting");
+        return mv;
+    }
+
+    /* ターゲットコンテンツ一括削除処理 */
+    @PostMapping("/deleteTargetContents")
+    public ModelAndView deleteTargetContents(ModelAndView mv, @RequestParam("deleteContentId") List<Integer> deleteIdList, @RequestParam("editTemplateId") Integer editTemplateId, HttpSession session) {
+        List<Templates> targetTemplates = (List<Templates>) session.getAttribute("targetTemplates");
+        
+        templateService.bulkDeleteContents(targetTemplates, editTemplateId, deleteIdList, ElementType.Target);
+        mv.addObject("editTemplate", templateService.getTemplateById(targetTemplates, editTemplateId));
+        mv.addObject("type", TYPE_TARGET);
+        mv.setViewName("templateEdit");
+        return mv;
+    }
+
+    /* ジャンルコンテンツ一括削除処理 */
+    @PostMapping("/deleteGenreContents")
+    public ModelAndView deleteGenreContents(ModelAndView mv, @RequestParam("deleteContentId") List<Integer> deleteIdList, @RequestParam("editTemplateId") Integer editTemplateId, HttpSession session) {
+        List<Templates> genreTemplates = (List<Templates>) session.getAttribute("genreTemplates");
+        
+        templateService.bulkDeleteContents(genreTemplates, editTemplateId, deleteIdList, ElementType.Genre);
+
+        mv.addObject("editTemplate", templateService.getTemplateById(genreTemplates, editTemplateId));
+        mv.addObject("type", TYPE_GENRE);
+        mv.setViewName("templateEdit");
         return mv;
     }
 

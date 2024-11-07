@@ -2,9 +2,12 @@ package com.tonkatsuudon.quizsniper.repository;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.tonkatsuudon.quizsniper.dao.QuizElementDao;
 import com.tonkatsuudon.quizsniper.dao.TargetTemplateDao;
+import com.tonkatsuudon.quizsniper.entity.GenreContents;
+import com.tonkatsuudon.quizsniper.entity.GenreTemplates;
 import com.tonkatsuudon.quizsniper.entity.TargetContents;
 import com.tonkatsuudon.quizsniper.entity.TargetTemplates;
 import com.tonkatsuudon.quizsniper.entity.Templates;
@@ -131,6 +134,34 @@ public class TargetRepository implements TargetTemplateDao, QuizElementDao {
             // 検索したエンティティを削除
             if (deleteContents != null) {
                 targetTemplates.getTargetContents().remove(deleteContents);
+                entityManager.merge(targetTemplates);
+            }
+            
+        } catch (Exception e) {
+            // TODO: エラーハンドリング（例: ログ出力など）
+            
+            System.out.println(e);
+        }
+        
+    }
+
+    @Override
+    /**
+     * @param deleteIdList 削除するコンテンツのIDのリスト
+     * @param Template コンテンツを削除する対象のテンプレート
+     */
+    public void bulkDeleteContents(List<Integer> deleteIdList, Templates Template) {
+        try {
+            
+            // 検索結果を取得
+            TargetTemplates targetTemplates = (TargetTemplates)Template;
+            List<TargetContents> deleteContents = targetTemplates.getTargetContents().stream()
+                    .filter(content -> deleteIdList.contains(content.getId()))
+                    .collect(Collectors.toList());
+            
+            // 検索したエンティティを削除
+            if (!deleteContents.isEmpty()) {
+                targetTemplates.getTargetContents().removeAll(deleteContents);
                 entityManager.merge(targetTemplates);
             }
             
