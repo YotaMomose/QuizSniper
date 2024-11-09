@@ -175,6 +175,7 @@ public class TemplateService {
         targetRepository.addTargetContent(newTarget, setTemplate);
     }
 
+
     /**
      * デフォルトのジャンルテンプレートにcontetsを追加する
      * @param genreTemplates 現在のデフォルトテンプレート
@@ -278,5 +279,17 @@ public class TemplateService {
         QuizElementDao repository = repositoies.get(type);
         repository.bulkDeleteContents(deleteIdList, Template);
         
+    }
+
+    /**
+     * 引数で渡されたIDのテンプレートに新たにコンテンツを追加する
+     * @param ediTemplate　コンテンツを追加するテンプレート
+     * @param newContent 追加するコンテンツ
+     * @param type ターゲットorジャンル
+     */
+    @Transactional
+    public void addNewContent(Templates ediTemplate, String newContent, ElementType type) {
+        QuizElementDao repository = repositoies.get(type);
+        repository.addContent(newContent, ediTemplate);
     }
 }

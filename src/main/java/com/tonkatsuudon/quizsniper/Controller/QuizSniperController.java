@@ -345,6 +345,8 @@ public class QuizSniperController {
         return mv;
     }
 
+    //　↓編集画面----------------------------------------------------------------------------------------------------------------------------
+
     /* ターゲットコンテンツ一括削除処理 */
     @PostMapping("/deleteTargetContents")
     public ModelAndView deleteTargetContents(ModelAndView mv, @RequestParam("deleteContentId") List<Integer> deleteIdList, @RequestParam("editTemplateId") Integer editTemplateId, HttpSession session) {
@@ -365,6 +367,32 @@ public class QuizSniperController {
         templateService.bulkDeleteContents(genreTemplates, editTemplateId, deleteIdList, ElementType.Genre);
 
         mv.addObject("editTemplate", templateService.getTemplateById(genreTemplates, editTemplateId));
+        mv.addObject("type", TYPE_GENRE);
+        mv.setViewName("templateEdit");
+        return mv;
+    }
+
+    /* ターゲット追加処理 (編集画面)*/
+    @PostMapping("/addtarget-edit")
+    public ModelAndView addTargetFromEditView(ModelAndView mv, @RequestParam("newTarget") String newTarget, @RequestParam("editTemplateId") Integer editTemplateId, HttpSession session) {
+        List<Templates> targetTemplates = (List<Templates>) session.getAttribute("targetTemplates");
+        Templates editTemplate = templateService.getTemplateById(targetTemplates, editTemplateId);
+        templateService.addNewContent(editTemplate, newTarget, ElementType.Target);
+        
+        mv.addObject("editTemplate", editTemplate);
+        mv.addObject("type", TYPE_TARGET);
+        mv.setViewName("templateEdit");
+        return mv;
+    }
+
+    /* ジャンル追加処理 (編集画面)*/
+    @PostMapping("/addgenre-edit")
+    public ModelAndView addGenreFromEditView(ModelAndView mv, @RequestParam("newGenre") String newGenre, @RequestParam("editTemplateId") Integer editTemplateId, HttpSession session) {
+        List<Templates> genreTemplates = (List<Templates>) session.getAttribute("genreTemplates");
+        Templates editTemplate = templateService.getTemplateById(genreTemplates, editTemplateId);
+        templateService.addNewContent(editTemplate, newGenre, ElementType.Genre);
+        
+        mv.addObject("editTemplate", editTemplate);
         mv.addObject("type", TYPE_GENRE);
         mv.setViewName("templateEdit");
         return mv;

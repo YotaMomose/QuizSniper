@@ -8,4 +8,6 @@ public interface QuizElementDao {
     void delteSetContent(Integer id, Templates setTemplate);
 
     void bulkDeleteContents(List<Integer> deleteIdList, Templates Template);
+
+    void addContent(String newContent, Templates ediTemplate);
 }

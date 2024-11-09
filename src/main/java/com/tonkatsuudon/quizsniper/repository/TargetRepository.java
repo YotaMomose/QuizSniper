@@ -6,8 +6,6 @@ import java.util.stream.Collectors;
 
 import com.tonkatsuudon.quizsniper.dao.QuizElementDao;
 import com.tonkatsuudon.quizsniper.dao.TargetTemplateDao;
-import com.tonkatsuudon.quizsniper.entity.GenreContents;
-import com.tonkatsuudon.quizsniper.entity.GenreTemplates;
 import com.tonkatsuudon.quizsniper.entity.TargetContents;
 import com.tonkatsuudon.quizsniper.entity.TargetTemplates;
 import com.tonkatsuudon.quizsniper.entity.Templates;
@@ -173,4 +171,25 @@ public class TargetRepository implements TargetTemplateDao, QuizElementDao {
         
     }
     
+    /**
+     * 引数で受け取ったcontentを編集対象のテンプレートに追加する
+     * @param newContent　追加するコンテンツ
+     * @param ediTemplate　追加対象のテンプレート
+     */
+    @Override
+    public void addContent(String newContent, Templates ediTemplate) {
+        try {
+            TargetTemplates targetTemplates = (TargetTemplates)ediTemplate;
+            TargetContents targetContent = new TargetContents();
+            targetContent.setContent(newContent);
+            targetContent.setTargetTemplates(targetTemplates);
+            entityManager.persist(targetContent);
+            targetTemplates.getTargetContents().add(targetContent);
+        } catch (Exception e) {
+            // TODO: エラーハンドリング（例: ログ出力など）
+            
+            System.out.println(e);
+        }
+    }
+
 }

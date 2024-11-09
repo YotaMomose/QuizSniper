@@ -169,6 +169,25 @@ public class GenreRepository implements GenreTemplateDao, QuizElementDao {
         
     }
     
-
+    /**
+     * 引数で受け取ったcontentを編集対象のテンプレートに追加する
+     * @param newContent　追加するコンテンツ
+     * @param ediTemplate　追加対象のテンプレート
+     */
+    @Override
+    public void addContent(String newContent, Templates ediTemplate) {
+        try {
+            GenreTemplates genreTemplates = (GenreTemplates)ediTemplate;
+            GenreContents genreContent = new GenreContents();
+            genreContent.setContent(newContent);
+            genreContent.setGenreTemplates(genreTemplates);
+            entityManager.persist(genreContent);
+            genreTemplates.getGenreContents().add(genreContent);
+        } catch (Exception e) {
+            // TODO: エラーハンドリング（例: ログ出力など）
+            
+            System.out.println(e);
+        }
+    }
 
 }

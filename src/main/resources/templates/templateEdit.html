@@ -49,6 +49,24 @@
                     </form>
                 </div>
              </div>
+
+            <div class="add-content">
+                <div th:if="${type == 'target'}">
+                    <form th:action="@{/addtarget-edit}" method="post" class="add-form-edit">
+                        <input type="text" name="newTarget" placeholder="新しいターゲットを入力">
+                        <input type="hidden" name="editTemplateId" th:value="${editTemplate.id}"/>
+                        <button type="submit">登録</button>
+                    </form>
+                </div>
+                <div th:if="${type == 'genre'}">
+                    <form th:action="@{/addgenre-edit}" method="post" class="add-form-edit">
+                        <input type="text" name="newGenre" placeholder="新しいジャンルを入力">
+                        <input type="hidden" name="editTemplateId" th:value="${editTemplate.id}"/>
+                        <button type="submit">登録</button>
+                    </form>
+                </div>
+            </div>
+
             <div class="back-button">
                 <a th:href="@{/}" class="btn">戻る</a>
             </div>
