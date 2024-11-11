@@ -8,6 +8,7 @@ import com.tonkatsuudon.quizsniper.dao.GenreTemplateDao;
 import com.tonkatsuudon.quizsniper.dao.QuizElementDao;
 import com.tonkatsuudon.quizsniper.entity.GenreContents;
 import com.tonkatsuudon.quizsniper.entity.GenreTemplates;
+import com.tonkatsuudon.quizsniper.entity.TargetTemplates;
 import com.tonkatsuudon.quizsniper.entity.Templates;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -156,9 +157,15 @@ public class GenreRepository implements GenreTemplateDao, QuizElementDao {
                     .collect(Collectors.toList());
             
             // 検索したエンティティを削除
+            genreTemplates = entityManager.find(GenreTemplates.class, genreTemplates.getId());
             if (!deleteContents.isEmpty()) {
                 genreTemplates.getGenreContents().removeAll(deleteContents);
+                genreTemplates.getGenreContents().stream().forEach(content -> System.out.println(content.getId()));
+                
                 entityManager.merge(genreTemplates);
+                entityManager.flush();
+                
+                
             }
             
         } catch (Exception e) {
@@ -187,6 +194,23 @@ public class GenreRepository implements GenreTemplateDao, QuizElementDao {
             // TODO: エラーハンドリング（例: ログ出力など）
             
             System.out.println(e);
+        }
+    }
+
+    /**
+     * 引数で受け取ったIDに紐づくGenreTemplatesを取得する
+     * @param id 取得対象のテンプレートのID
+     * @return GenreTemplates 取得したテンプレート
+     */
+    @Override
+    public Templates findTemplateById(Integer id) {
+        try {
+            GenreTemplates genreTemplate = entityManager.find(GenreTemplates.class, id);
+            return genreTemplate;
+        } catch (Exception e) {
+            // TODO: エラーハンドリング（例: ログ出力など）
+            System.out.println(e);
+            return null;
         }
     }
 

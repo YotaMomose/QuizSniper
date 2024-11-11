@@ -292,4 +292,15 @@ public class TemplateService {
         QuizElementDao repository = repositoies.get(type);
         repository.addContent(newContent, ediTemplate);
     }
+
+    /**
+     * 引数で渡されたIDのテンプレートを取得する
+     * @param id　テンプレートのid
+     * @param type ターゲットorジャンル
+     */
+    @Transactional
+    public Templates findTemplateById(Integer id, ElementType type) {
+        QuizElementDao repository = repositoies.get(type);
+        return repository.findTemplateById(id);
+    }
 }

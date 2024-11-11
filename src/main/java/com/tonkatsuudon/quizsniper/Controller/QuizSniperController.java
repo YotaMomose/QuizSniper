@@ -306,14 +306,14 @@ public class QuizSniperController {
     @PostMapping("/editTargetTemplate")
     public ModelAndView showeditTargetTempateView(ModelAndView mv, @RequestParam("id") Integer id, HttpSession session) {
         //編集するテンプレートを特定
-        List<Templates> targetTemplates = (List<Templates>) session.getAttribute("targetTemplates");
-        TargetTemplates editTemplate = (TargetTemplates) templateService.getTemplateById(targetTemplates, id);
+        TargetTemplates editTemplate = (TargetTemplates) templateService.findTemplateById(id, ElementType.Target);
 
         if (editTemplate == null) { 
             System.out.println("null");
             // エラー画面に遷移
         }
         
+        session.setAttribute("editTargetTemplateId", id);
         mv.addObject("editTemplate", editTemplate);
         mv.addObject("type", TYPE_TARGET);
         mv.setViewName("templateEdit");
@@ -324,14 +324,51 @@ public class QuizSniperController {
     @PostMapping("/editGenreTemplate")
     public ModelAndView showeditGenreTempateView(ModelAndView mv, @RequestParam("id") Integer id, HttpSession session) {
         //編集するテンプレートを特定
-        List<Templates> genreTemplates = (List<Templates>) session.getAttribute("genreTemplates");
-        GenreTemplates editTemplate = (GenreTemplates) templateService.getTemplateById(genreTemplates, id);
+        GenreTemplates editTemplate = (GenreTemplates) templateService.findTemplateById(id, ElementType.Genre);
+        if (editTemplate == null) { 
+            System.out.println("null");
+            // エラー画面に遷移
+        }
+        
+        session.setAttribute("editGenreTemplateId", id);
+        mv.addObject("editTemplate", editTemplate);
+        mv.addObject("type", TYPE_GENRE);
+        mv.setViewName("templateEdit");
+        return mv;
+    }
+
+    /* テンプレート編集画面リダイレクト遷移（ターゲット）*/
+    @GetMapping("/editTargetTemplate")
+    public ModelAndView showEditTargetTempateViewRedirect(ModelAndView mv, HttpSession session) {
+        //編集するテンプレートを特定
+        Integer id = (Integer) session.getAttribute("editTargetTemplateId");
+        TargetTemplates editTemplate = (TargetTemplates) templateService.findTemplateById(id, ElementType.Target);
 
         if (editTemplate == null) { 
             System.out.println("null");
             // エラー画面に遷移
         }
         
+        session.setAttribute("editTargetTemplateId", id);
+        mv.addObject("editTemplate", editTemplate);
+        mv.addObject("type", TYPE_TARGET);
+        mv.setViewName("templateEdit");
+        return mv;
+    }
+
+    /* テンプレート編集画面リダイレクト遷移（ジャンル）*/
+    @GetMapping("/editGenreTemplate")
+    public ModelAndView showEditGenreTempateViewRedirect(ModelAndView mv, HttpSession session) {
+        //編集するテンプレートを特定
+        Integer id = (Integer) session.getAttribute("editGenreTemplateId");
+        GenreTemplates editTemplate = (GenreTemplates) templateService.findTemplateById(id, ElementType.Genre);
+
+        if (editTemplate == null) { 
+            System.out.println("null");
+            // エラー画面に遷移
+        }
+        
+        session.setAttribute("editGenreTemplateId", id);
         mv.addObject("editTemplate", editTemplate);
         mv.addObject("type", TYPE_GENRE);
         mv.setViewName("templateEdit");
@@ -349,27 +386,23 @@ public class QuizSniperController {
 
     /* ターゲットコンテンツ一括削除処理 */
     @PostMapping("/deleteTargetContents")
-    public ModelAndView deleteTargetContents(ModelAndView mv, @RequestParam("deleteContentId") List<Integer> deleteIdList, @RequestParam("editTemplateId") Integer editTemplateId, HttpSession session) {
+    public String deleteTargetContents(@RequestParam("deleteContentId") List<Integer> deleteIdList, @RequestParam("editTemplateId") Integer editTemplateId, HttpSession session) {
         List<Templates> targetTemplates = (List<Templates>) session.getAttribute("targetTemplates");
         
         templateService.bulkDeleteContents(targetTemplates, editTemplateId, deleteIdList, ElementType.Target);
-        mv.addObject("editTemplate", templateService.getTemplateById(targetTemplates, editTemplateId));
-        mv.addObject("type", TYPE_TARGET);
-        mv.setViewName("templateEdit");
-        return mv;
+
+        return "redirect:/editTargetTemplate";
     }
 
     /* ジャンルコンテンツ一括削除処理 */
     @PostMapping("/deleteGenreContents")
-    public ModelAndView deleteGenreContents(ModelAndView mv, @RequestParam("deleteContentId") List<Integer> deleteIdList, @RequestParam("editTemplateId") Integer editTemplateId, HttpSession session) {
+    public String deleteGenreContents(@RequestParam("deleteContentId") List<Integer> deleteIdList, @RequestParam("editTemplateId") Integer editTemplateId, HttpSession session) {
         List<Templates> genreTemplates = (List<Templates>) session.getAttribute("genreTemplates");
         
         templateService.bulkDeleteContents(genreTemplates, editTemplateId, deleteIdList, ElementType.Genre);
 
-        mv.addObject("editTemplate", templateService.getTemplateById(genreTemplates, editTemplateId));
-        mv.addObject("type", TYPE_GENRE);
-        mv.setViewName("templateEdit");
-        return mv;
+
+        return "redirect:/editGenreTemplate";
     }
 
     /* ターゲット追加処理 (編集画面)*/

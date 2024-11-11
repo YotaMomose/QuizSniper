@@ -150,7 +150,8 @@ public class TargetRepository implements TargetTemplateDao, QuizElementDao {
      */
     public void bulkDeleteContents(List<Integer> deleteIdList, Templates Template) {
         try {
-            
+            System.out.println("ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー");
+            deleteIdList.forEach(id -> System.out.println(id));
             // 検索結果を取得
             TargetTemplates targetTemplates = (TargetTemplates)Template;
             List<TargetContents> deleteContents = targetTemplates.getTargetContents().stream()
@@ -158,9 +159,14 @@ public class TargetRepository implements TargetTemplateDao, QuizElementDao {
                     .collect(Collectors.toList());
             
             // 検索したエンティティを削除
+            targetTemplates = entityManager.find(TargetTemplates.class, targetTemplates.getId());
             if (!deleteContents.isEmpty()) {
                 targetTemplates.getTargetContents().removeAll(deleteContents);
+                targetTemplates.getTargetContents().stream().forEach(content -> System.out.println(content.getId()));
+                
                 entityManager.merge(targetTemplates);
+                entityManager.flush();
+                
             }
             
         } catch (Exception e) {
@@ -189,6 +195,23 @@ public class TargetRepository implements TargetTemplateDao, QuizElementDao {
             // TODO: エラーハンドリング（例: ログ出力など）
             
             System.out.println(e);
+        }
+    }
+
+    /**
+     * 引数で受け取ったIDに紐づくTargetTemplatesを取得する
+     * @param id 取得対象のテンプレートのID
+     * @return TargetTemplates 取得したテンプレート
+     */
+    @Override
+    public Templates findTemplateById(Integer id) {
+        try {
+            TargetTemplates targetTemplate = entityManager.find(TargetTemplates.class, id);
+            return targetTemplate;
+        } catch (Exception e) {
+            // TODO: エラーハンドリング（例: ログ出力など）
+            System.out.println(e);
+            return null;
         }
     }
 
