@@ -150,8 +150,6 @@ public class TargetRepository implements TargetTemplateDao, QuizElementDao {
      */
     public void bulkDeleteContents(List<Integer> deleteIdList, Templates Template) {
         try {
-            System.out.println("ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー");
-            deleteIdList.forEach(id -> System.out.println(id));
             // 検索結果を取得
             TargetTemplates targetTemplates = (TargetTemplates)Template;
             List<TargetContents> deleteContents = targetTemplates.getTargetContents().stream()
@@ -162,7 +160,6 @@ public class TargetRepository implements TargetTemplateDao, QuizElementDao {
             targetTemplates = entityManager.find(TargetTemplates.class, targetTemplates.getId());
             if (!deleteContents.isEmpty()) {
                 targetTemplates.getTargetContents().removeAll(deleteContents);
-                targetTemplates.getTargetContents().stream().forEach(content -> System.out.println(content.getId()));
                 
                 entityManager.merge(targetTemplates);
                 entityManager.flush();

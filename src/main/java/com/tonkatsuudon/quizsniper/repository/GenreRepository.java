@@ -159,7 +159,6 @@ public class GenreRepository implements GenreTemplateDao, QuizElementDao {
             genreTemplates = entityManager.find(GenreTemplates.class, genreTemplates.getId());
             if (!deleteContents.isEmpty()) {
                 genreTemplates.getGenreContents().removeAll(deleteContents);
-                genreTemplates.getGenreContents().stream().forEach(content -> System.out.println(content.getId()));
                 
                 entityManager.merge(genreTemplates);
                 entityManager.flush();
