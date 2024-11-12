@@ -48,3 +48,14 @@ targetButton.addEventListener('click', function() {
     
 });
 
+//削除時の確認
+function confirmDelete() {
+    const checkboxes = document.querySelectorAll('input[name="deleteContentId"]:checked');
+    
+    if (checkboxes.length === 0) {
+        alert("削除する項目を選んでください");
+        return false; 
+    }
+    return confirm("本当に削除しますか？");
+}
+

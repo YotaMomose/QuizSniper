@@ -37,7 +37,7 @@
                     </form>
                 </div>
                 <div th:if="${type == 'genre'}">
-                    <form th:action="@{/deleteGenreContents}" method="post">
+                    <form th:action="@{/deleteGenreContents}" method="post" onsubmit="return confirmDelete()">
                         <div th:each="content : ${editTemplate.genreContents}">
                             <div style="display: flex; align-items: center;">
                                 <input type="checkbox" name="deleteContentId" th:value="${content.id}">
@@ -78,7 +78,7 @@
             <p>© 2024 クイズスナイパー. All rights reserved.</p>
         </footer>
     </div>
-
+    <script src="script/script.js"></script>
 </body>
 </html>
 
