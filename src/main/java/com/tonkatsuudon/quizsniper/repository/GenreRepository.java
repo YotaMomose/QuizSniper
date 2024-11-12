@@ -1,7 +1,7 @@
 package com.tonkatsuudon.quizsniper.repository;
 
 import java.util.List;
-
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 import com.tonkatsuudon.quizsniper.dao.GenreTemplateDao;
@@ -141,9 +141,75 @@ public class GenreRepository implements GenreTemplateDao, QuizElementDao {
     }
         
     
-
+    @Override
+    /**
+     * @param deleteIdList 削除するコンテンツのIDのリスト
+     * @param Template コンテンツを削除する対象のテンプレート
+     */
+    public void bulkDeleteContents(List<Integer> deleteIdList, Templates Template) {
+        try {
+            
+            // 検索結果を取得
+            GenreTemplates genreTemplates = (GenreTemplates)Template;
+            List<GenreContents> deleteContents = genreTemplates.getGenreContents().stream()
+                    .filter(content -> deleteIdList.contains(content.getId()))
+                    .collect(Collectors.toList());
+            
+            // 検索したエンティティを削除
+            genreTemplates = entityManager.find(GenreTemplates.class, genreTemplates.getId());
+            if (!deleteContents.isEmpty()) {
+                genreTemplates.getGenreContents().removeAll(deleteContents);
+                
+                entityManager.merge(genreTemplates);
+                entityManager.flush();
+                
+                
+            }
+            
+        } catch (Exception e) {
+            // TODO: エラーハンドリング（例: ログ出力など）
+            
+            System.out.println(e);
+        }
+        
+    }
     
+    /**
+     * 引数で受け取ったcontentを編集対象のテンプレートに追加する
+     * @param newContent　追加するコンテンツ
+     * @param ediTemplate　追加対象のテンプレート
+     */
+    @Override
+    public void addContent(String newContent, Templates ediTemplate) {
+        try {
+            GenreTemplates genreTemplates = (GenreTemplates)ediTemplate;
+            GenreContents genreContent = new GenreContents();
+            genreContent.setContent(newContent);
+            genreContent.setGenreTemplates(genreTemplates);
+            entityManager.persist(genreContent);
+            genreTemplates.getGenreContents().add(genreContent);
+        } catch (Exception e) {
+            // TODO: エラーハンドリング（例: ログ出力など）
+            
+            System.out.println(e);
+        }
+    }
 
-
+    /**
+     * 引数で受け取ったIDに紐づくGenreTemplatesを取得する
+     * @param id 取得対象のテンプレートのID
+     * @return GenreTemplates 取得したテンプレート
+     */
+    @Override
+    public Templates findTemplateById(Integer id) {
+        try {
+            GenreTemplates genreTemplate = entityManager.find(GenreTemplates.class, id);
+            return genreTemplate;
+        } catch (Exception e) {
+            // TODO: エラーハンドリング（例: ログ出力など）
+            System.out.println(e);
+            return null;
+        }
+    }
 
 }

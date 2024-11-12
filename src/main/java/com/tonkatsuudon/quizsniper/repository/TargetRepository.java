@@ -2,6 +2,7 @@ package com.tonkatsuudon.quizsniper.repository;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.tonkatsuudon.quizsniper.dao.QuizElementDao;
 import com.tonkatsuudon.quizsniper.dao.TargetTemplateDao;
@@ -141,5 +142,74 @@ public class TargetRepository implements TargetTemplateDao, QuizElementDao {
         }
         
     }
+
+    @Override
+    /**
+     * @param deleteIdList 削除するコンテンツのIDのリスト
+     * @param Template コンテンツを削除する対象のテンプレート
+     */
+    public void bulkDeleteContents(List<Integer> deleteIdList, Templates Template) {
+        try {
+            // 検索結果を取得
+            TargetTemplates targetTemplates = (TargetTemplates)Template;
+            List<TargetContents> deleteContents = targetTemplates.getTargetContents().stream()
+                    .filter(content -> deleteIdList.contains(content.getId()))
+                    .collect(Collectors.toList());
+            
+            // 検索したエンティティを削除
+            targetTemplates = entityManager.find(TargetTemplates.class, targetTemplates.getId());
+            if (!deleteContents.isEmpty()) {
+                targetTemplates.getTargetContents().removeAll(deleteContents);
+                
+                entityManager.merge(targetTemplates);
+                entityManager.flush();
+                
+            }
+            
+        } catch (Exception e) {
+            // TODO: エラーハンドリング（例: ログ出力など）
+            
+            System.out.println(e);
+        }
+        
+    }
     
+    /**
+     * 引数で受け取ったcontentを編集対象のテンプレートに追加する
+     * @param newContent　追加するコンテンツ
+     * @param ediTemplate　追加対象のテンプレート
+     */
+    @Override
+    public void addContent(String newContent, Templates ediTemplate) {
+        try {
+            TargetTemplates targetTemplates = (TargetTemplates)ediTemplate;
+            TargetContents targetContent = new TargetContents();
+            targetContent.setContent(newContent);
+            targetContent.setTargetTemplates(targetTemplates);
+            entityManager.persist(targetContent);
+            targetTemplates.getTargetContents().add(targetContent);
+        } catch (Exception e) {
+            // TODO: エラーハンドリング（例: ログ出力など）
+            
+            System.out.println(e);
+        }
+    }
+
+    /**
+     * 引数で受け取ったIDに紐づくTargetTemplatesを取得する
+     * @param id 取得対象のテンプレートのID
+     * @return TargetTemplates 取得したテンプレート
+     */
+    @Override
+    public Templates findTemplateById(Integer id) {
+        try {
+            TargetTemplates targetTemplate = entityManager.find(TargetTemplates.class, id);
+            return targetTemplate;
+        } catch (Exception e) {
+            // TODO: エラーハンドリング（例: ログ出力など）
+            System.out.println(e);
+            return null;
+        }
+    }
+
 }

@@ -315,3 +315,8 @@ button:hover {
 .error-message {
     color: #EF4444;
 }
+
+/*--------------------編集画面------------------*/
+.add-form-edit {
+    display: flex; align-items: center;
+}

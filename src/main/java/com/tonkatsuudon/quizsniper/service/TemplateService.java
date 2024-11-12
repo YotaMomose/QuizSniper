@@ -150,7 +150,7 @@ public class TemplateService {
     }
 
     /**
-     * 現在セットされているテンプレートにのコンテンツを削除する
+     * 現在セットされているテンプレートのコンテンツを削除する
      * @param genreTemplates テンプレートのリスト
      * @param deleteGenre 削除するコンテンツ
      */
@@ -174,6 +174,7 @@ public class TemplateService {
 
         targetRepository.addTargetContent(newTarget, setTemplate);
     }
+
 
     /**
      * デフォルトのジャンルテンプレートにcontetsを追加する
@@ -247,5 +248,59 @@ public class TemplateService {
         newTemplates.add(newTemplate);
 
         return newTemplates;
+    }
+
+    /**
+     * テンプレートのリストからidのテンプレートを抽出する
+     * @param List<Templates> テンプレートのリスト
+     * @param id テンプレートID
+     * @return Templates idに該当するテンプレート
+     */
+    public Templates getTemplateById(List<Templates> templates, Integer id) {
+        Templates editTemplate = templates.stream()
+        .filter(template -> template.getId().equals(id))
+        .findFirst()
+        .orElse(null);
+
+        return editTemplate;
+    } 
+
+    /**
+     * テンプレートのコンテンツを一括削除する
+     * @param genreTemplates テンプレートのリスト
+     * @param tempid 削除する対象のテンプレートのID
+     * @param deleteContentList 削除するコンテンツのIDのリスト
+     * @param type ジャンルorターゲット
+     */
+    @Transactional
+    public void bulkDeleteContents(List<Templates> templates, Integer tempId , List<Integer> deleteIdList, ElementType type) {
+        Templates Template = getTemplateById(templates, tempId);
+        
+        QuizElementDao repository = repositoies.get(type);
+        repository.bulkDeleteContents(deleteIdList, Template);
+        
+    }
+
+    /**
+     * 引数で渡されたIDのテンプレートに新たにコンテンツを追加する
+     * @param ediTemplate　コンテンツを追加するテンプレート
+     * @param newContent 追加するコンテンツ
+     * @param type ターゲットorジャンル
+     */
+    @Transactional
+    public void addNewContent(Templates ediTemplate, String newContent, ElementType type) {
+        QuizElementDao repository = repositoies.get(type);
+        repository.addContent(newContent, ediTemplate);
+    }
+
+    /**
+     * 引数で渡されたIDのテンプレートを取得する
+     * @param id　テンプレートのid
+     * @param type ターゲットorジャンル
+     */
+    @Transactional
+    public Templates findTemplateById(Integer id, ElementType type) {
+        QuizElementDao repository = repositoies.get(type);
+        return repository.findTemplateById(id);
     }
 }
