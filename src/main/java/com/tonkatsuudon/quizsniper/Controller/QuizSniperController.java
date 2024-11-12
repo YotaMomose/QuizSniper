@@ -401,34 +401,27 @@ public class QuizSniperController {
         
         templateService.bulkDeleteContents(genreTemplates, editTemplateId, deleteIdList, ElementType.Genre);
 
-
         return "redirect:/editGenreTemplate";
     }
 
     /* ターゲット追加処理 (編集画面)*/
     @PostMapping("/addtarget-edit")
-    public ModelAndView addTargetFromEditView(ModelAndView mv, @RequestParam("newTarget") String newTarget, @RequestParam("editTemplateId") Integer editTemplateId, HttpSession session) {
+    public String addTargetFromEditView(@RequestParam("newTarget") String newTarget, @RequestParam("editTemplateId") Integer editTemplateId, HttpSession session) {
         List<Templates> targetTemplates = (List<Templates>) session.getAttribute("targetTemplates");
         Templates editTemplate = templateService.getTemplateById(targetTemplates, editTemplateId);
         templateService.addNewContent(editTemplate, newTarget, ElementType.Target);
         
-        mv.addObject("editTemplate", editTemplate);
-        mv.addObject("type", TYPE_TARGET);
-        mv.setViewName("templateEdit");
-        return mv;
+        return "redirect:/editTargetTemplate";
     }
 
     /* ジャンル追加処理 (編集画面)*/
     @PostMapping("/addgenre-edit")
-    public ModelAndView addGenreFromEditView(ModelAndView mv, @RequestParam("newGenre") String newGenre, @RequestParam("editTemplateId") Integer editTemplateId, HttpSession session) {
+    public String addGenreFromEditView(@RequestParam("newGenre") String newGenre, @RequestParam("editTemplateId") Integer editTemplateId, HttpSession session) {
         List<Templates> genreTemplates = (List<Templates>) session.getAttribute("genreTemplates");
         Templates editTemplate = templateService.getTemplateById(genreTemplates, editTemplateId);
         templateService.addNewContent(editTemplate, newGenre, ElementType.Genre);
         
-        mv.addObject("editTemplate", editTemplate);
-        mv.addObject("type", TYPE_GENRE);
-        mv.setViewName("templateEdit");
-        return mv;
+        return "redirect:/editGenreTemplate";
     }
 
 }
