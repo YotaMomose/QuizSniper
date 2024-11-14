@@ -21,6 +21,35 @@
             <h1 id="title">クイズスナイパー</h1>
         </header>
 
+         <!-- メインコンテンツ -->
+        <main class="setting-container">
+            <h2>テンプレート設定</h2>
+            
+            <!-- テンプレート追加フォーム -->
+            <form class="template-form" action="/saveTemplate" method="post">
+                <div class="form-group">
+                    <label for="templateName">テンプレート名:</label>
+                    <input type="text" id="templateName" name="templateName" required>
+                </div>
+                <br>
+            
+                <p>内容</p>
+                <div id="templateContentContainer" class="form-group">
+                    <div class="template-item">
+                        <label for="templateContent1">・</label>
+                        <input type="text" id="templateContent1" name="templateContent" required>
+                        <input type="checkbox" name="deleteContent" value="1">
+                    </div>
+                </div>
+                
+                <button type="button" class="add-btn" onclick="addTemplateContent()">+</button>
+                <button type="button" class="delete-btn" onclick="deleteTemplateContent()">チェックした項目を削除</button>
+                <br>
+                <button type="submit" class="submit-btn">保存</button>
+            </form>
+            
+ 
+        </main>
     
          <!-- Footer Section -->
         <footer class="footer">
@@ -28,7 +57,7 @@
             <p>© 2024 クイズスナイパー. All rights reserved.</p>
         </footer>
     </div>
-
+    <script src="script/createTemp.js"></script>
 </body>
 </html>
 
