@@ -26,7 +26,16 @@
             <h2>テンプレート設定</h2>
             
             <!-- テンプレート追加フォーム -->
-            <form class="template-form" action="/saveTemplate" method="post">
+            <form class="template-form" th:action="@{/saveTemplate}" method="post">
+                <div class="form-group">
+                    <label>テンプレートの種類:</label>
+                    <div>
+                        <input type="radio" id="genreType" name="templateType" value="genre" checked>
+                        <label for="genreType">ジャンル</label>
+                        <input type="radio" id="targetType" name="templateType" value="target">
+                        <label for="targetType">ターゲット</label>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label for="templateName">テンプレート名:</label>
                     <input type="text" id="templateName" name="templateName" required>
@@ -48,6 +57,9 @@
                 <button type="submit" class="submit-btn">保存</button>
             </form>
             
+            <div class="back-button-container">
+                <a th:href="@{/}" class="back-button">戻る</a>
+            </div>
  
         </main>
     

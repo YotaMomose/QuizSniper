@@ -1,5 +1,6 @@
 package com.tonkatsuudon.quizsniper.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -209,6 +210,42 @@ public class GenreRepository implements GenreTemplateDao, QuizElementDao {
             // TODO: エラーハンドリング（例: ログ出力など）
             System.out.println(e);
             return null;
+        }
+    }
+
+    /**
+     * 新たなテンプレートをDBに登録する
+     * @param templateName 新規追加するテンプレートの名前
+     * @param templateContents 新規追加するテンプレートのコンテンツ
+     * @param userId ユーザーID
+     */
+    @Override
+    public void addNewTemplate(String templateName,List<String> templateContents,String userId) {
+        try {
+            // 新しいジャンルテンプレートを作成
+            GenreTemplates genreTemplate = new GenreTemplates();
+            genreTemplate.setName(templateName);
+            genreTemplate.setUserId(userId);
+            genreTemplate.setGenreContents(new ArrayList<GenreContents>());
+
+            // テンプレートを永続化
+            entityManager.persist(genreTemplate);
+
+            // コンテンツを作成して追加
+            for (String content : templateContents) {
+                GenreContents genreContent = new GenreContents();
+                genreContent.setContent(content);
+                System.out.println(content);
+                genreContent.setGenreTemplates(genreTemplate);
+                entityManager.persist(genreContent);
+                genreTemplate.getGenreContents().add(genreContent);
+            }
+            genreTemplate.getGenreContents().forEach(content -> System.out.println(content.getContent()));
+            entityManager.persist(genreTemplate);
+
+        } catch (Exception e) {
+            // TODO: エラーハンドリング（例: ログ出力など）
+            System.out.println(e);
         }
     }
 

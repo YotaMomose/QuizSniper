@@ -1,11 +1,14 @@
 package com.tonkatsuudon.quizsniper.repository;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import com.tonkatsuudon.quizsniper.dao.QuizElementDao;
 import com.tonkatsuudon.quizsniper.dao.TargetTemplateDao;
+import com.tonkatsuudon.quizsniper.entity.GenreContents;
+import com.tonkatsuudon.quizsniper.entity.GenreTemplates;
 import com.tonkatsuudon.quizsniper.entity.TargetContents;
 import com.tonkatsuudon.quizsniper.entity.TargetTemplates;
 import com.tonkatsuudon.quizsniper.entity.Templates;
@@ -212,4 +215,39 @@ public class TargetRepository implements TargetTemplateDao, QuizElementDao {
         }
     }
 
+    /**
+     * 新たなテンプレートをDBに登録する
+     * @param templateName 新規追加するテンプレートの名前
+     * @param templateContents 新規追加するテンプレートのコンテンツ
+     * @param userId ユーザーID
+     */
+    @Override
+    public void addNewTemplate(String templateName,List<String> templateContents,String userId) {
+        try {
+            // 新しいジャンルテンプレートを作成
+            TargetTemplates targetTemplate = new TargetTemplates();
+            targetTemplate.setName(templateName);
+            targetTemplate.setUserId(userId);
+            targetTemplate.setTargetContents(new ArrayList<TargetContents>());
+
+            // テンプレートを永続化
+            entityManager.persist(targetTemplate);
+
+            // コンテンツを作成して追加
+            for (String content : templateContents) {
+                TargetContents targetContent = new TargetContents();
+                targetContent.setContent(content);
+                System.out.println(content);
+                targetContent.setTargetTemplates(targetTemplate);
+                entityManager.persist(targetContent);
+                targetTemplate.getTargetContents().add(targetContent);
+            }
+            targetTemplate.getTargetContents().forEach(content -> System.out.println(content.getContent()));
+            entityManager.persist(targetTemplate);
+
+        } catch (Exception e) {
+            // TODO: エラーハンドリング（例: ログ出力など）
+            System.out.println(e);
+        }
+    }
 }

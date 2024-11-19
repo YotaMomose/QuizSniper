@@ -12,4 +12,6 @@ public interface QuizElementDao {
     void addContent(String newContent, Templates ediTemplate);
 
     Templates findTemplateById(Integer id);
+
+    void addNewTemplate(String templateName,List<String> templateContents,String userId);
 }
