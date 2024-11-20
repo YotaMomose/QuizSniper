@@ -7,8 +7,7 @@ import java.util.stream.Collectors;
 
 import com.tonkatsuudon.quizsniper.dao.QuizElementDao;
 import com.tonkatsuudon.quizsniper.dao.TargetTemplateDao;
-import com.tonkatsuudon.quizsniper.entity.GenreContents;
-import com.tonkatsuudon.quizsniper.entity.GenreTemplates;
+import com.tonkatsuudon.quizsniper.entity.TargetTemplates;
 import com.tonkatsuudon.quizsniper.entity.TargetContents;
 import com.tonkatsuudon.quizsniper.entity.TargetTemplates;
 import com.tonkatsuudon.quizsniper.entity.Templates;
@@ -245,6 +244,25 @@ public class TargetRepository implements TargetTemplateDao, QuizElementDao {
             targetTemplate.getTargetContents().forEach(content -> System.out.println(content.getContent()));
             entityManager.persist(targetTemplate);
 
+        } catch (Exception e) {
+            // TODO: エラーハンドリング（例: ログ出力など）
+            System.out.println(e);
+        }
+    }
+
+    /**
+     * 引数のIDのテンプレートを削除する
+     * @param id テンプレートのID
+     */
+    @Override
+    public void deleteTemplate(Integer id) {
+        try {
+            // 削除対象のテンプレートを取得
+            TargetTemplates template = entityManager.find(TargetTemplates.class, id);
+            if (template != null) {
+                // テンプレート自体を削除
+                entityManager.remove(template);
+            }
         } catch (Exception e) {
             // TODO: エラーハンドリング（例: ログ出力など）
             System.out.println(e);

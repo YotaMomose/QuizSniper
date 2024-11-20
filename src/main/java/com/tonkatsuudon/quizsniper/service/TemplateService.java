@@ -318,4 +318,17 @@ public class TemplateService {
         repository.addNewTemplate(templateName, templateContents,userId);
         
     }
+
+    /**
+     * 引数のIDのテンプレートをDBから削除する
+     * @param id テンプレートのID
+     * @param type ジャンルorターゲット
+     */
+    @Transactional
+    public void deleteTemplate(Integer id, ElementType type) {
+        
+        QuizElementDao repository = repositoies.get(type);
+        repository.deleteTemplate(id);
+        
+    }
 }

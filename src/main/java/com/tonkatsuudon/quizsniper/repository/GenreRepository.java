@@ -249,4 +249,24 @@ public class GenreRepository implements GenreTemplateDao, QuizElementDao {
         }
     }
 
+    /**
+     * 引数のIDのテンプレートを削除する
+     * @param id テンプレートのID
+     */
+    @Override
+    public void deleteTemplate(Integer id) {
+        try {
+            // 削除対象のテンプレートを取得
+            GenreTemplates template = entityManager.find(GenreTemplates.class, id);
+            if (template != null) {
+                // テンプレート自体を削除
+                entityManager.remove(template);
+            }
+        } catch (Exception e) {
+            // TODO: エラーハンドリング（例: ログ出力など）
+            System.out.println(e);
+        }
+    }
+
+
 }

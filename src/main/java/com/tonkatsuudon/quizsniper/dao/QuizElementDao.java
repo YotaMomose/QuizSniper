@@ -14,4 +14,6 @@ public interface QuizElementDao {
     Templates findTemplateById(Integer id);
 
     void addNewTemplate(String templateName,List<String> templateContents,String userId);
+
+    void deleteTemplate(Integer id);
 }

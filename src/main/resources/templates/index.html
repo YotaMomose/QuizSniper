@@ -92,17 +92,18 @@
                                 </li>
                             </ul>
                         </details>
-                        <form th:action="@{/setTargetTemplate/}" method="post">
-                            <input type="hidden" name="id" th:value="${template.id}">
-                            <button type="submit">セットする</button>
-                        </form>
                         <th:block th:if="${session.loginUser != null}">
+                            <form th:action="@{/setTargetTemplate/}" method="post">
+                                <input type="hidden" name="id" th:value="${template.id}">
+                                <button type="submit">セットする</button>
+                            </form>
+
                             <form th:action="@{/editTargetTemplate}" method="post">
                                 <input type="hidden" name="id" th:value="${template.id}">
                                 <button type="submit">編集する</button>
                             </form>
     
-                            <form th:action="@{/editTargetTemplate}" method="post">
+                            <form th:action="@{/deleteTargetTemplate}" method="post">
                                 <input type="hidden" name="id" th:value="${template.id}">
                                 <button type="submit">削除する</button>
                             </form>
@@ -124,17 +125,18 @@
                                 </li>
                             </ul>
                         </details>
-                        <form th:action="@{/setGenreTemplate/}" method="post">
-                            <input type="hidden" name="id" th:value="${template.id}">
-                            <button type="submit">セットする</button>
-                        </form>
                         <th:block th:if="${session.loginUser != null}">
+                            <form th:action="@{/setGenreTemplate/}" method="post">
+                                <input type="hidden" name="id" th:value="${template.id}">
+                                <button type="submit">セットする</button>
+                            </form>
+                        
                             <form th:action="@{/editGenreTemplate}" method="post">
                                 <input type="hidden" name="id" th:value="${template.id}">
                                 <button type="submit">編集する</button>
                             </form>
     
-                            <form th:action="@{/editTargetTemplate/}" method="post">
+                            <form th:action="@{/deleteGenreTemplate}" method="post">
                                 <input type="hidden" name="id" th:value="${template.id}">
                                 <button type="submit">削除する</button>
                             </form>
@@ -143,7 +145,9 @@
                 </li>
             </ul>
             <!-- 設定画面遷移 -->
-            <a class="setting-view" th:href="@{/setting}">新規テンプレートを作成する</a>
+            <th:block th:if="${session.loginUser != null}">
+                <a class="setting-view" th:href="@{/setting}">新規テンプレートを作成する</a>
+            </th:block>    
         </section>
 
         

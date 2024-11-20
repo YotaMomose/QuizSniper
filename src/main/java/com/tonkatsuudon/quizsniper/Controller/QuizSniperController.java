@@ -294,6 +294,26 @@ public class QuizSniperController {
         return "redirect:/";
     }
 
+    /* テンプレート削除処理（ターゲット） */
+    @PostMapping("/deleteTargetTemplate")
+    public String deletetTargetTempate(@RequestParam("id") Integer id,
+            HttpSession session) {
+        // テンプレートを削除
+        templateService.deleteTemplate(id, ElementType.Target);
+
+        return "redirect:/";
+    }
+
+    /* テンプレート削除処理（ターゲット） */
+    @PostMapping("/deleteGenreTemplate")
+    public String deletetGenreTempate(@RequestParam("id") Integer id,
+            HttpSession session) {
+        // テンプレートを削除
+        templateService.deleteTemplate(id, ElementType.Genre);
+
+        return "redirect:/";
+    }
+
     /* テンプレート編集画面遷移（ターゲット） */
     @PostMapping("/editTargetTemplate")
     public ModelAndView showeditTargetTempateView(ModelAndView mv, @RequestParam("id") Integer id,
