@@ -303,4 +303,32 @@ public class TemplateService {
         QuizElementDao repository = repositoies.get(type);
         return repository.findTemplateById(id);
     }
+
+    /**
+     * 新たなテンプレートを追加する
+     * @param templateName 新規追加するテンプレートの名前
+     * @param templateContents 新規追加するテンプレートのコンテンツ
+     * @param userId ユーザーID
+     * @param type ジャンルorターゲット
+     */
+    @Transactional
+    public void addNewTemplate(String templateName,List<String> templateContents,String userId, ElementType type) {
+        
+        QuizElementDao repository = repositoies.get(type);
+        repository.addNewTemplate(templateName, templateContents,userId);
+        
+    }
+
+    /**
+     * 引数のIDのテンプレートをDBから削除する
+     * @param id テンプレートのID
+     * @param type ジャンルorターゲット
+     */
+    @Transactional
+    public void deleteTemplate(Integer id, ElementType type) {
+        
+        QuizElementDao repository = repositoies.get(type);
+        repository.deleteTemplate(id);
+        
+    }
 }
