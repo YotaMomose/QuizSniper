@@ -193,6 +193,13 @@ public class QuizSniperController {
         return "redirect:/";
     }
 
+    /* 新規登録画面遷移 */
+    @GetMapping("/register")
+    public String showRegisterView(ModelAndView mv) {
+        
+        return "register";
+    }
+
     /* テンプレートセット(ジャンル) */
     @PostMapping("/setGenreTemplate/")
     public String setGenreTmp(@RequestParam("id") Integer id, HttpSession session) {

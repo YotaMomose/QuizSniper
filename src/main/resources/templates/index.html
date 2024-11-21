@@ -34,8 +34,7 @@
                 <div th:if="${session.loginUser == null}">
                     <a th:href="@{/login}" id="login-button" class="login-register-button">ログイン</a>
                 </div>
-                
-                <button id="register-button" class="login-register-button">新規登録</button>
+                <a th:href="@{/register}" id="register-button" class="login-register-button">新規登録</a>
             </div>
             <br>
             <h1 id="title">クイズスナイパー</h1>
