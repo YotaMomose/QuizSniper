@@ -9,7 +9,6 @@ import com.tonkatsuudon.quizsniper.dao.QuizElementDao;
 import com.tonkatsuudon.quizsniper.dao.TargetTemplateDao;
 import com.tonkatsuudon.quizsniper.entity.TargetTemplates;
 import com.tonkatsuudon.quizsniper.entity.TargetContents;
-import com.tonkatsuudon.quizsniper.entity.TargetTemplates;
 import com.tonkatsuudon.quizsniper.entity.Templates;
 
 import jakarta.persistence.EntityManager;

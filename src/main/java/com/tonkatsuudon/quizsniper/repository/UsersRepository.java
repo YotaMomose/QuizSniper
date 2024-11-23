@@ -38,6 +38,35 @@ public class UsersRepository implements UsersDao{
         }
 
     }
+
+    /**
+     * IDの重複チェック
+     * @param Id　登録するID
+     * @return Ture：重複あり
+     * 
+     */
+    @Override
+    public boolean existsId(String Id) {
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> query = builder.createQuery(Long.class);
+        Root<Users> usersRoot = query.from(Users.class);
+        
+        query.select(builder.count(usersRoot))
+             .where(builder.equal(usersRoot.get("id"), Id));
+        
+        Long count = entityManager.createQuery(query).getSingleResult();
+        return count > 0;
+    }
+
+    /**
+     * 新規登録
+     * @param users　新規登録するユーザー
+     * 
+     */
+    @Override
+    public void registerUser(Users users) {
+        entityManager.persist(users);
+    }
     
     
 } 

@@ -16,6 +16,7 @@ import com.tonkatsuudon.quizsniper.entity.TargetTemplates;
 import com.tonkatsuudon.quizsniper.entity.Templates;
 import com.tonkatsuudon.quizsniper.entity.Users;
 import com.tonkatsuudon.quizsniper.form.LoginData;
+import com.tonkatsuudon.quizsniper.form.RegisterData;
 import com.tonkatsuudon.quizsniper.repository.GenreRepository;
 import com.tonkatsuudon.quizsniper.repository.TargetRepository;
 import com.tonkatsuudon.quizsniper.service.LoginService;
@@ -192,12 +193,44 @@ public class QuizSniperController {
         session.invalidate();
         return "redirect:/";
     }
-
+ // ↓新規登録画面----------------------------------------------------------------------------------------------------------------------------
+    
     /* 新規登録画面遷移 */
     @GetMapping("/register")
-    public String showRegisterView(ModelAndView mv) {
+    public ModelAndView showRegisterView(ModelAndView mv) {
+        mv.setViewName("register");
+        mv.addObject("registerData", new RegisterData());
+        return mv;
+    }
+
+    /* 新規登録処理（メイン画面） */
+    @PostMapping("/register")
+    public ModelAndView newRegistration(ModelAndView mv, @ModelAttribute @Validated RegisterData registerData,
+            BindingResult result, HttpSession session) {
+
+        // エラー時はログイン画面へ遷移
+        if (result.hasErrors()) {
+            mv.setViewName("register");
+            return mv;
+        }
+
         
-        return "register";
+        String inputId = registerData.getUserId();
+        if (loginService.checkDuplicateId(inputId)) {
+            result.reject("error.duplicate", "入力したIDは既に使用されています。別のIDを入力してください。");
+            mv.setViewName("register");
+            return mv;
+        }
+
+        //ユーザーテーブルに登録
+        Users InputData = registerData.toEntity();
+        loginService.registerUser(InputData);
+
+        // // ユーザー情報をセッションに登録
+        // session.setAttribute("loginUser", loginUser);
+
+        mv.setViewName("registered");
+        return mv;
     }
 
     /* テンプレートセット(ジャンル) */
