@@ -46,7 +46,7 @@ public class QuizSniperController {
     private final TemplateService templateService;
     private final LoginService loginService;
 
-    private final String DEFAULT_USER_ID = "default";
+
     private final String TYPE_GENRE = "genre";
     private final String TYPE_TARGET = "target";
 
@@ -64,13 +64,14 @@ public class QuizSniperController {
                 mv.setViewName("index");
                 return mv;
             }
-
+            GenreTemplates gTemplates = new GenreTemplates();
+            TargetTemplates tTemplates = new TargetTemplates();
             // ログインしない場合のターゲットテンプレートの一覧
-            List<TargetTemplates> targetTemplates = targetRepository.findTargetTemplates(DEFAULT_USER_ID);
+            List<TargetTemplates> targetTemplates = tTemplates.getDefaultTmplate();
             session.setAttribute("targetTemplates", targetTemplates);
 
             // ログインしない場合のジャンルテンプレートの一覧
-            genreTemplates = genreRepository.findGenreTemplates(DEFAULT_USER_ID);
+            genreTemplates = gTemplates.getDefaultTmplate();
             session.setAttribute("genreTemplates", genreTemplates);
 
             // セットされているターゲットのContentsのリスト
@@ -225,6 +226,14 @@ public class QuizSniperController {
         //ユーザーテーブルに登録
         Users InputData = registerData.toEntity();
         loginService.registerUser(InputData);
+        String userId = registerData.getUserId();
+
+        List<GenreTemplates> newGenreTemplates = (List<GenreTemplates>) session.getAttribute("genreTemplates");
+        List<TargetTemplates> newTargetTemplates = (List<TargetTemplates>) session.getAttribute("targetTemplates");
+        GenreTemplates newGenreTemplate = newGenreTemplates.get(0);
+        TargetTemplates newTargetTemplate = newTargetTemplates.get(0);
+        templateService.templateInitialSetup(newGenreTemplate, userId, ElementType.Genre);
+        templateService.templateInitialSetup(newTargetTemplate, userId, ElementType.Target);
 
         // // ユーザー情報をセッションに登録
         // session.setAttribute("loginUser", loginUser);

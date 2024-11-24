@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import com.tonkatsuudon.quizsniper.dao.QuizElementDao;
 import com.tonkatsuudon.quizsniper.dao.TargetTemplateDao;
 import com.tonkatsuudon.quizsniper.entity.TargetTemplates;
+import com.tonkatsuudon.quizsniper.entity.GenreTemplates;
 import com.tonkatsuudon.quizsniper.entity.TargetContents;
 import com.tonkatsuudon.quizsniper.entity.Templates;
 
@@ -264,6 +265,24 @@ public class TargetRepository implements TargetTemplateDao, QuizElementDao {
             }
         } catch (Exception e) {
             // TODO: エラーハンドリング（例: ログ出力など）
+            System.out.println(e);
+        }
+    }
+
+    /**
+     * 引数で受け取ったテンプレートを新規登録する
+     * @param templates 登録するテンプレート
+     * @param userId　テンプレートを紐づけるユーザー
+     */
+    @Override
+    public void templateInitialSetup(Templates templates, String userId) {
+        try {
+            GenreTemplates genreTemplates = (GenreTemplates)templates;
+            genreTemplates.setUserId(userId);
+            entityManager.persist(genreTemplates);
+        } catch (Exception e) {
+            // TODO: エラーハンドリング（例: ログ出力など）
+            
             System.out.println(e);
         }
     }

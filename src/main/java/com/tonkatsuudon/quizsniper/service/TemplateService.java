@@ -184,6 +184,13 @@ public class TemplateService {
     public List<GenreTemplates> addDefaultGenre(List<GenreTemplates> genreTemplates, String newGenre) {
         GenreTemplates newTemplate = genreTemplates.get(0);
         GenreContents newContents = new GenreContents();
+        // IDをセット
+        Integer maxId = newTemplate.getGenreContents().stream()
+                .mapToInt(GenreContents::getId)
+                .max()
+                .orElse(0);
+        newContents.setId(maxId + 1);
+
         newContents.setContent(newGenre);
         newTemplate.getGenreContents().add(newContents);
         
@@ -201,6 +208,14 @@ public class TemplateService {
     public List<TargetTemplates> addDefaultTarget(List<TargetTemplates> targetTemplates, String newTarget) {
         TargetTemplates newTemplate = targetTemplates.get(0);
         TargetContents newContents = new TargetContents();
+
+        // IDをセット
+        Integer maxId = newTemplate.getTargetContents().stream()
+        .mapToInt(TargetContents::getId)
+        .max()
+        .orElse(0);
+        newContents.setId(maxId + 1);
+
         newContents.setContent(newTarget);
         newTemplate.getTargetContents().add(newContents);
         
@@ -329,6 +344,20 @@ public class TemplateService {
         
         QuizElementDao repository = repositoies.get(type);
         repository.deleteTemplate(id);
+        
+    }
+
+    /**
+     * 新規登録時の初期テンプレート登録
+     * @param template 登録するテンプレート
+     * @param userId 登録するユーザーのID    
+     * @param type ジャンルorターゲット
+     * */
+    @Transactional
+    public void templateInitialSetup(Templates templates, String userId, ElementType type) {
+        
+        QuizElementDao repository = repositoies.get(type);
+        repository.templateInitialSetup(templates, userId);
         
     }
 }
