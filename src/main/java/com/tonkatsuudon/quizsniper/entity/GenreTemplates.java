@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Data;
 
 @Entity
@@ -35,7 +36,8 @@ public class GenreTemplates implements Templates {
     //fetch = FetchType.EAGERとすることで一度のアクセスでtargetContentsまで取得する。デフォルトはFetchType.LAZY
     @OneToMany(mappedBy = "genreTemplates", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<GenreContents> genreContents;
-
+    
+    @Transient
     private List<String> defaultGenre = List.of(
         "漢字問題",
         "一般常識問題",

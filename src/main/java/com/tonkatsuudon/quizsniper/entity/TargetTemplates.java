@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Data;
 
 @Entity
@@ -36,7 +37,7 @@ public class TargetTemplates implements Templates {
     @OneToMany(mappedBy = "targetTemplates", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<TargetContents> targetContents;
 
-    
+    @Transient
     List<String> defaultTarget = List.of("佐藤","鈴木","高橋","田中","伊藤");
     /**
      * ログインしない場合のターゲットのデフォルトを返す

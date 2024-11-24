@@ -274,24 +274,13 @@ public class GenreRepository implements GenreTemplateDao, QuizElementDao {
     @Override
     public void templateInitialSetup(Templates templates, String userId) {
         try {
-            System.out.println("1");
             GenreTemplates genreTemplates = (GenreTemplates)templates;
-            System.out.println("あ");
-            List<GenreContents> setGenreContents = new ArrayList<GenreContents>();
-            System.out.println("い");
-            setGenreContents = genreTemplates.getGenreContents();
-            System.out.println("う");
-            genreTemplates.setId(null);
-            // デフォルトのIDが設定されているためIDをnullに設定し、新規データであることを示す。
-            System.out.println("え");
-            genreTemplates.setGenreContents(setGenreContents);
-            // genreTemplates.getGenreContents().forEach(content -> content.setId(null));
-            System.out.println("お");
-            System.out.println(genreTemplates.getId());
-            genreTemplates.getGenreContents().forEach(content -> System.out.println(content.getContent()));
-            System.out.println("2");
             genreTemplates.setUserId(userId);
-            System.out.println("3");
+            genreTemplates.getGenreContents().forEach(content -> {
+                content.setId(null);
+                content.setGenreTemplates(genreTemplates);
+            });
+
             entityManager.persist(genreTemplates);
         } catch (Exception e) {
             // TODO: エラーハンドリング（例: ログ出力など）
