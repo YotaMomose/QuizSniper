@@ -37,10 +37,10 @@
             </div>
             
             <label class="login-label" for="username">ユーザーID:</label>
-            <input class="login-input" type="text" id="username" name="userId" th:value="*{userId}">
+            <input class="login-input" type="text" id="username" name="userId" th:value="*{userId}" maxlength="20">
             
             <label class="login-label" for="password">パスワード:</label>
-            <input class="login-input" type="password" id="password" name="password" th:value="*{password}">
+            <input class="login-input" type="password" id="password" name="password" th:value="*{password}" maxlength="20">
             
             <button type="submit" class="login-button">登録する</button>
         </form>
