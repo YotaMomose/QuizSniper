@@ -236,8 +236,9 @@ public class QuizSniperController {
 
         registerService.newRegister(InputData, newGenreTemplate, newTargetTemplate, userId);
         
-        // // ユーザー情報をセッションに登録
-        // session.setAttribute("loginUser", loginUser);
+        // ユーザー情報をセッションに登録
+        Users loginUser = registerData.toEntity();
+        session.setAttribute("loginUser", loginUser);
 
         mv.setViewName("registered");
         return mv;
