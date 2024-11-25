@@ -347,17 +347,5 @@ public class TemplateService {
         
     }
 
-    /**
-     * 新規登録時の初期テンプレート登録
-     * @param template 登録するテンプレート
-     * @param userId 登録するユーザーのID    
-     * @param type ジャンルorターゲット
-     * */
-    @Transactional
-    public void templateInitialSetup(Templates templates, String userId, ElementType type) {
-        
-        QuizElementDao repository = repositoies.get(type);
-        repository.templateInitialSetup(templates, userId);
-        
-    }
+
 }

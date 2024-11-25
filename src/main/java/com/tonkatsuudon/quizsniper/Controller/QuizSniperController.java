@@ -20,6 +20,7 @@ import com.tonkatsuudon.quizsniper.form.RegisterData;
 import com.tonkatsuudon.quizsniper.repository.GenreRepository;
 import com.tonkatsuudon.quizsniper.repository.TargetRepository;
 import com.tonkatsuudon.quizsniper.service.LoginService;
+import com.tonkatsuudon.quizsniper.service.RegisterService;
 import com.tonkatsuudon.quizsniper.service.TemplateService;
 import com.tonkatsuudon.quizsniper.type.ElementType;
 
@@ -45,6 +46,7 @@ public class QuizSniperController {
 
     private final TemplateService templateService;
     private final LoginService loginService;
+    private final RegisterService registerService;
 
 
     private final String TYPE_GENRE = "genre";
@@ -209,7 +211,7 @@ public class QuizSniperController {
     public ModelAndView newRegistration(ModelAndView mv, @ModelAttribute @Validated RegisterData registerData,
             BindingResult result, HttpSession session) {
 
-        // エラー時はログイン画面へ遷移
+        // エラー時は新規登録画面へ遷移
         if (result.hasErrors()) {
             mv.setViewName("register");
             return mv;
@@ -217,7 +219,7 @@ public class QuizSniperController {
 
         
         String inputId = registerData.getUserId();
-        if (loginService.checkDuplicateId(inputId)) {
+        if (registerService.checkDuplicateId(inputId)) {
             result.reject("error.duplicate", "入力したIDは既に使用されています。別のIDを入力してください。");
             mv.setViewName("register");
             return mv;
@@ -225,16 +227,15 @@ public class QuizSniperController {
 
         //ユーザーテーブルに登録
         Users InputData = registerData.toEntity();
-        loginService.registerUser(InputData);
         String userId = registerData.getUserId();
 
         List<GenreTemplates> newGenreTemplates = (List<GenreTemplates>) session.getAttribute("genreTemplates");
         List<TargetTemplates> newTargetTemplates = (List<TargetTemplates>) session.getAttribute("targetTemplates");
         GenreTemplates newGenreTemplate = newGenreTemplates.get(0);
         TargetTemplates newTargetTemplate = newTargetTemplates.get(0);
-        templateService.templateInitialSetup(newGenreTemplate, userId, ElementType.Genre);
-        templateService.templateInitialSetup(newTargetTemplate, userId, ElementType.Target);
 
+        registerService.newRegister(InputData, newGenreTemplate, newTargetTemplate, userId);
+        
         // // ユーザー情報をセッションに登録
         // session.setAttribute("loginUser", loginUser);
 
