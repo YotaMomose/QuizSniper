@@ -17,6 +17,7 @@ import com.tonkatsuudon.quizsniper.entity.Templates;
 import com.tonkatsuudon.quizsniper.entity.Users;
 import com.tonkatsuudon.quizsniper.form.LoginData;
 import com.tonkatsuudon.quizsniper.form.RegisterData;
+import com.tonkatsuudon.quizsniper.form.SearchData;
 import com.tonkatsuudon.quizsniper.repository.GenreRepository;
 import com.tonkatsuudon.quizsniper.repository.TargetRepository;
 import com.tonkatsuudon.quizsniper.service.LoginService;
@@ -442,7 +443,9 @@ public class QuizSniperController {
     /* 設定画面遷移 */
     @GetMapping("/setting")
     public ModelAndView showSettingView(ModelAndView mv) {
+
         mv.setViewName("setting");
+        mv.addObject("searchData", new SearchData());
         return mv;
     }
 
@@ -501,7 +504,6 @@ public class QuizSniperController {
             HttpSession session) {
         
         Users loginUser = (Users) session.getAttribute("loginUser");
-        System.out.println(templateType);
         if (TYPE_GENRE.equals(templateType)) {
             templateService.addNewTemplate(templateName, templateContents, loginUser.getId(), ElementType.Genre);
         } else if (TYPE_TARGET.equals(templateType)) {
@@ -511,5 +513,38 @@ public class QuizSniperController {
         }
         
         return "redirect:/setting";
+    }
+
+    @PostMapping("/searchTemplate")
+    public ModelAndView searchTemplate(
+            ModelAndView mv,
+            @ModelAttribute SearchData searchData,
+            BindingResult result,
+            HttpSession session) {
+        
+        String templateType = searchData.getTemplateType();
+        Integer templateId = searchData.getTemplateId();
+        GenreTemplates gTemplates = new GenreTemplates();
+        TargetTemplates tTemplates = new TargetTemplates();
+
+        if (TYPE_GENRE.equals(templateType)) {
+            gTemplates = (GenreTemplates)templateService.findTemplateById(templateId, ElementType.Genre);
+            if(gTemplates == null ) {
+                result.reject("error.search", "入力されたIDのジャンルテンプレートは存在しません。");
+            }
+            mv.addObject("searchResult", gTemplates);
+        } else if (TYPE_TARGET.equals(templateType)) {
+            tTemplates = (TargetTemplates)templateService.findTemplateById(templateId, ElementType.Target);
+            if(tTemplates == null ) {
+                result.reject("error.search", "入力されたIDのターゲットテンプレートは存在しません。");
+            }
+            mv.addObject("searchResult", tTemplates);
+        } else {
+            System.out.println("エラーです");
+        }
+        
+        mv.addObject("templateType", templateType);
+        mv.setViewName("setting");
+        return mv;
     }
 }
