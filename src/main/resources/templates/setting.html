@@ -82,32 +82,36 @@
             </form>
 
             <!-- 検索結果表示エリア -->
-            <div th:if="${searchResult}" class="search-result">
+            <div th:if="${session.searchResult}" class="search-result">
                 <h3>検索結果</h3>
 
                 <div class="template-details">
                     <th:block th:if="${templateType == 'genre'}">
-                        <p>ジャンルテンプレート名: <span th:text="${searchResult.name}"></span></p>
+                        <p>ジャンルテンプレート名: <span th:text="${session.searchResult.name}"></span></p>
                     </th:block>
                     <th:block th:if="${templateType == 'target'}"></th:block>
-                        <p>ターゲットテンプレート名: <span th:text="${searchResult.name}"></span></p>
+                        <p>ターゲットテンプレート名: <span th:text="${session.searchResult.name}"></span></p>
                     </th:block>
                     <div class="template-contents">
                         <p>内容:</p>
                         <ul>
                             <th:block th:if="${templateType == 'genre'}">
-                                <li th:each="content : ${searchResult.genreContents}">
+                                <li th:each="content : ${session.searchResult.genreContents}">
                                     <p th:text="${content.content}" class="content-text"></p>
                                 </li>
                             </th:block>
                             <th:block th:if="${templateType == 'target'}">
-                                <li th:each="content : ${searchResult.targetContents}">
+                                <li th:each="content : ${session.searchResult.targetContents}">
                                     <p th:text="${content.content}" class="content-text"></p>
                                 </li>
                             </th:block>
                         </ul>
                     </div>
                 </div>
+                <form th:action="@{/saveSearchTemplate}" method="post" class="template-form">
+                    <input type="hidden" name="templateType" th:value="${templateType}">
+                    <button type="submit" class="submit-btn">このテンプレートを追加する</button>
+                </form>
             </div>
             
             <div class="back-button-container">

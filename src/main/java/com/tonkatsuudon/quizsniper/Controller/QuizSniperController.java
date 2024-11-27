@@ -98,10 +98,22 @@ public class QuizSniperController {
 
             // ログインユーザーに紐づくターゲットテンプレートの一覧
             List<TargetTemplates> targetTemplates = targetRepository.findTargetTemplates(userId);
+
+            TargetTemplates searchTargetTemplates = (TargetTemplates)session.getAttribute("serchTargetTemplate");
+            // 誰かのテンプレてーとを追加する場合
+            if (searchTargetTemplates != null) {
+                targetTemplates.add(searchTargetTemplates);
+            }
             session.setAttribute("targetTemplates", targetTemplates);
 
             // ログインユーザーに紐づくジャンルテンプレートの一覧
             List<GenreTemplates> genreTemplates = genreRepository.findGenreTemplates(userId);
+
+            GenreTemplates searchGenreTemplate = (GenreTemplates)session.getAttribute("serchGenreTemplate");
+            // 誰かのテンプレてーとを追加する場合
+            if (searchGenreTemplate != null) {
+                genreTemplates.add(searchGenreTemplate);
+            }
             session.setAttribute("genreTemplates", genreTemplates);
 
             // セットされているターゲットのContentsのリスト
@@ -532,19 +544,42 @@ public class QuizSniperController {
             if(gTemplates == null ) {
                 result.reject("error.search", "入力されたIDのジャンルテンプレートは存在しません。");
             }
-            mv.addObject("searchResult", gTemplates);
+            session.setAttribute("searchResult", gTemplates);
         } else if (TYPE_TARGET.equals(templateType)) {
             tTemplates = (TargetTemplates)templateService.findTemplateById(templateId, ElementType.Target);
             if(tTemplates == null ) {
                 result.reject("error.search", "入力されたIDのターゲットテンプレートは存在しません。");
             }
-            mv.addObject("searchResult", tTemplates);
+            session.setAttribute("searchResult", tTemplates);
         } else {
             System.out.println("エラーです");
         }
         
         mv.addObject("templateType", templateType);
         mv.setViewName("setting");
+        return mv;
+    }
+
+    /* 検索したテンプレートを自分のテンプレートとして使用する */
+    @PostMapping("/saveSearchTemplate")
+    public ModelAndView saveSearchTemplate(
+            ModelAndView mv,
+            @RequestParam("templateType") String templateType,
+            HttpSession session) {
+        
+        if (TYPE_GENRE.equals(templateType)) {
+            GenreTemplates addTemplates = (GenreTemplates)session.getAttribute("searchResult");
+            addTemplates.setSet(false);
+            session.setAttribute("serchGenreTemplate", addTemplates);
+        } else if (TYPE_TARGET.equals(templateType)) {
+            TargetTemplates addTemplates = (TargetTemplates)session.getAttribute("searchResult");
+            addTemplates.setSet(false);
+            session.setAttribute("serchTargetTemplate", addTemplates);
+        } else {
+            System.out.println("エラーです");
+        }
+        
+        mv.setViewName("redirect:/setting");
         return mv;
     }
 }

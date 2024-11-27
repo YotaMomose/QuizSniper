@@ -98,16 +98,18 @@
                                 <input type="hidden" name="id" th:value="${template.id}">
                                 <button type="submit">セットする</button>
                             </form>
+                            <th:block th:if="${template.userId == session.loginUser.id}">
+                                <form th:action="@{/editTargetTemplate}" method="post">
+                                    <input type="hidden" name="id" th:value="${template.id}">
+                                    <button type="submit">編集する</button>
+                                </form>
+        
+                                <form th:action="@{/deleteTargetTemplate}" method="post">
+                                    <input type="hidden" name="id" th:value="${template.id}">
+                                    <button type="submit">削除する</button>
+                                </form>
+                            </th:block>
 
-                            <form th:action="@{/editTargetTemplate}" method="post">
-                                <input type="hidden" name="id" th:value="${template.id}">
-                                <button type="submit">編集する</button>
-                            </form>
-    
-                            <form th:action="@{/deleteTargetTemplate}" method="post">
-                                <input type="hidden" name="id" th:value="${template.id}">
-                                <button type="submit">削除する</button>
-                            </form>
                         </th:block>
                     </div>
                 </li>
@@ -133,16 +135,18 @@
                                 <input type="hidden" name="id" th:value="${template.id}">
                                 <button type="submit">セットする</button>
                             </form>
-                        
-                            <form th:action="@{/editGenreTemplate}" method="post">
-                                <input type="hidden" name="id" th:value="${template.id}">
-                                <button type="submit">編集する</button>
-                            </form>
-    
-                            <form th:action="@{/deleteGenreTemplate}" method="post">
-                                <input type="hidden" name="id" th:value="${template.id}">
-                                <button type="submit">削除する</button>
-                            </form>
+                            <th:block th:if="${template.userId == session.loginUser.id}">
+                                <form th:action="@{/editGenreTemplate}" method="post">
+                                    <input type="hidden" name="id" th:value="${template.id}">
+                                    <button type="submit">編集する</button>
+                                </form>
+        
+                                <form th:action="@{/deleteGenreTemplate}" method="post">
+                                    <input type="hidden" name="id" th:value="${template.id}">
+                                    <button type="submit">削除する</button>
+                                </form>
+                            </th:block>
+
                         </th:block>
                     </div>
                 </li>
