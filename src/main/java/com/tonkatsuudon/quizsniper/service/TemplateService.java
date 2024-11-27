@@ -48,11 +48,27 @@ public class TemplateService {
      * @return　セットしているターゲットテンプレートの中身のリスト
      */
     public List<TargetContents> getsetTargetContents(List<TargetTemplates> targetTemplates) {
-        TargetTemplates setTargetTemplate = targetTemplates.get(0);
-
+        TargetTemplates setTargetTemplate = getSetTargetTemplate(targetTemplates);
         List<TargetContents> setTargetStringList = setTargetTemplate.getTargetContents();
 
         return setTargetStringList;
+    }
+
+    /**
+     * セット状態のテンプレートを取得する
+     * @param targetTemplates
+     * @return　セットされているターゲットテンプレート
+     */
+    private TargetTemplates getSetTargetTemplate(List<TargetTemplates> targetTemplates) {
+        TargetTemplates setTargetTemplate = targetTemplates.stream()
+                .filter(TargetTemplates::isSet)
+                .findFirst()
+                .orElse(null);
+
+        if (setTargetTemplate == null) {
+            setTargetTemplate = targetTemplates.get(0);
+        }
+        return setTargetTemplate;
     }
 
     /**
@@ -61,11 +77,28 @@ public class TemplateService {
      * @return　セットしているジャンルテンプレートの中身のリスト
      */
     public List<GenreContents> getsetGenreContents(List<GenreTemplates> genreTemplates) {
-        GenreTemplates setGenreTemplate = genreTemplates.get(0);
+        GenreTemplates setGenreTemplate = getSetGenreTemplate(genreTemplates);
 
         List<GenreContents> setGenreStringList = setGenreTemplate.getGenreContents();
 
         return setGenreStringList;
+    }
+
+    /**
+     * セット状態のテンプレートを取得する
+     * @param targetTemplates
+     * @return　セットされているジャンルテンプレート
+     */
+    private GenreTemplates getSetGenreTemplate(List<GenreTemplates> genreTemplates) {
+        GenreTemplates setGenreTemplate = genreTemplates.stream()
+        .filter(GenreTemplates::isSet)
+        .findFirst()
+        .orElse(null);
+
+        if (setGenreTemplate == null) {
+            setGenreTemplate = genreTemplates.get(0);
+        }
+        return setGenreTemplate;
     }
 
     //TODO インターフェースとかで下の二つのメソッドをいい感じにまとめられないか要検討
@@ -75,7 +108,7 @@ public class TemplateService {
      * @return　セットしているターゲットテンプレートの中身のStringのリスト
      */
     public List<String> getSetTargetStringList(List<TargetTemplates> targetTemplates) {
-        TargetTemplates setTargetTemplate = targetTemplates.get(0);
+        TargetTemplates setTargetTemplate = getSetTargetTemplate(targetTemplates);
 
         List<String> setTargetStringList = setTargetTemplate.getTargetContents().stream()
         .map(TargetContents::getContent)
@@ -90,7 +123,7 @@ public class TemplateService {
      * @return　セットしているジャンルテンプレートの中身のStringのリスト
      */
     public List<String> getSetGenreStringList(List<GenreTemplates> genreTemplates) {
-        GenreTemplates setGenreTemplate = genreTemplates.get(0);
+        GenreTemplates setGenreTemplate = getSetGenreTemplate(genreTemplates);
 
         List<String> setGenreStringList = setGenreTemplate.getGenreContents().stream()
         .map(GenreContents::getContent)
@@ -103,7 +136,7 @@ public class TemplateService {
      * ユーザーがセットしているターゲットテンプレートのidを取得する処理
      */
     public Integer getSetTargetId(List<TargetTemplates> targetTemplates) {
-        TargetTemplates setTargetTemplate = targetTemplates.get(0);
+        TargetTemplates setTargetTemplate = getSetTargetTemplate(targetTemplates);
         return setTargetTemplate.getId();
     }
 
@@ -111,7 +144,7 @@ public class TemplateService {
      * ユーザーがセットしているジャンルテンプレートのidを取得する処理
      */
     public Integer getSetGenreId(List<GenreTemplates> genreTemplates) {
-        GenreTemplates setGenreTemplate = genreTemplates.get(0);
+        GenreTemplates setGenreTemplate = getSetGenreTemplate(genreTemplates);
         return setGenreTemplate.getId();
     }
 
@@ -124,6 +157,44 @@ public class TemplateService {
     public void switchSetGenreTemplate(Integer currentSetId, Integer newSetId) {
         genreRepository.unsetGenreTemplate(currentSetId);
         genreRepository.setGenreTemplate(newSetId);
+    }
+
+    /* 
+    * ジャンルテンプレートをセット状態にする
+    * @param newSetId　新たにセットするテンプレートのID
+    */
+   @Transactional
+   public void setGenreTemplate(Integer newSetId) {
+       genreRepository.setGenreTemplate(newSetId);
+   }
+
+    /* 
+    * ターゲットテンプレートをセット状態にする
+    * @param newSetId　新たにセットするテンプレートのID
+    */
+    @Transactional
+    public void setTargetTemplate(Integer newSetId) {
+        targetRepository.setTargetTemplate(newSetId);
+    }
+
+    /* 
+    * 現在セットされているジャンルテンプレートを解除する。
+    * @param currentSetId 現在セットされているテンプレートのID
+    * @param newSetId　新たにセットするテンプレートのID
+    */
+   @Transactional
+   public void unsetGenreTemplate(Integer currentSetId) {
+       genreRepository.unsetGenreTemplate(currentSetId);
+   }
+
+    /* 
+    * 現在セットされているターゲットテンプレートを解除する。
+    * @param currentSetId 現在セットされているテンプレートのID
+    * @param newSetId　新たにセットするテンプレートのID
+    */
+    @Transactional
+    public void unsetTargetTemplate(Integer currentSetId) {
+        targetRepository.unsetTargetTemplate(currentSetId);
     }
 
     /**

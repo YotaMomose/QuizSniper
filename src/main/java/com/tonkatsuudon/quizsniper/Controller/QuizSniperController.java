@@ -100,7 +100,7 @@ public class QuizSniperController {
             List<TargetTemplates> targetTemplates = targetRepository.findTargetTemplates(userId);
 
             TargetTemplates searchTargetTemplates = (TargetTemplates)session.getAttribute("serchTargetTemplate");
-            // 誰かのテンプレてーとを追加する場合
+            // 誰かのテンプレートを追加する場合
             if (searchTargetTemplates != null) {
                 targetTemplates.add(searchTargetTemplates);
             }
@@ -110,7 +110,7 @@ public class QuizSniperController {
             List<GenreTemplates> genreTemplates = genreRepository.findGenreTemplates(userId);
 
             GenreTemplates searchGenreTemplate = (GenreTemplates)session.getAttribute("serchGenreTemplate");
-            // 誰かのテンプレてーとを追加する場合
+            // 誰かのテンプレートを追加する場合
             if (searchGenreTemplate != null) {
                 genreTemplates.add(searchGenreTemplate);
             }
@@ -261,9 +261,22 @@ public class QuizSniperController {
     @PostMapping("/setGenreTemplate/")
     public String setGenreTmp(@RequestParam("id") Integer id, HttpSession session) {
         Integer currentSetId = (Integer) session.getAttribute("setGenreId");
-        // 現在のテンプレートのセットを解除
-        templateService.switchSetGenreTemplate(currentSetId, id);
-
+        GenreTemplates searchGenreTemplates = (GenreTemplates)session.getAttribute("serchGenreTemplate");
+        if (searchGenreTemplates != null && searchGenreTemplates.getId() == id) {
+            templateService.unsetGenreTemplate(currentSetId);
+            searchGenreTemplates.setSet(true);
+            session.setAttribute("serchGenreTemplate", searchGenreTemplates);
+        } else {
+            // 現在のテンプレートのセットを解除
+            if (searchGenreTemplates != null && searchGenreTemplates.getId() == currentSetId) {
+                searchGenreTemplates.setSet(false);
+                session.setAttribute("serchGenreTemplate", searchGenreTemplates);
+                templateService.setGenreTemplate(id);
+            } else {
+                templateService.switchSetGenreTemplate(currentSetId, id);
+            }
+            
+        }
         return "redirect:/";
     }
 
@@ -271,8 +284,21 @@ public class QuizSniperController {
     @PostMapping("/setTargetTemplate/")
     public String setTargetTmp(@RequestParam("id") Integer id, HttpSession session) {
         Integer currentSetId = (Integer) session.getAttribute("setTargetId");
-        // 現在のテンプレートのセットを解除
-        templateService.switchSetTargetTemplate(currentSetId, id);
+        TargetTemplates searchTargetTemplates = (TargetTemplates)session.getAttribute("serchTargetTemplate");
+        if (searchTargetTemplates != null && searchTargetTemplates.getId() == id) {
+            templateService.unsetTargetTemplate(currentSetId);
+            searchTargetTemplates.setSet(true);
+            session.setAttribute("serchTargetTemplate", searchTargetTemplates);
+        } else {
+            // 現在のテンプレートのセットを解除
+            if (searchTargetTemplates != null && searchTargetTemplates.getId() == currentSetId) {
+                searchTargetTemplates.setSet(false);
+                session.setAttribute("serchTargetTemplate", searchTargetTemplates);
+                templateService.setTargetTemplate(id);
+            } else {
+                templateService.switchSetTargetTemplate(currentSetId, id);
+            }
+        }
 
         return "redirect:/";
     }
