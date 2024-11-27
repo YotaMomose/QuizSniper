@@ -84,7 +84,9 @@
                     <div class="template-button-set">
                         <details>
                             <summary th:text="${template.name}"></summary>
-                            
+                            <th:block th:if="${session.loginUser != null}"></th:block>
+                                <p th:text="|ターゲットテンプレートID： ${template.id}|"></p>
+                            </th:block>
                             <ul>
                                 <li th:each="content : ${template.targetContents}">
                                     <p th:text="${content.content}" class="content-text"></p>
@@ -117,7 +119,9 @@
                     <div class="template-button-set">
                         <details>
                             <summary th:text="${template.name}"></summary>
-                            
+                            <th:block th:if="${session.loginUser != null}"></th:block>
+                                <p th:text="|ジャンルテンプレートID： ${template.id}|"></p>
+                            </th:block>
                             <ul>
                                 <li th:each="content : ${template.genreContents}">
                                     <p th:text="${content.content}" class="content-text"></p>
