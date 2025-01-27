@@ -235,12 +235,10 @@ public class TargetRepository implements TargetTemplateDao, QuizElementDao {
             for (String content : templateContents) {
                 TargetContents targetContent = new TargetContents();
                 targetContent.setContent(content);
-                System.out.println(content);
                 targetContent.setTargetTemplates(targetTemplate);
                 entityManager.persist(targetContent);
                 targetTemplate.getTargetContents().add(targetContent);
             }
-            targetTemplate.getTargetContents().forEach(content -> System.out.println(content.getContent()));
             entityManager.persist(targetTemplate);
 
         } catch (Exception e) {
