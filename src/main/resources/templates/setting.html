@@ -28,7 +28,7 @@
             <!-- テンプレート追加フォーム -->
             <form class="template-form" th:action="@{/saveTemplate}" method="post">
                 <div class="form-group">
-                    <label>テンプレートの種類:</label>
+                    <label>追加するテンプレートの種類:</label>
                     <div>
                         <input type="radio" id="genreType" name="templateType" value="genre" checked>
                         <label for="genreType">ジャンル</label>
@@ -56,6 +56,63 @@
                 <br>
                 <button type="submit" class="submit-btn">保存</button>
             </form>
+
+            <br>
+            <hr>
+            <p>ほかの人が作成したテンプレートを使う</p>
+            <p>※IDで検索してください</p>
+            <!-- テンプレート検索フォーム -->
+            <form class="template-form" th:action="@{/searchTemplate}" th:object="${searchData}" method="post">
+                <div class="form-group">
+                    <label>検索するテンプレートの種類:</label>
+                    <div>
+                        <input type="radio" id="genreType" name="templateType" value="genre" checked>
+                        <label for="genreType">ジャンル</label>
+                        <input type="radio" id="targetType" name="templateType" value="target">
+                        <label for="targetType">ターゲット</label>
+                    </div>
+                
+                    <label for="searchId">テンプレートID:</label>
+                    <input type="number" id="searchId" name="templateId" required>
+                </div>
+                <div th:if="${#fields.hasErrors('global')}" class="error-message">
+                    <p th:text="${#fields.errors('global')}" />
+                </div>
+                <button type="submit" class="submit-btn">検索</button>
+            </form>
+
+            <!-- 検索結果表示エリア -->
+            <div th:if="${session.searchResult}" class="search-result">
+                <h3>検索結果</h3>
+
+                <div class="template-details">
+                    <th:block th:if="${templateType == 'genre'}">
+                        <p>ジャンルテンプレート名: <span th:text="${session.searchResult.name}"></span></p>
+                    </th:block>
+                    <th:block th:if="${templateType == 'target'}"></th:block>
+                        <p>ターゲットテンプレート名: <span th:text="${session.searchResult.name}"></span></p>
+                    </th:block>
+                    <div class="template-contents">
+                        <p>内容:</p>
+                        <ul>
+                            <th:block th:if="${templateType == 'genre'}">
+                                <li th:each="content : ${session.searchResult.genreContents}">
+                                    <p th:text="${content.content}" class="content-text"></p>
+                                </li>
+                            </th:block>
+                            <th:block th:if="${templateType == 'target'}">
+                                <li th:each="content : ${session.searchResult.targetContents}">
+                                    <p th:text="${content.content}" class="content-text"></p>
+                                </li>
+                            </th:block>
+                        </ul>
+                    </div>
+                </div>
+                <form th:action="@{/saveSearchTemplate}" method="post" class="template-form">
+                    <input type="hidden" name="templateType" th:value="${templateType}">
+                    <button type="submit" class="submit-btn">このテンプレートを追加する</button>
+                </form>
+            </div>
             
             <div class="back-button-container">
                 <a th:href="@{/}" class="back-button">戻る</a>

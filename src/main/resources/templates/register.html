@@ -26,17 +26,28 @@
         <h2 id="login-title">新規登録</h2>
 
         
-        <form th:action="@{/}" method="post" id="login-form">
+        <form th:action="@{/register}" method="post" th:object="${registerData}" id="login-form">
             <!-- エラーメッセージ表示部分 -->
+            <div th:if="${#fields.hasErrors()}" class="error-message">
+                <p th:if="${#fields.hasErrors('userId')}" th:text="${#fields.errors('userId')}"></p>
+                <p th:if="${#fields.hasErrors('password')}" th:text="${#fields.errors('password')}"></p>
+            </div>
+            <div th:if="${#fields.hasErrors('global')}" class="error-message">
+                <p th:text="${#fields.errors('global')}" />
+            </div>
             
             <label class="login-label" for="username">ユーザーID:</label>
-            <input class="login-input" type="text" id="username" name="userId" th:value="*{userId}">
+            <input class="login-input" type="text" id="username" name="userId" th:value="*{userId}" maxlength="20">
             
             <label class="login-label" for="password">パスワード:</label>
-            <input class="login-input" type="password" id="password" name="password" th:value="*{password}">
+            <input class="login-input" type="password" id="password" name="password" th:value="*{password}" maxlength="20">
             
-            <button type="submit" class="login-button">ログイン</button>
+            <button type="submit" class="login-button">登録する</button>
         </form>
+        <br>
+        <div class="login-button-container">
+            <a th:href="@{/}" class="login-button">戻る</a>
+        </div>
     </div>
 </body>
 </html>

@@ -235,12 +235,10 @@ public class GenreRepository implements GenreTemplateDao, QuizElementDao {
             for (String content : templateContents) {
                 GenreContents genreContent = new GenreContents();
                 genreContent.setContent(content);
-                System.out.println(content);
                 genreContent.setGenreTemplates(genreTemplate);
                 entityManager.persist(genreContent);
                 genreTemplate.getGenreContents().add(genreContent);
             }
-            genreTemplate.getGenreContents().forEach(content -> System.out.println(content.getContent()));
             entityManager.persist(genreTemplate);
 
         } catch (Exception e) {
@@ -268,5 +266,26 @@ public class GenreRepository implements GenreTemplateDao, QuizElementDao {
         }
     }
 
+    /**
+     * 引数で受け取ったテンプレートを新規登録する
+     * @param templates 登録するテンプレート
+     * @param userId　テンプレートを紐づけるユーザー
+     */
+    @Override
+    public void templateInitialSetup(Templates templates, String userId) {
+        try {
+            GenreTemplates genreTemplates = (GenreTemplates)templates;
+            genreTemplates.setUserId(userId);
+            genreTemplates.getGenreContents().forEach(content -> {
+                content.setId(null);
+                content.setGenreTemplates(genreTemplates);
+            });
 
+            entityManager.persist(genreTemplates);
+        } catch (Exception e) {
+            // TODO: エラーハンドリング（例: ログ出力など）
+            
+            System.out.println(e);
+        }
+    }
 }

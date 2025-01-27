@@ -9,7 +9,6 @@ import com.tonkatsuudon.quizsniper.dao.QuizElementDao;
 import com.tonkatsuudon.quizsniper.dao.TargetTemplateDao;
 import com.tonkatsuudon.quizsniper.entity.TargetTemplates;
 import com.tonkatsuudon.quizsniper.entity.TargetContents;
-import com.tonkatsuudon.quizsniper.entity.TargetTemplates;
 import com.tonkatsuudon.quizsniper.entity.Templates;
 
 import jakarta.persistence.EntityManager;
@@ -236,12 +235,10 @@ public class TargetRepository implements TargetTemplateDao, QuizElementDao {
             for (String content : templateContents) {
                 TargetContents targetContent = new TargetContents();
                 targetContent.setContent(content);
-                System.out.println(content);
                 targetContent.setTargetTemplates(targetTemplate);
                 entityManager.persist(targetContent);
                 targetTemplate.getTargetContents().add(targetContent);
             }
-            targetTemplate.getTargetContents().forEach(content -> System.out.println(content.getContent()));
             entityManager.persist(targetTemplate);
 
         } catch (Exception e) {
@@ -265,6 +262,29 @@ public class TargetRepository implements TargetTemplateDao, QuizElementDao {
             }
         } catch (Exception e) {
             // TODO: エラーハンドリング（例: ログ出力など）
+            System.out.println(e);
+        }
+    }
+
+    /**
+     * 引数で受け取ったテンプレートを新規登録する
+     * @param templates 登録するテンプレート
+     * @param userId　テンプレートを紐づけるユーザー
+     */
+    @Override
+    public void templateInitialSetup(Templates templates, String userId) {
+        try {
+            TargetTemplates targetTemplates = (TargetTemplates)templates;
+            targetTemplates.setUserId(userId);
+            targetTemplates.getTargetContents().forEach(content -> {
+                content.setId(null);
+                content.setTargetTemplates(targetTemplates);
+            });
+            
+            entityManager.persist(targetTemplates);
+        } catch (Exception e) {
+            // TODO: エラーハンドリング（例: ログ出力など）
+            
             System.out.println(e);
         }
     }
